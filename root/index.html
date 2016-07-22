@@ -11,9 +11,9 @@
     <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1.0, user-scalable=0">
     <!-- Bootstrap: The above 3 meta tags *must* come first in the head; any other head content must come *after* these tags -->
 
-    <title>World Wind Explorer</title>
+    <title>World Wind Weather</title>
 
-    <meta name="description" content="World Wind Explorer">
+    <meta name="description" content="World Wind Weather">
     <meta name="author" content="Bruce Schubert">
 
     <!-- Favicon -->
@@ -48,9 +48,8 @@ Main Menu NavBar
                 <span class="icon-bar"></span>
                 <span class="icon-bar"></span>
             </button>
-            <a class="navbar-brand" href="https://github.com/NASAWorldWindResearch/WorldWindExplorer" target="_blank">World
-                Wind
-                Explorer</a>
+            <a class="navbar-brand" href="https://github.com/emxsys/WorldWindWeather" 
+               target="_blank">World Wind Explorer</a>
         </div>
         <!-- Navigation links, Projections and Search Box -->
         <div class="collapse navbar-collapse" id="main-navbar">
@@ -77,6 +76,14 @@ Main Menu NavBar
                                 <span class="glyphicon glyphicon-map-marker visible-sm-block" aria-hidden="true"
                                       style="padding-top:4px; padding-bottom:4px"></span>
                         <span class="hidden-sm" aria-hidden="true">Markers</span>
+                    </a>
+                </li>
+                <!-- Weather navigation button -->
+                <li>
+                    <a href="#weather" role="tab" data-toggle="tab">
+                                <span class="glyphicon glyphicon-certificate visible-sm-block" aria-hidden="true"
+                                      style="padding-top:4px; padding-bottom:4px"></span>
+                        <span class="hidden-sm" aria-hidden="true">Weather</span>
                     </a>
                 </li>
                 <!-- Search box and button (bound to SearchViewModel)-->
@@ -273,6 +280,24 @@ Main Content
                 <div id="markers-body" class="section-body collapse in">
                     <!-- Bind the list to the 'markers' observableArray -->
                     <div data-bind="template: { name: 'marker-template', foreach: markers}"></div>
+                </div>
+            </div>
+            
+            <!--
+            Weather View (bound to WeatherViewModel)
+            -->
+            <div id="weather" class="tab-pane" role="tabpanel">
+                <div class="section-heading">
+                    <h4 class="sub-header">
+                                <span class="glyphicon glyphicon-certificate" aria-hidden="true"
+                                      style="padding-right:5px;"></span>
+                        Weather
+                        <a class="section-toggle" data-toggle="collapse" href="#weather-body"></a>
+                    </h4>
+                </div>
+                <div id="weather-body" class="section-body collapse in">
+                    <!-- Bind the list to the 'weatherScouts' observableArray -->
+                    <div data-bind="template: { name: 'weather-template', foreach: weatherScouts}"></div>
                 </div>
             </div>
         </div>
