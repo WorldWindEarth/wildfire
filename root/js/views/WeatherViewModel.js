@@ -15,33 +15,28 @@ define(['knockout', 'model/Constants'],
              * @constructor
              */
             function WeatherViewModel(globe, weatherScoutManager) {
-                var self = this,
-                        wwd = globe.wwd;
+                var self = this;
 
-                self.weatherScoutsLayer = globe.layerManager.findLayer(constants.LAYER_NAME_MARKERS);
-                self.weatherScouts = ko.observableArray()  // observable array
-//                self.weatherScoutsLayer = globe.layerManager.findLayer(constants.LAYER_NAME_MARKERS);
-//                self.weatherScouts = weatherScoutManager.weatherScouts;   // observable array
-//
-//                /** "Goto" function centers the globe on a selected weatherScout */
-//                self.gotoWeatherScout = function (weatherScout) {
-//                    globe.goto(weatherScout.latitude(), weatherScout.longitude());
-//                };
-//
-//                /** "Edit" function invokes a modal dialog to edit the weatherScout attributes */
-//                self.editWeatherScout = function (weatherScout) {
-//                    if (weatherScout.isOpenable) {
-//                        weatherScout.open();
-//                    }
-//                };
-//                
-//                /** "Remove" function removes a weatherScout from the globe */
-//                self.removeWeatherScout = function (weatherScout) {
-//                    if (weatherScout.isRemovable) {
-//                        weatherScout.remove();
-//                    }
-//                };
+                self.weatherScouts = weatherScoutManager.scouts;
 
+                /** "Goto" function centers the globe on a selected weatherScout */
+                self.gotoWeatherScout = function (weatherScout) {
+                    globe.goto(weatherScout.latitude(), weatherScout.longitude());
+                };
+
+                /** "Edit" function invokes a modal dialog to edit the weatherScout attributes */
+                self.editWeatherScout = function (weatherScout) {
+                    if (weatherScout.isOpenable) {
+                        weatherScout.open();
+                    }
+                };
+                
+                /** "Remove" function removes a weatherScout from the globe */
+                self.removeWeatherScout = function (weatherScout) {
+                    if (weatherScout.isRemovable) {
+                        weatherScout.remove();
+                    }
+                };
             }
 
             return WeatherViewModel;
