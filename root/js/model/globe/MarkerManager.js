@@ -108,7 +108,7 @@ define(['knockout',
             var validMarkers = this.markers().filter(function (marker) {
                     return !marker.invalid;
                 }),
-                markersString = ko.toJSON(validMarkers, ['id', 'name', 'source', 'latitude', 'longitude']);
+                markersString = ko.toJSON(validMarkers, ['id', 'name', 'source', 'latitude', 'longitude', 'isMovable']);
             // Set the key/value pair
             localStorage.setItem(constants.STORAGE_KEY_MARKERS, markersString);
         };
@@ -119,7 +119,7 @@ define(['knockout',
         MarkerManager.prototype.restoreMarkers = function () {
             var string = localStorage.getItem(constants.STORAGE_KEY_MARKERS),
                 array, max, i,
-                placemark, position, attributes;
+                marker, placemark, position, attributes;
 
             // Convert JSON array to array of objects
             array = JSON.parse(string);
@@ -130,8 +130,10 @@ define(['knockout',
                     attributes.imageSource = array[i].source;
                     placemark = new WorldWind.Placemark(position, false, attributes);
                     placemark.label = array[i].name;
-
-                    this.addMarker(new BasicMarker(this, placemark, array[i].id));
+                    placemark.altitudeMode = WorldWind.CLAMP_TO_GROUND;
+                    marker = new BasicMarker(this, placemark, array[i].id);
+                    marker.isMovable = array[i].isMovable;
+                    this.addMarker();
                 }
             }
         };
