@@ -8,87 +8,119 @@
 /**
  * The WeatherScout module.
  * 
+ * @param {Constants} constants Constants singleton
  * @param {ContextSensitive} constextSensitive Adds context menu capability.
  * @param {Openable} openable Adds open capability.
- * @param {Log} log Logger.
- * @param {Messenger} messenger UI notifications.
+ * @param {Log} log Logger singleton.
  * @param {Movable} movable Adds move capabilities.
- * @param {PlaceResource} PlaceResource Gets place names.
+ * @param {PlaceService} PlaceService Gets place names.
  * @param {Removable} removable Adds remove capability.
- * @param {WeatherResource} WeatherResource Gets weather forecasts.
+ * @param {WeatherService} WeatherService Gets weather forecasts.
  * @param {WmtUtil} util Utilities.
- * @param {Wmt} wmt Constants.
  * @returns {WeatherScout}
  * 
  * @author Bruce Schubert
  */
 define([
+    'knockout',
+    'model/Constants',
     'model/util/ContextSensitive',
+    'model/Events',
     'model/util/Openable',
     'model/util/Log',
-    'model/util/Messenger',
     'model/util/Movable',
     'model/services/PlaceService',
     'model/util/Removable',
-    'model/resource/WeatherResource',
-    'model/view/WeatherScoutViewer',
-    'model/util/WmtUtil',
-    'model/Wmt'],
+    'model/weather/symbols/WeatherMapSymbol',
+    'model/services/WeatherService',
+    'model/util/WmtUtil'],
     function (
+        ko,
+        constants,
         contextSensitive,
+        events,
         openable,
         log,
-        messenger,
         movable,
-        PlaceResource,
+        PlaceService,
         removable,
-        WeatherResource,
-        weatherScoutViewer,
-        util,
-        wmt) {
+        WeatherMapSymbol,
+        WeatherService,
+        util) {
         "use strict";
 
-        var WeatherScout = function (params) {
+        /**
+         * 
+         * @param {Object} params Parameters object containing:
+         * {    
+         *      id: optional, must be unique, will be assigned if missing
+         *      name: optional, will be assigned if missing
+         *      latitude: required
+         *      longitude: required
+         *      isMovable: optional, will be set to true if missing
+         *      duration: hours
+         *      editor: 
+         *  }
+         * @returns {WeatherScout_L33.WeatherScout}
+         */
+        var WeatherScout = function (manager, position, params) {
             var arg = params || {},
                 self = this;
+            
+            // TODO: assert that the params object contains the required members, e.g. lat, lon.
             
             // Make movable by the SelectController: Fires the EVENT_OBJECT_MOVE... events.
             movable.makeMovable(this);
 
             // Make openable via menus: Fires the EVENT_OBJECT_OPENED event on success.
             openable.makeOpenable(this, function () {
-                weatherScoutViewer.show(self);
-                return true; // return true to fire EVENT_OBJECT_OPENED event.
-            });
+                   var $element = $("#weather-scout-editor"),        
+                        wxScoutEditor = ko.dataFor($element.get(0)); // get the view model bound to the element
+                    
+                    if (wxScoutEditor) {
+                        wxScoutEditor.open(this);
+                        return true; // return true to fire EVENT_OBJECT_OPENED event.
+                    }
+                    log.warning("WeatherScout","constructor","#weather-scout-editor element was not found.")
+                    return false; 
+             });
             
             // Make deletable via menu: Fires the EVENT_OBJECT_REMOVED event on success.
             removable.makeRemovable(this, function () {
-                // TODO: Ask for confirmation; return false if veto'd
-                return true;    // return true to fire a notification that allows the delete to proceed.
+                    // TODO: Could ask for confirmation; return false if veto'd
+                    manager.removeScout(self); // Removes the marker from the manager's observableArray
+                    return true;    // return true to fire a EVENT_OBJECT_REMOVED
             });
             // Make context sensiive by the SelectController: shows the context menu.
             contextSensitive.makeContextSenstive(this, function () {
-                messenger.infoGrowl("Show menu with delete, open, and lock/unlock", "TODO");
+                $.growl({title: "TODO", message: "Show menu with delete, open, and lock/unlock"});
             });
 
-            /**
-             * The unique id used to identify this particular weather object
-             */
-            this.id = arg.id || util.guid();
-            /**
-             * The display name
-             */
-            this.name = arg.name || 'Wx Scout';
-            this.duration = arg.duration || wmt.configuration.wxForecastDurationHours;
-            this.latitude = arg.latitude;
-            this.longitude = arg.longitude;
-            this.isMovable = arg.isMovable === undefined ? true : arg.isMovable;
+            // Observables:
+            /** The latitude of this scout */
+            this.latitude = ko.observable(position.latitude);
+            /** The longitude of this scout */
+            this.longitude = ko.observable(position.longitude);
+            /** The unique id used to identify this particular weather object */
+            this.id = ko.observable(arg.id || util.guid());
+            /** The display name */
+            this.name = ko.observable(arg.name || 'Wx Scout');
+            /** The movable state */
+            this.isMovable = ko.observable(arg.isMovable === undefined ? true : arg.isMovable);
+            /** The lat/lon location string of this scout */
+            this.location = ko.computed(function () {
+                return "Lat " + self.latitude().toPrecision(4).toString() + "\n" + "Lon " + self.longitude().toPrecision(5).toString();
+            });
+            /** Weather forecast duration */
+            this.duration = ko.observable(72); // hours
 
-            this.rules = [];
-
+            // Properties:
+            this.placemark = new WeatherMapSymbol(this);
+ 
+            
             // Self subscribe to move operations so we can update the forecast and place
             // when the move is finished. We don't want to update during the move itself.
-            this.on(wmt.EVENT_OBJECT_MOVE_FINISHED, this.refresh);
+            this.on(events.EVENT_OBJECT_MOVE_FINISHED, this.refresh);
 
         };
 
@@ -232,13 +264,13 @@ define([
             var self = this;
 
             // Get the weather forecast at this location
-            WeatherResource.pointForecast(
-                this.latitude,
-                this.longitude,
-                this.duration,
+            WeatherService.pointForecast(
+                this.latitude(),
+                this.longitude(),
+                this.duration(),
                 function (json) { // Callback to process JSON result
                     self.processForecast(json);
-                    log.info('WeatherScout', 'refreshForecast', self.name + ': EVENT_WEATHER_CHANGED');
+                    log.info('WeatherScout', 'refreshForecast', self.name() + ': EVENT_WEATHER_CHANGED');
                     self.fire(wmt.EVENT_WEATHER_CHANGED, self);
                     if (deferred) {
                         deferred.resolve(self);
@@ -260,9 +292,9 @@ define([
                 placename = '';
 
             // Get the place name(s) at this location
-            PlaceResource.places(
-                this.latitude,
-                this.longitude,
+            PlaceService.places(
+                this.latitude(),
+                this.longitude(),
                 function (json) { // Callback to process YQL Geo.Places result
 
                     // Load all the places into a place object array
@@ -291,7 +323,7 @@ define([
                     // Update the placename property: toponym
                     self.toponym = placename;
                     
-                    log.info('WeatherScout', 'refreshPlace', self.name + ': EVENT_PLACE_CHANGED');
+                    log.info('WeatherScout', 'refreshPlace', self.name() + ': EVENT_PLACE_CHANGED');
                     self.fire(wmt.EVENT_PLACE_CHANGED, self);
                     if (deferred) {
                         deferred.resolve(self);
