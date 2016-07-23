@@ -297,7 +297,7 @@ Main Content
                 </div>
                 <div id="weather-body" class="section-body collapse in">
                     <!-- Bind the list to the 'weatherScouts' observableArray -->
-                    <div data-bind="template: { name: 'weather-template', foreach: weatherScouts}"></div>
+                    <div data-bind="template: { name: 'weather-scout-template', foreach: weatherScouts}"></div>
                 </div>
             </div>
         </div>
@@ -320,7 +320,14 @@ Main Content
                             Globe
                             <!-- Tool bar -->
                                     <span class="btn-group" style="float: right">
-                                        <!-- Add Marker button and palette -->
+                                        <!-- Add Weather Scout button -->
+                                        <button type="button"
+                                                class="btn btn-primary btn-sm"
+                                                style="padding-top: 0; padding-bottom: 0; height: 30px;"
+                                                data-bind="click: armDropScout">
+                                            <span class="glyphicon glyphicon-plus" aria-hidden="true"></span>
+                                            <span class="glyphicon glyphicon-certificate" aria-hidden="true"></span>
+                                        </button>                                        <!-- Add Marker button and palette -->
                                         <button type="button"
                                                 class="btn btn-primary btn-sm"
                                                 style="padding-top: 0; padding-bottom: 0;"
@@ -446,6 +453,7 @@ Layer Settings Dialog
     </div>
 </div>
 
+
 <!--
 Marker Editor Dialog
 -->
@@ -454,6 +462,17 @@ Marker Editor Dialog
         <label for="name">Name</label>
         <input type="text" name="name" id="name" class="text ui-widget-content ui-corner-all"
                data-bind="value: marker().name">
+    </div>
+</div>
+
+<!--
+Weather Scout Editor Dialog
+-->
+<div style="display: none">
+    <div id="weather-scout-editor">
+        <label for="name">Name</label>
+        <input type="text" name="name" id="name" class="text ui-widget-content ui-corner-all"
+               data-bind="value: scout().name">
     </div>
 </div>
 
@@ -523,6 +542,26 @@ This script renders the individual marker view model items in the Markers panel.
         <!-- Delete Button -->
         <button type="button" class="btn btn-default glyphicon glyphicon-trash"
                 data-bind="click: $parent.removeMarker"></button>
+    </div>
+</script>
+
+<!--
+Weather Scout Template
+This script renders the individual weather scout view model items in the Weather panel.
+-->
+<script type="text/html" id="weather-scout-template">
+    <div class="btn-group btn-block">
+        <button type="button" class="btn btn-default"
+                style="display: block; width: 70%"
+                data-bind="click: $root.gotoWeatherScout">
+            <span data-bind="text: $data.name"></span>
+        </button>
+        <!-- Edit Button -->
+        <button type="button" class="btn btn-default glyphicon glyphicon-pencil"
+                data-bind="click: $parent.editWeatherScout"></button>
+        <!-- Delete Button -->
+        <button type="button" class="btn btn-default glyphicon glyphicon-trash"
+                data-bind="click: $parent.removeWeatherScout"></button>
     </div>
 </script>
 

@@ -44,6 +44,8 @@ require(['knockout', 'jquery', 'bootstrap', 'worldwind',
     'views/OutputViewModel',
     'views/ProjectionsViewModel',
     'views/SearchViewModel',
+    'views/WeatherScoutEditor',
+    'views/WeatherViewModel',
     'model/globe/layers/UsgsContoursLayer',
     'model/globe/layers/UsgsImageryTopoBaseMapLayer',
     'model/globe/layers/UsgsTopoBaseMapLayer'],
@@ -59,6 +61,8 @@ require(['knockout', 'jquery', 'bootstrap', 'worldwind',
                 OuputViewModel,
                 ProjectionsViewModel,
                 SearchViewModel,
+                WeatherScoutEditor,
+                WeatherViewModel,
                 UsgsContoursLayer,
                 UsgsImageryTopoBaseMapLayer,
                 UsgsTopoBaseMapLayer) { // this callback gets executed when all required modules are loaded
@@ -98,6 +102,7 @@ require(['knockout', 'jquery', 'bootstrap', 'worldwind',
             globe.layerManager.addOverlayLayer(new UsgsContoursLayer(), {enabled: false});
 
             globe.layerManager.addDataLayer(new WorldWind.RenderableLayer(constants.LAYER_NAME_MARKERS), {enabled: true, pickEnabled: true});
+            globe.layerManager.addDataLayer(new WorldWind.RenderableLayer(constants.LAYER_NAME_WEATHER), {enabled: true, pickEnabled: true});
 
             // Initialize the Explorer object
             explorer.initialize(globe);
@@ -105,12 +110,16 @@ require(['knockout', 'jquery', 'bootstrap', 'worldwind',
             // --------------------------------------------------------
             // Bind view models to the corresponding HTML elements
             // --------------------------------------------------------
-            ko.applyBindings(new GlobeViewModel(globe, explorer.markerManager), document.getElementById('globe'));
+            ko.applyBindings(new GlobeViewModel(globe, { 
+                markerManager: explorer.markerManager, 
+                weatherManager: explorer.weatherManager}), document.getElementById('globe'));
             ko.applyBindings(new ProjectionsViewModel(globe), document.getElementById('projections'));
             ko.applyBindings(new SearchViewModel(globe), document.getElementById('search'));
             ko.applyBindings(new LayersViewModel(globe), document.getElementById('layers'));
             ko.applyBindings(new MarkersViewModel(globe, explorer.markerManager), document.getElementById('markers'));
+            ko.applyBindings(new WeatherViewModel(globe, explorer.weatherManager), document.getElementById('weather'));
             ko.applyBindings(new MarkerEditor(), document.getElementById('marker-editor'));
+            ko.applyBindings(new WeatherScoutEditor(), document.getElementById('weather-scout-editor'));
             //ko.applyBindings(new OuputViewModel(), document.getElementById('output'));
 
             // -----------------------------------------------------------
