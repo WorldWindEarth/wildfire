@@ -11,6 +11,7 @@ define(['knockout', 'jquery', 'jqueryui',
         'model/Constants',
         'model/Explorer',
         'model/util/WmtUtil',
+        'model/weather/WeatherScout',
         'worldwind'
     ],
     function (ko, $, jqueryui,
@@ -19,16 +20,20 @@ define(['knockout', 'jquery', 'jqueryui',
               constants,
               explorer,
               util,
+              WeatherScout,
               ww) {
         "use strict";
         /**
          *
          * @param {Globe} globe The globe object
          * @param {MarkerManager} markerManager
+         * @param {WeatherManager} weatherManager
          * @constructor
          */
-        function GlobeViewModel(globe, markerManager) {
+        function GlobeViewModel(globe, params) {
             var self = this,
+                markerManager = params.markerManager,
+                weatherManager = params.weatherManager,
                 commonAttributes = BasicMarker.commonAttributes();
 
             // Save a reference to the auto-update time observable for the view view
@@ -87,8 +92,17 @@ define(['knockout', 'jquery', 'jqueryui',
                 self.dropCallback = self.dropMarkerCallback;
                 self.dropObject = self.selectedMarkerTemplate();
             };
+            /**
+             * Arms the click-drop handler to add a weather scoute to the globe. See: handleClick below.
+             */
+            self.armDropScout = function () {
+                self.dropIsArmed(true);
+                self.dropCallback = self.dropScoutCallback;
+                self.dropObject = null;
+            };
 
-            // Invoke armDropMarker when a template is selected from the palette
+            // Subscribe to changes to the selected marker template: invoke
+            // armDropMarker when a new template is selected from the palette.
             self.selectedMarkerTemplate.subscribe(self.armDropMarker);
 
             // This "Drop" action callback creates and adds a marker to the globe
@@ -103,6 +117,12 @@ define(['knockout', 'jquery', 'jqueryui',
 
                 // Add the placemark to the layer and to the observable array
                 markerManager.addMarker(new BasicMarker(markerManager, placemark));
+            };
+            
+            // This "Drop" action callback creates and adds a weather scout to the globe
+            // when the globe is clicked while dropIsArmed is true.
+            self.dropScoutCallback = function (position) {
+                weatherManager.addScout(new WeatherScout(weatherManager, position));
             };
 
             /**
@@ -131,6 +151,7 @@ define(['knockout', 'jquery', 'jqueryui',
                         y = event.changedTouches[0].clientY;
                         break;
                 }
+                // Invoke the callback, passing the position and callback object
                 if (self.dropCallback) {
                     // Get all the picked items
                     pickList = globe.wwd.pickTerrain(globe.wwd.canvasCoordinates(x, y));
@@ -143,7 +164,7 @@ define(['knockout', 'jquery', 'jqueryui',
                 self.dropIsArmed(false);
                 event.stopImmediatePropagation();
             };
-            // Assign the click handler to the WorldWind
+            // Assign the drop click handler (defined above) to the WorldWindow
             globe.wwd.addEventListener('click', function (event) {
                 self.handleDropClick(event);
             });
