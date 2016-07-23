@@ -27,13 +27,16 @@ define(['model/weather/symbols/AirTemperature',
         'model/weather/symbols/SkyCover',
         'model/weather/symbols/WindBarb',
         'model/Constants',
+        'model/Events',
         'worldwind'],
-    function (AirTemperature,
+    function (
+              AirTemperature,
               ForecastTime,
               RelativeHumidity,
               SkyCover,
               WindBarb,
               constants,
+              events,
               ww) {
         "use strict";
 
@@ -50,11 +53,11 @@ define(['model/weather/symbols/AirTemperature',
             this.wxScout = wxScout;
 
             // Create the composite weather map symbol components
-            this.skyCover = new SkyCover(wxScout.latitude, wxScout.longitude);
-            this.windBarb = new WindBarb(wxScout.latitude, wxScout.longitude);
-            this.airTemperature = new AirTemperature(wxScout.latitude, wxScout.longitude, 'F');
-            this.relHumidity = new RelativeHumidity(wxScout.latitude, wxScout.longitude, '%');
-            this.forecastTime = new ForecastTime(wxScout.latitude, wxScout.longitude, ' ');
+            this.skyCover = new SkyCover(wxScout.latitude(), wxScout.longitude());
+            this.windBarb = new WindBarb(wxScout.latitude(), wxScout.longitude());
+            this.airTemperature = new AirTemperature(wxScout.latitude(), wxScout.longitude(), 'F');
+            this.relHumidity = new RelativeHumidity(wxScout.latitude(), wxScout.longitude(), '%');
+            this.forecastTime = new ForecastTime(wxScout.latitude(), wxScout.longitude(), ' ');
 
             // Add a reference to our wx model object to the principle renderables.
             // The "movable" wxScoute will generate EVENT_OBJECT_MOVED events. 
@@ -65,46 +68,44 @@ define(['model/weather/symbols/AirTemperature',
             this.relHumidity.pickDelegate = wxScout;
             this.forecastTime.pickDelegate = wxScout;
 
-
-            if (constants.configuration.weatherScoutLabels === constants.WEATHER_SCOUT_LABEL_NAME) {
-                this.skyCover.label = wxScout.name;
-            }
+            this.skyCover.label = wxScout.name();   // TODO: could be configured for place or lat/lon
 
 
             // EVENT_OBJECT_MOVED handler that synchronizes the composite renderables with the model's location
-            this.handleObjectMovedEvent = function (wxModel) {
-                self.skyCover.position.latitude = wxModel.latitude;
-                self.skyCover.position.longitude = wxModel.longitude;
-                self.windBarb.position.latitude = wxModel.latitude;
-                self.windBarb.position.longitude = wxModel.longitude;
-                self.airTemperature.position.latitude = wxModel.latitude;
-                self.airTemperature.position.longitude = wxModel.longitude;
-                self.relHumidity.position.latitude = wxModel.latitude;
-                self.relHumidity.position.longitude = wxModel.longitude;
-                self.forecastTime.position.latitude = wxModel.latitude;
-                self.forecastTime.position.longitude = wxModel.longitude;
+            this.handleObjectMovedEvent = function (wxScout) {
+                self.skyCover.position.latitude = wxScout.latitude();
+                self.skyCover.position.longitude = wxScout.longitude();
+                self.windBarb.position.latitude = wxScout.latitude();
+                self.windBarb.position.longitude = wxScout.longitude();
+                self.airTemperature.position.latitude = wxScout.latitude();
+                self.airTemperature.position.longitude = wxScout.longitude();
+                self.relHumidity.position.latitude = wxScout.latitude();
+                self.relHumidity.position.longitude = wxScout.longitude();
+                self.forecastTime.position.latitude = wxScout.latitude();
+                self.forecastTime.position.longitude = wxScout.longitude();
             };
 
             // EVENT_WEATHER_CHANGED handler that updates the symbology
-            this.handleWeatherChangedEvent = function (wxModel) {
-                wx = wxModel.getForecastAtTime(controller.model.applicationTime);
-                // Update the values
-                self.skyCover.updateSkyCoverImage(wx.skyCoverPct);
-                self.windBarb.updateWindBarbImage(wx.windSpeedKts, wx.windDirectionDeg);
-                self.airTemperature.text = wx.airTemperatureF + 'F';
-                self.relHumidity.text = wx.relaltiveHumidityPct + '%';
-                self.forecastTime.text = '@ ' + wx.time.toLocaleTimeString('en', timeOptions);
+            this.handleWeatherChangedEvent = function (wxScout) {
+//                wx = wxScout.getForecastAtTime(controller.model.applicationTime);
+//                // Update the values
+//                self.skyCover.updateSkyCoverImage(wx.skyCoverPct);
+//                self.windBarb.updateWindBarbImage(wx.windSpeedKts, wx.windDirectionDeg);
+//                self.airTemperature.text = wx.airTemperatureF + 'F';
+//                self.relHumidity.text = wx.relaltiveHumidityPct + '%';
+//                self.forecastTime.text = '@ ' + wx.time.toLocaleTimeString('en', timeOptions);
             };
 
             // EVENT_PLACE_CHANGED handler that updates the label
             this.handlePlaceChangedEvent = function (wxScout) {
-                if (constants.configuration.weatherScoutLabels === constants.WEATHER_SCOUT_LABEL_PLACE) {
-                    // Display the place name
-                    self.skyCover.label = wxScout.toponym || null;
-                } else if (constants.configuration.weatherScoutLabels === constants.WEATHER_SCOUT_LABEL_LATLON) {
-                    // Display "Lat Lon"
-                    self.skyCover.label = wxScout.latitude.toFixed(3) + ' ' + wxScout.longitude.toFixed(3);
-                }
+                
+//                if (constants.configuration.weatherScoutLabels === constants.WEATHER_SCOUT_LABEL_PLACE) {
+//                    // Display the place name
+//                    self.skyCover.label = wxScout.toponym || null;
+//                } else if (constants.configuration.weatherScoutLabels === constants.WEATHER_SCOUT_LABEL_LATLON) {
+//                    // Display "Lat Lon"
+//                    self.skyCover.label = wxScout.latitude.toFixed(3) + ' ' + wxScout.longitude.toFixed(3);
+//                }
             };
 
             //EVENT_TIME_CHANGED handler that updates the label and symbology
@@ -123,13 +124,13 @@ define(['model/weather/symbols/AirTemperature',
             };
 
             // Establish the Publisher/Subscriber relationship between this symbol and the wx scout
-            wxScout.on(constants.EVENT_OBJECT_MOVED, this.handleObjectMovedEvent, this);
-            wxScout.on(constants.EVENT_PLACE_CHANGED, this.handlePlaceChangedEvent, this);
-            wxScout.on(constants.EVENT_WEATHER_CHANGED, this.handleWeatherChangedEvent, this);
-            controller.model.on(constants.EVENT_TIME_CHANGED, this.handleTimeChangedEvent, this);
-
-            // Set the initial values to the current application time
-            this.handleTimeChangedEvent(controller.model.applicationTime);
+            wxScout.on(events.EVENT_OBJECT_MOVED, this.handleObjectMovedEvent, this);
+//            wxScout.on(events.EVENT_PLACE_CHANGED, this.handlePlaceChangedEvent, this);
+//            wxScout.on(events.EVENT_WEATHER_CHANGED, this.handleWeatherChangedEvent, this);
+//            controller.model.on(constants.EVENT_TIME_CHANGED, this.handleTimeChangedEvent, this);
+//
+//            // Set the initial values to the current application time
+//            this.handleTimeChangedEvent(controller.model.applicationTime);
         };
         // Inherit Renderable functions.
         WeatherMapSymbol.prototype = Object.create(WorldWind.Renderable.prototype);
