@@ -24,13 +24,15 @@ define(['jquery',
         'model/util/Log',
         'model/globe/MarkerManager',
         'model/util/Settings',
+        'model/weather/WeatherScoutManager',
         'worldwind'],
     function ($,
               ko,
               constants,
               log,
               MarkerManager,
-              settings) {
+              settings,
+              WeatherScoutManager) {
         "use strict";
         /**
          * This is the top-level Explorer singleton.
@@ -53,6 +55,7 @@ define(['jquery',
                 this.globe = globe;
                 this.wwd = globe.wwd;
                 this.markerManager = new MarkerManager(globe);
+                this.weatherManager = new WeatherScoutManager(globe);
 
                 // Configure the objects used to animate the globe when performing "go to" operations
                 this.goToAnimator = new WorldWind.GoToAnimator(this.wwd);
