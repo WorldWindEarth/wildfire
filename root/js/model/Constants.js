@@ -39,7 +39,11 @@ define([], function () {
         LAYER_NAME_RETICLE: "Crosshairs",
         LAYER_NAME_SKY: "Sky",
         LAYER_NAME_VIEW_CONTROLS: "Controls",
+        LAYER_NAME_WEATHER: "Weather",
         LAYER_NAME_WIDGETS: "Widgets",
+        /**
+         * Keys/ids
+         */
         MARKER_LABEL_LATLON: "markerLabelLatLon",
         MARKER_LABEL_NAME: "markerLabelName",
         MARKER_LABEL_NONE: "markerLabelNone",
@@ -62,6 +66,7 @@ define([], function () {
          * The local storage key for markers.
          */
         STORAGE_KEY_MARKERS: "markers",
+        STORAGE_KEY_WEATHER_SCOUTS: "weatherScouts",
 
         /**
          * Base URL for Web World Wind SDK. (Do not use a relative path.)
