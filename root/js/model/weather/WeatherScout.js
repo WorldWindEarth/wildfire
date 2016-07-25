@@ -51,12 +51,11 @@ define([
 
         /**
          * 
+         * 
          * @param {Object} params Parameters object containing:
          * {    
          *      id: optional, must be unique, will be assigned if missing
          *      name: optional, will be assigned if missing
-         *      latitude: required
-         *      longitude: required
          *      isMovable: optional, will be set to true if missing
          *      duration: hours
          *      editor: 
@@ -69,11 +68,12 @@ define([
             
             // TODO: assert that the params object contains the required members, e.g. lat, lon.
             
-            // Make movable by the SelectController: Fires the EVENT_OBJECT_MOVE... events.
+            // Make movable by the SelectController: Establishes the isMovable member.
+            // Fires the EVENT_OBJECT_MOVE... events.
             movable.makeMovable(this);
 
-            // Make openable via menus: Fires the EVENT_OBJECT_OPENED event on success.
-            openable.makeOpenable(this, function () {
+            // Make openable via menus: Establishes the isOpenable member.
+            openable.makeOpenable(this, function () { // define the function that opens the editor
                    var $element = $("#weather-scout-editor"),        
                         wxScoutEditor = ko.dataFor($element.get(0)); // get the view model bound to the element
                     
@@ -85,12 +85,13 @@ define([
                     return false; 
              });
             
-            // Make deletable via menu: Fires the EVENT_OBJECT_REMOVED event on success.
+            // Make deletable via menu: Establishes the isRemovable member.
             removable.makeRemovable(this, function () {
                     // TODO: Could ask for confirmation; return false if veto'd
                     manager.removeScout(self); // Removes the marker from the manager's observableArray
                     return true;    // return true to fire a EVENT_OBJECT_REMOVED
             });
+            
             // Make context sensiive by the SelectController: shows the context menu.
             contextSensitive.makeContextSenstive(this, function () {
                 $.growl({title: "TODO", message: "Show menu with delete, open, and lock/unlock"});
