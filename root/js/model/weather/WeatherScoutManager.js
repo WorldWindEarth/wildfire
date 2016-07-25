@@ -150,7 +150,7 @@ define([
             array = JSON.parse(string);
             for (i = 0, max = array.length; i < max; i++) {
                 position = new WorldWind.Position(array[i].latitude, array[i].longitude, 0);
-                params = {id: array[i].id, name: array[i].name, sMovable: array[i].isMovable};
+                params = {id: array[i].id, name: array[i].name, isMovable: array[i].isMovable};
                 this.addScout(new WeatherScout(this, position, params));
             }
         };
