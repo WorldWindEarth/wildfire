@@ -40,7 +40,7 @@ Main Menu NavBar
 <nav class="navbar navbar-default navbar-fixed-top">
     <div class="container-fluid">
         <!-- Branding and 'hamburger' menu -->
-        <div class="navbar-header">
+        <div id="header" class="navbar-header">
             <button type="button" class="navbar-toggle collapsed" data-toggle="collapse" data-target="#main-navbar"
                     aria-expanded="false">
                 <span class="sr-only">Toggle navigation</span>
@@ -50,6 +50,9 @@ Main Menu NavBar
             </button>
             <a class="navbar-brand" href="https://github.com/emxsys/WorldWindWeather" 
                target="_blank">World Wind Weather</a>
+            <a class="navbar-brand"
+               href="https://github.com/NASAWorldWindResearch/WorldWindExplorer" target="_blank"
+                data-bind="text:appName"></a>
         </div>
         <!-- Navigation links, Projections and Search Box -->
         <div class="collapse navbar-collapse" id="main-navbar">
@@ -120,7 +123,7 @@ Main Menu NavBar
 <!--
 Main Content
 -->
-<div class="container-fluid">
+<div id="main" class="container-fluid">
     <div class="row">
         <!--
         Left Sidebar
