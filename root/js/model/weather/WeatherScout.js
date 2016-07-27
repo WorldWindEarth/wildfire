@@ -31,6 +31,7 @@ define([
     'model/util/Movable',
     'model/services/PlaceService',
     'model/util/Removable',
+    'model/util/Selectable',
     'model/weather/symbols/WeatherMapSymbol',
     'model/services/WeatherService',
     'model/util/WmtUtil'],
@@ -44,6 +45,7 @@ define([
         movable,
         PlaceService,
         removable,
+        selectable,
         WeatherMapSymbol,
         WeatherService,
         util) {
@@ -72,6 +74,14 @@ define([
             // Fires the EVENT_OBJECT_MOVE... events.
             movable.makeMovable(this);
 
+            // Make selectable via picking (see SelectController): adds the "select" method
+            selectable.makeSelectable(this, function () {   // define the callback that selects this marker
+                // The manager will toggle the exclusive highlighted state
+                // i.e., only a single marker can be highlighted at one time.
+                manager.selectScout(self);                      
+                return true;    // return true to fire a EVENT_OBJECT_SELECTED event
+            });
+            
             // Make openable via menus: Establishes the isOpenable member.
             openable.makeOpenable(this, function () { // define the function that opens the editor
                    var $element = $("#weather-scout-editor"),        
@@ -116,8 +126,20 @@ define([
             this.duration = ko.observable(72); // hours
 
             // Properties:
-            this.placemark = new WeatherMapSymbol(this);
+            this.symbol = new WeatherMapSymbol(this); // a composite renderable of several placemark components
+            this.symbol.pickDelgate = this;
  
+            // Synchronize the placemark to the observable (writeable) properties of this marker
+
+            this.name.subscribe(function (newName) {
+                self.symbol.skyCover.label = newName;
+            });
+//            this.latitude.subscribe(function (newLat) {
+//                self.symbol.handleObjectMovedEvent(self);
+//            });
+//            this.longitude.subscribe(function (newLon) {
+//                self.symbol.handleObjectMovedEvent(self);
+//            });          
             
             // Self subscribe to move operations so we can update the forecast and place
             // when the move is finished. We don't want to update during the move itself.
@@ -272,7 +294,7 @@ define([
                 function (json) { // Callback to process JSON result
                     self.processForecast(json);
                     log.info('WeatherScout', 'refreshForecast', self.name() + ': EVENT_WEATHER_CHANGED');
-                    self.fire(wmt.EVENT_WEATHER_CHANGED, self);
+                    self.fire(events.EVENT_WEATHER_CHANGED, self);
                     if (deferred) {
                         deferred.resolve(self);
                     }
@@ -325,7 +347,7 @@ define([
                     self.toponym = placename;
                     
                     log.info('WeatherScout', 'refreshPlace', self.name() + ': EVENT_PLACE_CHANGED');
-                    self.fire(wmt.EVENT_PLACE_CHANGED, self);
+                    self.fire(events.EVENT_PLACE_CHANGED, self);
                     if (deferred) {
                         deferred.resolve(self);
                     }

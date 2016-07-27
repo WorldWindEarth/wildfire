@@ -29,6 +29,7 @@ define([
             this.globe = globe;
             this.layer = layer || globe.findLayer(constants.LAYER_NAME_WEATHER);
             this.scouts = ko.observableArray();
+            this.selectedScout = null;
 
             // Subscribe to "arrayChange" events in the scouts array.
             // Here is where we add/remove scouts from WW layer.
@@ -42,7 +43,7 @@ define([
                         self.doAddScoutToLayer(change.value);
                     }
                     else if (change.status === 'deleted' && change.moved === undefined) {
-                        // When a scout is removed we must remove the placemark,
+                        // When a scout is removed we must remove the renderable,
                         // (but not if the array reordered -- i.e., moved items)
                         self.doRemoveScoutFromLayer(change.value);
                     }
@@ -77,6 +78,26 @@ define([
         };
 
         /**
+         * Selects the given marker; deselects other markers
+         * @param {Marker} scout The marker to Select
+         */
+        WeatherScoutManager.prototype.selectScout = function (scout) {
+
+            if (this.selectedScout === scout) {
+                return;
+            }
+            if (this.selectedScout !== null) {
+                this.selectedScout.placemark.highlighted = false;
+                this.selectedScout.isMovable = false;
+            }
+            if (scout !== null) {
+                scout.placemark.highlighted = true;
+                scout.isMovable = true;
+                this.selectedScout = scout;
+            }
+        };
+
+        /**
          * Removes the given scout from the manager.
          * @param {WeatherScout} scout
          */
@@ -101,12 +122,12 @@ define([
 
         // Internal method to add the scout to the layer.
         WeatherScoutManager.prototype.doAddScoutToLayer = function (scout) {
-            this.layer.addRenderable(scout.placemark);
+            this.layer.addRenderable(scout.symbol);
         };
 
         // Internal method to remove the scout's placemark from its layer.
         WeatherScoutManager.prototype.doRemoveScoutFromLayer = function (scout) {
-            var i, max, placemark = scout.placemark;
+            var i, max, placemark = scout.symbol;
             // Remove the placemark from the renderable layer
             for (i = 0, max = this.layer.renderables.length; i < max; i++) {
                 if (this.layer.renderables[i] === placemark) {
