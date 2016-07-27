@@ -79,49 +79,9 @@ define(['knockout',
                 if (this.selectedMarker === marker) {
                     return;
                 }
-<<<<<<< HEAD
-            }
-        };
-
-        /**
-         * Saves the markers list to local storage.
-         */
-        MarkerManager.prototype.saveMarkers = function () {
-            // Get a native array where we've ignore markers that have been flagged as "invalid"
-            var validMarkers = this.markers().filter(function (marker) {
-                    return !marker.invalid;
-                }),
-                markersString = ko.toJSON(validMarkers, ['id', 'name', 'source', 'latitude', 'longitude', 'isMovable']);
-            // Set the key/value pair
-            localStorage.setItem(constants.STORAGE_KEY_MARKERS, markersString);
-        };
-
-        /**
-         * Restores the markers list from local storage.
-         */
-        MarkerManager.prototype.restoreMarkers = function () {
-            var string = localStorage.getItem(constants.STORAGE_KEY_MARKERS),
-                array, max, i,
-                marker, placemark, position, attributes;
-
-            // Convert JSON array to array of objects
-            array = JSON.parse(string);
-            if (array && array.length !== 0) {
-                for (i = 0, max = array.length; i < max; i++) {
-                    position = new WorldWind.Position(array[i].latitude, array[i].longitude, 0);
-                    attributes = new WorldWind.PlacemarkAttributes(BasicMarker.commonAttributes());
-                    attributes.imageSource = array[i].source;
-                    placemark = new WorldWind.Placemark(position, false, attributes);
-                    placemark.label = array[i].name;
-                    placemark.altitudeMode = WorldWind.CLAMP_TO_GROUND;
-                    marker = new BasicMarker(this, placemark, array[i].id);
-                    marker.isMovable = array[i].isMovable;
-                    this.addMarker();
-=======
                 if (this.selectedMarker !== null) {
                     this.selectedMarker.placemark.highlighted = false;
                     this.selectedMarker.isMovable = false;
->>>>>>> 6a7ddb56c3ef1c4fed8e44c62fc462485871e5c3
                 }
                 if (marker !== null) {
                     marker.placemark.highlighted = true;
