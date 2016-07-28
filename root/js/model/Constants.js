@@ -6,7 +6,6 @@
 define([], function () {
     "use strict";
     var Constants = {
-
         BUTTON_TEXT_CANCEL: 'Cancel',
         BUTTON_TEXT_DELETE: 'Delete',
         BUTTON_TEXT_GOTO: 'Go To',
@@ -67,7 +66,14 @@ define([], function () {
          */
         STORAGE_KEY_MARKERS: "markers",
         STORAGE_KEY_WEATHER_SCOUTS: "weatherScouts",
-
+        /**
+         * The URL for the weather REST service.
+         */
+        WEATHER_REST_SERVICE: "http://emxsys.azurewebsites.net/wmt-rest/rs/weather",
+        WEATHER_SCOUT_LABEL_LATLON: "weatherScoutLabelLatLon",
+        WEATHER_SCOUT_LABEL_NAME: "weatherScoutLabelName",
+        WEATHER_SCOUT_LABEL_NONE: "weatherScoutLabelNone",
+        WEATHER_SCOUT_LABEL_PLACE: "weatherScoutLabelPlace",
         /**
          * Base URL for Web World Wind SDK. (Do not use a relative path.)
          * @default "js/libs/webworldwind/"
@@ -77,5 +83,5 @@ define([], function () {
     }
 
     return Constants;
-    }
+}
 );
