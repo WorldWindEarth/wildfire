@@ -56,7 +56,7 @@ define([
              */
             weatherTuple: function (airTempF, relHum, windSpdKts, windDir, clouds, callback) {
                 // TODO: assert input values
-                var url = util.currentDomain() + constants.WEATHER_REST_SERVICE,
+                var url = constants.WEATHER_REST_SERVICE,
                     query = "mime-type=application/json"
                         + "&airTemperature=" + airTempF
                         + "&relativeHumidity=" + relHum
@@ -75,7 +75,7 @@ define([
              */
             pointForecast: function (latitude, longitude, duration, callback) {
                 // TODO: assert input values
-                var url = util.currentDomain() + constants.WEATHER_REST_SERVICE + '/pointforecast',
+                var url = constants.WEATHER_REST_SERVICE + '/pointforecast',
                     query = "mime-type=application/json"
                         + "&latitude=" + latitude
                         + "&longitude=" + longitude
