@@ -67,6 +67,9 @@ define([
         var WeatherScout = function (manager, position, params) {
             var arg = params || {},
                 self = this;
+                
+            /** A reference to the globe for its symbol. */
+            this.globe = manager.globe;
             
             // TODO: assert that the params object contains the required members, e.g. lat, lon.
             
@@ -98,6 +101,11 @@ define([
             // Make deletable via menu: Establishes the isRemovable member.
             removable.makeRemovable(this, function () {
                     // TODO: Could ask for confirmation; return false if veto'd
+                    // 
+                    // =================================
+                    // TODO: Unsubscribe to observables!
+                    // =================================
+                    
                     manager.removeScout(self); // Removes the marker from the manager's observableArray
                     return true;    // return true to fire a EVENT_OBJECT_REMOVED
             });
@@ -129,11 +137,11 @@ define([
             this.symbol = new WeatherMapSymbol(this); // a composite renderable of several placemark components
             this.symbol.pickDelgate = this;
  
-            // Synchronize the placemark to the observable (writeable) properties of this marker
+            // Synchronize the renderable to the observable properties of this weatehr scout
 
-            this.name.subscribe(function (newName) {
-                self.symbol.skyCover.label = newName;
-            });
+//            this.name.subscribe(function (newName) {
+//                self.symbol.skyCover.label = newName;
+//            });
 //            this.latitude.subscribe(function (newLat) {
 //                self.symbol.handleObjectMovedEvent(self);
 //            });
@@ -141,10 +149,13 @@ define([
 //                self.symbol.handleObjectMovedEvent(self);
 //            });          
             
+            this.globe.dateTime.subscribe(this.symbol.handleTimeChangedEvent);
+            
             // Self subscribe to move operations so we can update the forecast and place
             // when the move is finished. We don't want to update during the move itself.
             this.on(events.EVENT_OBJECT_MOVE_FINISHED, this.refresh);
 
+            this.refresh();
         };
 
         /**
