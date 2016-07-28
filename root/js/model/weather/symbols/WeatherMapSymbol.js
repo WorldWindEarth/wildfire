@@ -26,6 +26,7 @@ define(['model/weather/symbols/AirTemperature',
         'model/weather/symbols/RelativeHumidity',
         'model/weather/symbols/SkyCover',
         'model/weather/symbols/WindBarb',
+        'model/Config',
         'model/Constants',
         'model/Events',
         'worldwind'],
@@ -35,6 +36,7 @@ define(['model/weather/symbols/AirTemperature',
               RelativeHumidity,
               SkyCover,
               WindBarb,
+              config,
               constants,
               events,
               ww) {
@@ -87,25 +89,25 @@ define(['model/weather/symbols/AirTemperature',
 
             // EVENT_WEATHER_CHANGED handler that updates the symbology
             this.handleWeatherChangedEvent = function (wxScout) {
-//                wx = wxScout.getForecastAtTime(controller.model.applicationTime);
-//                // Update the values
-//                self.skyCover.updateSkyCoverImage(wx.skyCoverPct);
-//                self.windBarb.updateWindBarbImage(wx.windSpeedKts, wx.windDirectionDeg);
-//                self.airTemperature.text = wx.airTemperatureF + 'F';
-//                self.relHumidity.text = wx.relaltiveHumidityPct + '%';
-//                self.forecastTime.text = '@ ' + wx.time.toLocaleTimeString('en', timeOptions);
+                wx = wxScout.getForecastAtTime(wxScout.globe.dateTime());
+                // Update the values
+                self.skyCover.updateSkyCoverImage(wx.skyCoverPct);
+                self.windBarb.updateWindBarbImage(wx.windSpeedKts, wx.windDirectionDeg);
+                self.airTemperature.text = wx.airTemperatureF + 'F';
+                self.relHumidity.text = wx.relaltiveHumidityPct + '%';
+                self.forecastTime.text = '@ ' + wx.time.toLocaleTimeString('en', timeOptions);
             };
 
             // EVENT_PLACE_CHANGED handler that updates the label
             this.handlePlaceChangedEvent = function (wxScout) {
                 
-//                if (constants.configuration.weatherScoutLabels === constants.WEATHER_SCOUT_LABEL_PLACE) {
-//                    // Display the place name
-//                    self.skyCover.label = wxScout.toponym || null;
-//                } else if (constants.configuration.weatherScoutLabels === constants.WEATHER_SCOUT_LABEL_LATLON) {
-//                    // Display "Lat Lon"
-//                    self.skyCover.label = wxScout.latitude.toFixed(3) + ' ' + wxScout.longitude.toFixed(3);
-//                }
+                if (config.weatherScoutLabels === constants.WEATHER_SCOUT_LABEL_PLACE) {
+                    // Display the place name
+                    self.skyCover.label = wxScout.toponym || null;
+                } else if (config.weatherScoutLabels === constants.WEATHER_SCOUT_LABEL_LATLON) {
+                    // Display "Lat Lon"
+                    self.skyCover.label = wxScout.latitude.toFixed(3) + ' ' + wxScout.longitude.toFixed(3);
+                }
             };
 
             //EVENT_TIME_CHANGED handler that updates the label and symbology
@@ -116,7 +118,7 @@ define(['model/weather/symbols/AirTemperature',
                 self.windBarb.updateWindBarbImage(wx.windSpeedKts, wx.windDirectionDeg);
                 self.airTemperature.text = wx.airTemperatureF + 'F';
                 self.relHumidity.text = wx.relaltiveHumidityPct + '%';
-                if (wx.time === WeatherScout.INVALID_WX.time) {
+                if (wx.time.getTime() === 0) { // See: WeatherScout.INVALID_WX.time
                     self.forecastTime.text = '-'; // empty labels not allowed
                 } else {
                     self.forecastTime.text = '@ ' + wx.time.toLocaleTimeString('en', timeOptions);
@@ -125,12 +127,12 @@ define(['model/weather/symbols/AirTemperature',
 
             // Establish the Publisher/Subscriber relationship between this symbol and the wx scout
             wxScout.on(events.EVENT_OBJECT_MOVED, this.handleObjectMovedEvent, this);
-//            wxScout.on(events.EVENT_PLACE_CHANGED, this.handlePlaceChangedEvent, this);
-//            wxScout.on(events.EVENT_WEATHER_CHANGED, this.handleWeatherChangedEvent, this);
-//            controller.model.on(constants.EVENT_TIME_CHANGED, this.handleTimeChangedEvent, this);
-//
-//            // Set the initial values to the current application time
-//            this.handleTimeChangedEvent(controller.model.applicationTime);
+            wxScout.on(events.EVENT_PLACE_CHANGED, this.handlePlaceChangedEvent, this);
+            wxScout.on(events.EVENT_WEATHER_CHANGED, this.handleWeatherChangedEvent, this);
+            wxScout.on(events.EVENT_TIME_CHANGED, this.handleTimeChangedEvent, this);
+
+            // Set the initial values to the current application time
+            this.handleTimeChangedEvent(wxScout.globe.dateTime());
         };
         // Inherit Renderable functions.
         WeatherMapSymbol.prototype = Object.create(WorldWind.Renderable.prototype);
