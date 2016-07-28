@@ -48,10 +48,12 @@ define(['jquery',
             startupHeading: 0,
             startupTilt: 0,
             startupRoll: 0,
-            showPanControl: true,
+            showPanControl: false,
             showExaggerationControl: true,
             showFieldOfViewControl: false,
-            terrainSampleRadius: 30
+            terrainSampleRadius: 30,
+            viewControlOrientation: "vertical",
+            weatherScoutLabels: constants.WEATHER_SCOUT_LABEL_PLACE, // Options: LATLON, NAME, NONE, PLACE
       };
 
 
