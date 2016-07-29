@@ -153,6 +153,7 @@ define(['jquery',
             restoreSession: function () {
                 log.info('Explorer', 'restoreSession', 'Restoring the model and view.');
                 this.markerManager.restoreMarkers();
+                this.weatherManager.restoreScouts();
                 this.restoreSessionView();
                 // Update all time sensitive objects
                 this.globe.updateDateTime(new Date());
@@ -172,6 +173,7 @@ define(['jquery',
                 log.info('Explorer', 'saveSession', 'Saving the model and view.');
                 this.saveSessionView();
                 this.markerManager.saveMarkers();
+                this.weatherManager.saveScouts();
             },
             // Internal method.
             saveSessionView: function () {
