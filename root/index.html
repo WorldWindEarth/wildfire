@@ -555,6 +555,8 @@ This script renders the individual weather scout view model items in the Weather
                 style="display: block; width: 70%"
                 data-bind="click: $root.gotoWeatherScout">
             <span data-bind="text: $data.name"></span>
+            <br/>
+            <span data-bind="text: $data.location"></span>
         </button>
         <!-- Edit Button -->
         <button type="button" class="btn btn-default glyphicon glyphicon-pencil"
