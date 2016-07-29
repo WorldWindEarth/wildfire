@@ -142,18 +142,26 @@ define([
          * Saves the weather scouts collection to local storage.
          */
         WeatherScoutManager.prototype.saveScouts = function () {
-            var validScouts = this.scouts().filter(function (scout) {
-                    return !scout.invalid;
-                }),
-                scoutsString = JSON.stringify(validScouts,
-                    [
-                        'id',
-                        'name',
-                        'latitude',
-                        'longitude',
-                        'isMovable'
-                    ]);
-
+            var validScouts = [],
+                scoutsString,
+                i, len, scout;
+        
+            // Knockout's toJSON cannot process a WeatherScout object...
+            // it appears to recurse and a call stack limit is reached.
+            // So we create a simplfied the object here to pass to toJSON.
+            for (var i = 0, len = this.scouts().length; i < len; i++) {
+                scout = this.scouts()[i];
+                if (!scout.invalid) {
+                    validScouts.push({
+                        id: scout.id,
+                        name: scout.name,
+                        latitude: scout.latitude,
+                        longitude: scout.longitude,
+                        isMovable: scout.isMovable
+                    });
+                }
+            }    
+            scoutsString = ko.toJSON(validScouts, ['id', 'name', 'latitude', 'longitude', 'isMovable']);
             localStorage.setItem(constants.STORAGE_KEY_WEATHER_SCOUTS, scoutsString);
         };
 
