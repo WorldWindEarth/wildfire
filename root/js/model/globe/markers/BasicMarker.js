@@ -99,8 +99,6 @@ define([
                 this.latitude = ko.observable(position.latitude);
                 /** The longitude of this marker -- may be set by the Movable interface during pick/drag operations See SelectController */
                 this.longitude = ko.observable(position.longitude);
-                /** The movable state */
-                this.isMovable = ko.observable(args.isMovable === undefined ? true : args.isMovable);
                 /** The lat/lon location string of this marker */
                 this.location = ko.computed(function () {
                     return "Lat " + self.latitude().toPrecision(4).toString() + "\n" + "Lon " + self.longitude().toPrecision(5).toString();
@@ -111,7 +109,7 @@ define([
                 /** The image source url, stored/recalled in the persistant store */
                 this.source = args.imageSource;
                 /** The default movable state is false; a marker must be selected to be movable. */
-                this.isMovable = false;
+                this.isMovable = args.isMovable === undefined ? false : args.isMovable;
                 
                 // Create the placemark property
                 normalAttributes = new WorldWind.PlacemarkAttributes(BasicMarker.commonAttributes());
