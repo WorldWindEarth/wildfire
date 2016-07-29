@@ -65,10 +65,10 @@ define([
          * @returns {WeatherScout_L33.WeatherScout}
          */
         var WeatherScout = function (manager, position, params) {
-            var arg = params || {},
+            var args = params || {},
                 self = this;
                 
-            /** A reference to the globe for its symbol. */
+            /** A reference to the globe; used by the WeatherMapSymbol. */
             this.globe = manager.globe;
             
             // TODO: assert that the params object contains the required members, e.g. lat, lon.
@@ -116,24 +116,27 @@ define([
             });
 
             // Observables:
+            
+            /** The display name */
+            this.name = ko.observable(args.name || 'Wx Scout');
             /** The latitude of this scout */
             this.latitude = ko.observable(position.latitude);
             /** The longitude of this scout */
             this.longitude = ko.observable(position.longitude);
-            /** The unique id used to identify this particular weather object */
-            this.id = ko.observable(arg.id || util.guid());
-            /** The display name */
-            this.name = ko.observable(arg.name || 'Wx Scout');
-            /** The movable state */
-            this.isMovable = ko.observable(arg.isMovable === undefined ? true : arg.isMovable);
             /** The lat/lon location string of this scout */
             this.location = ko.computed(function () {
-                return "Lat " + self.latitude().toPrecision(4).toString() + "\n" + "Lon " + self.longitude().toPrecision(5).toString();
+                return "Lat " + self.latitude().toPrecision(4).toString() + ", " + "Lon " + self.longitude().toPrecision(5).toString();
             });
             /** Weather forecast duration */
             this.duration = ko.observable(72); // hours
 
             // Properties:
+            
+            /** The unique id used to identify this particular weather object */
+            this.id = args.id || util.guid();
+            /** The default movable state is false; a scout must be selected to be movable. */
+            this.isMovable = args.isMovable === undefined ? false : args.isMovable;
+            /** The renderable, symbolic representation of this object */
             this.symbol = new WeatherMapSymbol(this); // a composite renderable of several placemark components
             this.symbol.pickDelgate = this;
  
