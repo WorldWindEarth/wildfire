@@ -124,6 +124,7 @@ require(['knockout', 'jquery', 'bootstrap', 'worldwind',
             ko.applyBindings(new MarkerEditor(), document.getElementById('marker-editor'));
             ko.applyBindings(new WeatherScoutEditor(), document.getElementById('weather-scout-editor'));
             //ko.applyBindings(new OuputViewModel(), document.getElementById('output'));
+            ko.applyBindings(new OuputViewModel(globe), document.getElementById('output'));
 
             // -----------------------------------------------------------
             // Add handlers to auto-expand/collapse the menus
