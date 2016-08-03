@@ -78,12 +78,12 @@ define([
             movable.makeMovable(this);
 
             // Make selectable via picking (see SelectController): adds the "select" method
-            selectable.makeSelectable(this, function () {   // define the callback that selects this marker
-                // The manager will toggle the exclusive highlighted state
-                // i.e., only a single marker can be highlighted at one time.
-                manager.selectScout(self);                      
+            selectable.makeSelectable(this, function (params) {   // define the callback that selects this marker
+                this.isMovable(params.selected);
+                this.symbol.highlighted = params.selected;
                 return true;    // return true to fire a EVENT_OBJECT_SELECTED event
             });
+
             
             // Make openable via menus: Establishes the isOpenable member.
             openable.makeOpenable(this, function () { // define the function that opens the editor
@@ -111,7 +111,7 @@ define([
             });
             
             // Make context sensiive by the SelectController: shows the context menu.
-            contextSensitive.makeContextSenstive(this, function () {
+            contextSensitive.makeContextSensitive(this, function () {
                 $.growl({title: "TODO", message: "Show menu with delete, open, and lock/unlock"});
             });
 
@@ -119,10 +119,12 @@ define([
             
             /** The display name */
             this.name = ko.observable(args.name || 'Wx Scout');
-            /** The latitude of this scout */
-            this.latitude = ko.observable(position.latitude);
-            /** The longitude of this scout */
-            this.longitude = ko.observable(position.longitude);
+            /** The movable mix-in state */
+            this.isMovable(args.isMovable === undefined ? false : args.isMovable);
+            /** The latitude of this marker -- set be by the Movable interface during pick/drag operations. See SelectController */
+            this.latitude(position.latitude)
+            /** The longitude of this marker -- may be set by the Movable interface during pick/drag operations See SelectController */
+            this.longitude (position.longitude);
             /** The lat/lon location string of this scout */
             this.location = ko.computed(function () {
                 return "Lat " + self.latitude().toPrecision(4).toString() + ", " + "Lon " + self.longitude().toPrecision(5).toString();
@@ -134,8 +136,6 @@ define([
             
             /** The unique id used to identify this particular weather object */
             this.id = args.id || util.guid();
-            /** The default movable state is false; a scout must be selected to be movable. */
-            this.isMovable = args.isMovable === undefined ? false : args.isMovable;
             /** The renderable, symbolic representation of this object */
             this.symbol = new WeatherMapSymbol(this); // a composite renderable of several placemark components
             this.symbol.pickDelgate = this;
