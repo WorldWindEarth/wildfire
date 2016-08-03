@@ -87,11 +87,11 @@ define([
                 return;
             }
             if (this.selectedScout !== null) {
-                this.selectedScout.placemark.highlighted = false;
+                this.selectedScout.symbol.highlighted = false;
                 this.selectedScout.isMovable = false;
             }
             if (scout !== null) {
-                scout.placemark.highlighted = true;
+                scout.symbol.highlighted = true;
                 scout.isMovable = true;
                 this.selectedScout = scout;
             }
@@ -125,12 +125,12 @@ define([
             this.layer.addRenderable(scout.symbol);
         };
 
-        // Internal method to remove the scout's placemark from its layer.
+        // Internal method to remove the scout's renderable from its layer.
         WeatherScoutManager.prototype.doRemoveScoutFromLayer = function (scout) {
-            var i, max, placemark = scout.symbol;
-            // Remove the placemark from the renderable layer
+            var i, max, renderable = scout.symbol;
+            // Remove the renderable from the renderable layer
             for (i = 0, max = this.layer.renderables.length; i < max; i++) {
-                if (this.layer.renderables[i] === placemark) {
+                if (this.layer.renderables[i] === renderable) {
                     this.layer.renderables.splice(i, 1);
                     break;
                 }
