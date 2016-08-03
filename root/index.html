@@ -303,16 +303,16 @@ Main Content
         </div>
 
         <!--
-        Globe View (bound to the GlobeViewModel)
+        Globe 
         -->
-        <div id="globe" class="col-sm-8 col-sm-offset-4 col-md-9 col-md-offset-3 main">
+        <div class="col-sm-8 col-sm-offset-4 col-md-9 col-md-offset-3 main">
 
             <div class="row" style="height: 100%;">
 
                 <!--
-                Globe section
+                Globe View (bound to the GlobeViewModel)
                 -->
-                <div class="col-md-12">
+                <div id="globe" class="col-md-12">
                     <div class="section-heading" style="width: 100%">
                         <h4 class="sub-header">
                                     <span class="glyphicon glyphicon-globe" aria-hidden="true"
@@ -417,27 +417,17 @@ Main Content
                     </div>
                 </div>
             </div>
-
-            <!--<div class="row">-->
-            <!--&lt;!&ndash;-->
-            <!--Output View (bound to the OutputViewModel)-->
-            <!--&ndash;&gt;-->
-            <!--<div id="output">-->
-
-            <!--&lt;!&ndash; Nav tabs &ndash;&gt;-->
-            <!--<ul class="nav nav-tabs" role="tablist">-->
-            <!--<li role="presentation" class="active">-->
-            <!--<a href="#servers-tab" aria-controls="home" role="tab" data-toggle="tab">Servers</a>-->
-            <!--</li>-->
-            <!--</ul>-->
-
-            <!--&lt;!&ndash; Tab panes &ndash;&gt;-->
-            <!--<div class="tab-content">-->
-            <!--<div role="tabpanel" class="tab-pane active" id="servers-tab">Layers go here</div>-->
-            <!--</div>-->
-            <!--</div>-->
-            <!--</div>-->
-
+            <div class="row">
+                <!--
+                Output View (bound to the OutputViewModel)
+                -->
+                <div id="output" data-bind="template: {
+                    if: viewTemplateName()!==null,
+                    name: viewTemplateName,
+                    data: selectedItem
+                    }">
+                </div>
+            </div>
         </div>
 
     </div>
@@ -612,6 +602,14 @@ This server-layer-template script recursively renders a server's layer list item
         </ul>
         <!-- /ko -->
     </li>
+</script>
+
+<!--
+Hello World Template
+This test template renders 'Hello World'
+-->
+<script type="text/html" id="hello-world-template">
+    <p>Hello World!</p>
 </script>
 
 
