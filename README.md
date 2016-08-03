@@ -1,11 +1,12 @@
-# World Wind Weather
-An HTML5/JavaScript geo-browser with weather built from the NASA WebWorldWind SDK using the Knockout and Bootstrap libraries.
+# World Wind Wildfire - The Wildfire Management Tool
+An HTML5/JavaScript geo-browser with weather forecasts and wildland fire potentials built from the NASA WebWorldWind SDK.
 
 ### Objectives
-- Be a useful web app in its own right
-- Be a WebWorldWind SDK example project that is easy to fork and customize
+- Weather Scouts
+- Fire Lookouts
+
 
 ### Important Links
-- Live Demo: http://weather.worldwind.earth
+- Live Demo: http://wildfire.worldwind.earth
 - NASA Web World Wind SDK (emxsys fork): https://github.com/emxsys/WebWorldWind
-
+- NASA World Wind Explorer (emxsys fork): https://github.com/emxsys/WorldWindExplorer
