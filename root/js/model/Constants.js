@@ -37,6 +37,7 @@ define([], function () {
         LAYER_NAME_MARKERS: "Markers",
         LAYER_NAME_RETICLE: "Crosshairs",
         LAYER_NAME_SKY: "Sky",
+        LAYER_NAME_TIME_ZONES: "Time Zones",
         LAYER_NAME_VIEW_CONTROLS: "Controls",
         LAYER_NAME_WEATHER: "Weather",
         LAYER_NAME_WIDGETS: "Widgets",
