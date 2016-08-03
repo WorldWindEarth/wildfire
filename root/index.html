@@ -12,7 +12,7 @@
         <!-- Bootstrap: The above 3 meta tags *must* come first in the head; any other head content must come *after* these tags -->
 
         <title>World Wind Weather</title>
-        <meta name="description" content="World Wind Weather">
+        <meta name="description" content="World Wind Wildfire">
         <meta name="author" content="Bruce Schubert">
 
         <!-- Favicon -->
@@ -81,9 +81,17 @@
                         <!-- Weather navigation button -->
                         <li>
                             <a href="#weather" role="tab" data-toggle="tab">
-                                <span class="glyphicon glyphicon-certificate visible-sm-block" aria-hidden="true"
+                                <span class="glyphicon glyphicon-cloud visible-sm-block" aria-hidden="true"
                                       style="padding-top:4px; padding-bottom:4px"></span>
                                 <span class="hidden-sm" aria-hidden="true">Weather</span>
+                            </a>
+                        </li>
+                        <!-- Wildfire navigation button -->
+                        <li>
+                            <a href="#wildfire" role="tab" data-toggle="tab">
+                                <span class="glyphicon glyphicon-fire visible-sm-block" aria-hidden="true"
+                                      style="padding-top:4px; padding-bottom:4px"></span>
+                                <span class="hidden-sm" aria-hidden="true">Wildfire</span>
                             </a>
                         </li>
                         <!-- Search box and button (bound to SearchViewModel)-->
@@ -271,23 +279,23 @@
                                 </div>
                             </div>
                         </div>
+                    </div>
 
-                        <!--
-                        Markers View (bound to MarkersViewModel)
-                        -->
-                        <div id="markers" class="tab-pane" role="tabpanel">
-                            <div class="section-heading">
-                                <h4 class="sub-header">
-                                    <span class="glyphicon glyphicon-map-marker" aria-hidden="true"
-                                          style="padding-right:5px;"></span>
-                                    Markers
-                                    <a class="section-toggle" data-toggle="collapse" href="#markers-body"></a>
-                                </h4>
-                            </div>
-                            <div id="markers-body" class="section-body collapse in">
-                                <!-- Bind the list to the 'markers' observableArray -->
-                                <div data-bind="template: { name: 'marker-template', foreach: markers}"></div>
-                            </div>
+                    <!--
+                    Markers View (bound to MarkersViewModel)
+                    -->
+                    <div id="markers" class="tab-pane" role="tabpanel">
+                        <div class="section-heading">
+                            <h4 class="sub-header">
+                                <span class="glyphicon glyphicon-map-marker" aria-hidden="true"
+                                      style="padding-right:5px;"></span>
+                                Markers
+                                <a class="section-toggle" data-toggle="collapse" href="#markers-body"></a>
+                            </h4>
+                        </div>
+                        <div id="markers-body" class="section-body collapse in">
+                            <!-- Bind the list to the 'markers' observableArray -->
+                            <div data-bind="template: { name: 'marker-template', foreach: markers}"></div>
                         </div>
                     </div>
 
@@ -297,7 +305,7 @@
                     <div id="weather" class="tab-pane" role="tabpanel">
                         <div class="section-heading">
                             <h4 class="sub-header">
-                                <span class="glyphicon glyphicon-certificate" aria-hidden="true"
+                                <span class="glyphicon glyphicon-cloud" aria-hidden="true"
                                       style="padding-right:5px;"></span>
                                 Weather
                                 <a class="section-toggle" data-toggle="collapse" href="#weather-body"></a>
@@ -306,6 +314,24 @@
                         <div id="weather-body" class="section-body collapse in">
                             <!-- Bind the list to the 'weatherScouts' observableArray -->
                             <div data-bind="template: { name: 'weather-scout-template', foreach: weatherScouts}"></div>
+                        </div>
+                    </div>
+
+                    <!--
+                    Wildfire View (bound to WildfireViewModel)
+                    -->
+                    <div id="wildfire" class="tab-pane" role="tabpanel">
+                        <div class="section-heading">
+                            <h4 class="sub-header">
+                                <span class="glyphicon glyphicon-fire" aria-hidden="true"
+                                      style="padding-right:5px;"></span>
+                                Wildfire
+                                <a class="section-toggle" data-toggle="collapse" href="#wildfire-body"></a>
+                            </h4>
+                        </div>
+                        <div id="wildfire-body" class="section-body collapse in">
+                            <!-- Bind the list to the 'fireLookouts' observableArray -->
+                            <div data-bind="template: { name: 'fire-lookout-template', foreach: fireLookouts}"></div>
                         </div>
                     </div>
                 </div>
@@ -334,7 +360,7 @@
                                                 style="padding-top: 0; padding-bottom: 0; height: 30px;"
                                                 data-bind="click: armDropScout">
                                             <span class="glyphicon glyphicon-plus" aria-hidden="true"></span>
-                                            <span class="glyphicon glyphicon-certificate" aria-hidden="true"></span>
+                                            <span class="glyphicon glyphicon-cloud" aria-hidden="true"></span>
                                         </button>                                        <!-- Add Marker button and palette -->
                                         <button type="button"
                                                 class="btn btn-primary btn-sm"

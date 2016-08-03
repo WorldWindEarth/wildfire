@@ -19,7 +19,7 @@ define(['knockout'],
          */
         function HeaderViewModel() {
             var self = this;
-            self.appName = ko.observable("World Wind Weather");
+            self.appName = ko.observable("WMT");
         }
 
         return HeaderViewModel;
