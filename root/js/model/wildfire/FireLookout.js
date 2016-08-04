@@ -11,7 +11,6 @@ define(['require',
     'model/wildire/FuelMoistureCatalog',
     'model/services/LandfireResource',
     'model/util/Log',
-    'wmt/util/Messenger',
     'wmt/resource/SolarResource',
     'model/services/SurfaceFireResource',
     'model/services/SurfaceFuelResource',
@@ -28,7 +27,6 @@ define(['require',
         fuelMoistureCatalog,
         landfireResource,
         log,
-        messenger,
         solarResource,
         surfaceFireResource,
         surfaceFuelResource,
@@ -138,7 +136,7 @@ define(['require',
                     self.refreshFireBehavior();
                 });
             } catch (e) {
-                messenger.warningGrowl("The automated fuel model lookup is service unavailable. You must manually select the fuel model.");
+                //messenger.warningGrowl("The automated fuel model lookup is service unavailable. You must manually select the fuel model.");
                 log.warning('FireLookout','refreshFuelModel',e.message);
             }
 
