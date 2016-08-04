@@ -25,6 +25,7 @@ define(['jquery',
         'model/globe/markers/MarkerManager',
         'model/util/Settings',
         'model/weather/WeatherScoutManager',
+        'model/wildfire/WildlandFireManager',
         'worldwind'],
     function ($,
               ko,
@@ -32,7 +33,8 @@ define(['jquery',
               log,
               MarkerManager,
               settings,
-              WeatherScoutManager) {
+              WeatherScoutManager,
+              WildlandFireManager) {
         "use strict";
         /**
          * This is the top-level Explorer singleton.
@@ -56,6 +58,7 @@ define(['jquery',
                 this.wwd = globe.wwd;
                 this.markerManager = new MarkerManager(globe);
                 this.weatherManager = new WeatherScoutManager(globe);
+                this.wildfireManager = new WildlandFireManager(globe);
 
                 // Configure the objects used to animate the globe when performing "go to" operations
                 this.goToAnimator = new WorldWind.GoToAnimator(this.wwd);

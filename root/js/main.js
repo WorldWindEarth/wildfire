@@ -49,6 +49,7 @@ require(['knockout', 'jquery', 'bootstrap', 'worldwind',
     'views/SearchViewModel',
     'views/WeatherScoutEditor',
     'views/WeatherViewModel',
+    'views/WildfireViewModel',
     'model/globe/layers/UsgsContoursLayer',
     'model/globe/layers/UsgsImageryTopoBaseMapLayer',
     'model/globe/layers/UsgsTopoBaseMapLayer'],
@@ -68,6 +69,7 @@ require(['knockout', 'jquery', 'bootstrap', 'worldwind',
                 SearchViewModel,
                 WeatherScoutEditor,
                 WeatherViewModel,
+                WildfireViewModel,
                 UsgsContoursLayer,
                 UsgsImageryTopoBaseMapLayer,
                 UsgsTopoBaseMapLayer) { // this callback gets executed when all required modules are loaded
@@ -124,10 +126,10 @@ require(['knockout', 'jquery', 'bootstrap', 'worldwind',
             ko.applyBindings(new HomeViewModel(globe), document.getElementById('home'));
             ko.applyBindings(new LayersViewModel(globe), document.getElementById('layers'));
             ko.applyBindings(new MarkersViewModel(globe, explorer.markerManager), document.getElementById('markers'));
-            ko.applyBindings(new WeatherViewModel(globe, explorer.weatherManager), document.getElementById('weather'));
             ko.applyBindings(new MarkerEditor(), document.getElementById('marker-editor'));
+            ko.applyBindings(new WeatherViewModel(globe, explorer.weatherManager), document.getElementById('weather'));
             ko.applyBindings(new WeatherScoutEditor(), document.getElementById('weather-scout-editor'));
-            //ko.applyBindings(new OuputViewModel(), document.getElementById('output'));
+            ko.applyBindings(new WildfireViewModel(globe, explorer.wildfireManager, null), document.getElementById('wildfire'));
             ko.applyBindings(new OuputViewModel(globe), document.getElementById('output'));
 
             // -----------------------------------------------------------
