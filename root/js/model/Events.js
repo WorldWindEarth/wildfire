@@ -6,6 +6,11 @@
 define([], function () {
     "use strict";
     var Events = {
+        EVENT_FIRE_BEHAVIOR_CHANGED: "fireBehaviorChanged",
+        EVENT_FIRE_LOOKOUT_ADDED: "fireLookoutAdded",
+        EVENT_FIRE_LOOKOUT_CHANGED: "fireLookoutChanged",
+        EVENT_FIRE_LOOKOUT_REMOVED: "fireLookoutRemoved",
+        EVENT_FUELMOISTURE_CHANGED: "fuelMoistureChanged",
         EVENT_MARKER_ADDED: "markerAdded",
         EVENT_MARKER_CHANGED: "markerChanged",
         EVENT_MARKER_REMOVED: "markerRemoved",
@@ -47,7 +52,11 @@ define([], function () {
         EVENT_WEATHER_CHANGED: "weatherChanged",
         EVENT_WEATHER_SCOUT_ADDED: "weatherScoutAdded",
         EVENT_WEATHER_SCOUT_CHANGED: "weatherScoutChanged",
-        EVENT_WEATHER_SCOUT_REMOVED: "weatherScoutRemoved"
+        EVENT_WEATHER_SCOUT_REMOVED: "weatherScoutRemoved",
+        EVENT_WILDLAND_FIRE_ADDED: "wildlandFireAdded",
+        EVENT_WILDLAND_FIRE_CHANGED: "wildlandFireChanged",
+        EVENT_WILDLAND_FIRE_REMOVED: "wildlandFireRemoved",
+        EVENT_WILDLAND_FIRES_ADDED: "wildlandFiresAdded"
     }
 
     return Events;

@@ -13,13 +13,10 @@
  */
 define(['jquery',
         'model/Constants',
-        'model/util/Log',
-        'model/util/Settings',
         'worldwind'],
     function ($,
               constants,
-              log,
-              settings) {
+              ww) {
         "use strict";
         /**
          * This is the top-level Config singleton.
@@ -39,7 +36,8 @@ define(['jquery',
          */
         var Config = {
             imageryDetailHint: (window.screen.width < 768 ? -0.1 : (window.screen.width < 1024 ? 0.0 : (window.screen.width < 1280 ? 0.1 : 0.2))),
-            markerLabels: "Marker",
+            fireLookoutLabels: constants.FIRE_LOOKOUT_LABEL_LATLON,
+            markerLabels: constants.MARKER_LABEL_NAME,
             startupLatitude: 34.29,
             startupLongitude: -119.29,
             startupAltitude: 1000000,
