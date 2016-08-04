@@ -20,7 +20,7 @@ define([
         util,
         constants) {
         "use strict";
-        var GeoMacResource = {
+        var GeoMacService = {
             /**
              * Identfies all current fires. Queries the GeoMAC geomac_fires large fire points layer (1).
              * 
@@ -481,6 +481,6 @@ define([
             }
 
         };
-        return GeoMacResource;
+        return GeoMacService;
     }
 );
