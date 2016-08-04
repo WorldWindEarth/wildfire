@@ -6,15 +6,15 @@
 /*global define, WorldWind*/
 
 define([
-    'wmt/Wmt',
+    'model/Constatns',
     'worldwind'],
     function (
-        wmt,
+        constants,
         ww) {
         "use strict";
 
         var WildfireDiamond = function (latitude, longitude, head, flanks, heal, eyeDistanceScaling) {
-            WorldWind.Placemark.call(this, new WorldWind.Position(latitude, longitude, wmt.MAP_SYMBOL_ALTITUDE_WILDFIRE), eyeDistanceScaling);
+            WorldWind.Placemark.call(this, new WorldWind.Position(latitude, longitude, constants.MAP_SYMBOL_ALTITUDE_WILDFIRE), eyeDistanceScaling);
 
             this.altitudeMode = WorldWind.RELATIVE_TO_GROUND;
 
@@ -54,7 +54,7 @@ define([
                     + WildfireDiamond.getColorCode(heal);
             }
 
-            this.attributes.imageSource = wmt.IMAGE_PATH + 'fire/' + imgName + '.png';
+            this.attributes.imageSource = constants.IMAGE_PATH + 'fire/' + imgName + '.png';
             this.highlightAttributes.imageSource = this.attributes.imageSource;
         };
 

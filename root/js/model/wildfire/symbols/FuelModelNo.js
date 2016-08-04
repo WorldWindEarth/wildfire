@@ -6,10 +6,10 @@
 /*global define, WorldWind*/
 
 define([
-    'wmt/Wmt',
+    'model/Constants',
     'worldwind'],
     function (
-        wmt,
+        constants,
         ww) {
         "use strict";
 
@@ -21,7 +21,7 @@ define([
          * @returns {FuelModelNo}
          */
         var FuelModelNo = function (latitude, longitude, modelNo) {
-            WorldWind.GeographicText.call(this, new WorldWind.Position(latitude, longitude, wmt.MAP_SYMBOL_ALTITUDE_WILDFIRE), modelNo);
+            WorldWind.GeographicText.call(this, new WorldWind.Position(latitude, longitude, constants.MAP_SYMBOL_ALTITUDE_WILDFIRE), modelNo);
 
             this.altitudeMode = WorldWind.RELATIVE_TO_GROUND;
             this.alwaysOnTop = true;

@@ -7,23 +7,17 @@
 
 /**
  * 
- * @param {type} controller
- * @param {type} IcsMarker
- * @param {type} wmt
+ * @param {type} constants
  * @param {type} ww
  * @returns {WildlandFireSymbol}
  * 
  * @author Bruce Schubert
  */
 define([
-    'wmt/controller/Controller',
-    'wmt/view/symbols/IcsMarker',
-    'wmt/Wmt',
+    'model/Constants',
     'worldwind'],
     function (
-        controller,
-        IcsMarker,
-        wmt,
+        constants,
         ww) {
         "use strict";
 
@@ -50,7 +44,7 @@ define([
             highlightAttributes.interiorColor = new WorldWind.Color(1, 1, 1, 0.5);
 
             // Create the symbol components
-            if (fire.geometryType === wmt.GEOMETRY_POINT) {
+            if (fire.geometryType === constants.GEOMETRY_POINT) {
                 // Points are symbolized with an ICS Fire Location symbol
                 marker = new IcsMarker(fire.geometry.y, fire.geometry.x, "ics-fire-location");
                 marker.pickDelegate = fire;
@@ -58,7 +52,7 @@ define([
                 marker.attributes.labelAttributes.color = WorldWind.Color.YELLOW;
                 this.shapes.push(marker);
 
-            } else if (fire.geometryType === wmt.GEOMETRY_POLYGON) {
+            } else if (fire.geometryType === constants.GEOMETRY_POLYGON) {
                 // Polygons are rendered as SurfacePolygons
                 for (i = 0, numRings = fire.geometry.rings.length; i < numRings; i++) {
                     ring = fire.geometry.rings[i];

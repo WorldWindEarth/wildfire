@@ -6,14 +6,14 @@
 /*global define, WorldWind*/
 
 define([
-    'wmt/globe/EnhancedPlacemark',
-    'wmt/util/WmtUtil',
-    'wmt/Wmt',
+    'model/globe/EnhancedPlacemark',
+    'model/util/WmtUtil',
+    'model/Constants',
     'worldwind'],
     function (
         EnhancedPlacemark,
         util,
-        wmt,
+        constants,
         ww) {
         "use strict";
 
@@ -27,7 +27,7 @@ define([
          */
         var DirOfSpread = function (latitude, longitude, dirOfSpread, eyeDistanceScaling) {
 
-            EnhancedPlacemark.call(this, new WorldWind.Position(latitude, longitude, wmt.MAP_SYMBOL_ALTITUDE_WILDFIRE), eyeDistanceScaling);
+            EnhancedPlacemark.call(this, new WorldWind.Position(latitude, longitude, constants.MAP_SYMBOL_ALTITUDE_WILDFIRE), eyeDistanceScaling);
 
             this.altitudeMode = WorldWind.RELATIVE_TO_GROUND;
 
@@ -82,7 +82,7 @@ define([
                 self.highlightAttributes.imageSource = new WorldWind.ImageSource(canvas);
             };
             // Set the image -- which fires the onload event
-            img.src = wmt.IMAGE_PATH + 'fire/dir-of-spread.png';
+            img.src = constants.IMAGE_PATH + 'fire/dir-of-spread.png';
 
             this.enabled = true;
         };

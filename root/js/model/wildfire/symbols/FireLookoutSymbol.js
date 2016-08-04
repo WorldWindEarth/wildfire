@@ -6,24 +6,26 @@
 /*global define, $, WorldWind */
 
 define([
-    'wmt/controller/Controller',
-    'wmt/view/symbols/fire/DirOfSpread',
-    'wmt/view/symbols/fire/FlameLengthHead',
-    'wmt/util/Formatter',
-    'wmt/view/symbols/fire/FuelModelNo',
-    'wmt/view/symbols/fire/WildfireDiamond',
-    'wmt/util/Log',
-    'wmt/Wmt',
+    'model/wildfire/symbols/DirOfSpread',
+    'model/wildfire/symbols/FlameLengthHead',
+    'model/util/Formatter',
+    'model/wildfire/symbols/FuelModelNo',
+    'model/wildfire/symbols/WildfireDiamond',
+    'model/util/Log',
+    'model/Constants',
+    'model/Config',
+    'model/Events',
     'worldwind'],
     function (
-        controller,
         DirOfSpread,
         FlameLengthHead,
         formatter,
         FuelModelNo,
         WildfireDiamond,
         logger,
-        wmt,
+        constants,
+        config,
+        events,
         ww) {
         "use strict";
 
@@ -93,19 +95,19 @@ define([
             };
             // EVENT_PLACE_CHANGED handler
             this.handlePlaceChangedEvent = function (lookout) {
-                if (wmt.configuration.fireLookoutLabels === wmt.FIRE_LOOKOUT_LABEL_PLACE) {
+                if (config.fireLookoutLabels === constants.FIRE_LOOKOUT_LABEL_PLACE) {
                     // Display the place name
                     self.diamond.label = lookout.toponym || null;
-                } else if (wmt.configuration.fireLookoutLabels === wmt.FIRE_LOOKOUT_LABEL_LATLON) {
+                } else if (config.fireLookoutLabels === constants.FIRE_LOOKOUT_LABEL_LATLON) {
                     // Display "Lat Lon"
                     self.diamond.label = lookout.latitude.toFixed(3) + ' ' + lookout.longitude.toFixed(3);
                 }
             };
 
             // Establish the Publisher/Subscriber relationship between this symbol and the wx model
-            lookout.on(wmt.EVENT_FIRE_BEHAVIOR_CHANGED, this.handleFireBehaviorChangedEvent, this);
-            lookout.on(wmt.EVENT_PLACE_CHANGED, this.handlePlaceChangedEvent, this);
-            lookout.on(wmt.EVENT_OBJECT_MOVED, this.handleObjectMovedEvent, this);
+            lookout.on(events.EVENT_FIRE_BEHAVIOR_CHANGED, this.handleFireBehaviorChangedEvent, this);
+            lookout.on(events.EVENT_PLACE_CHANGED, this.handlePlaceChangedEvent, this);
+            lookout.on(events.EVENT_OBJECT_MOVED, this.handleObjectMovedEvent, this);
 
         };
         // Inherit Renderable functions.
