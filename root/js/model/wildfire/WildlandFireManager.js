@@ -6,15 +6,15 @@
 /*global define*/
 
 define([
-    'wmt/resource/GeoMacResource',
-    'wmt/util/Publisher',
-    'wmt/model/WildlandFire',
-    'wmt/Wmt'],
+    'model/services/GeoMacService',
+    'model/util/Publisher',
+    'model/wildfire/WildlandFire',
+    'model/Events'],
     function (
         geoMac,
         publisher,
         WildlandFire,
-        wmt) {
+        events) {
         "use strict";
         var WildlandFireManager = function (model) {
             // Mix-in Publisher capability (publish/subscribe pattern)
@@ -38,6 +38,7 @@ define([
                     }
                     deferredFires.resolve(self.fires);
                 });
+                
             // Load the current fire perimeters (without geometry)
             geoMac.activeFirePerimeters(
                 false, // don't include Geometry
@@ -48,9 +49,10 @@ define([
                     }
                     deferredPerimeters.resolve(self.fires);
                 });
+                
             $.when(deferredFires, deferredPerimeters).done(function () {
                 // Notify views of the new fires
-                self.fire(wmt.EVENT_WILDLAND_FIRES_ADDED, self.fires);
+                self.fire(events.EVENT_WILDLAND_FIRES_ADDED, self.fires);
             });
         };
 
@@ -65,7 +67,7 @@ define([
             this.fires.push(fire);
 
             // Notify views of the new wx scount
-            this.fire(wmt.EVENT_WILDLAND_FIRE_ADDED, fire);
+            this.fire(events.EVENT_WILDLAND_FIRE_ADDED, fire);
         };
 
         /**
@@ -103,9 +105,9 @@ define([
             }
             if (removed && removed.length > 0) {
                 // Remove our subscription/reference to the fire
-                fire.cancelSubscription(wmt.EVENT_OBJECT_REMOVED, this.removeFire, this);
+                fire.cancelSubscription(events.EVENT_OBJECT_REMOVED, this.removeFire, this);
                 // Notify others.
-                this.fire(wmt.EVENT_WILDLAND_FIRE_REMOVED, removed[0]);
+                this.fire(events.EVENT_WILDLAND_FIRE_REMOVED, removed[0]);
                 return true;
             }
             return false;
