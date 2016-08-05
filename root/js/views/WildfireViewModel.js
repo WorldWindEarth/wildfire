@@ -23,7 +23,6 @@ define(['knockout', 'model/Constants'],
 
                 /** "Goto" function centers the globe on a selected wildfire */
                 self.gotoWildfire = function (wildfire) {
-                    //        WildlandFire.prototype.goto = function () {
                     var deferred = $.Deferred();
 
                     if (wildfire.geometry) {
@@ -34,7 +33,6 @@ define(['knockout', 'model/Constants'],
                         $.when(deferred).done(function (self) {
                             globe.goto(wildfire.latitude, wildfire.longitude);
                         });
-
                     }
                 };
                 
