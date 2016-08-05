@@ -48,7 +48,7 @@ define([
 
             // Make selectable via picking (see SelectController): adds the "select" method
             selectable.makeSelectable(this, function (params) {   // define the callback that selects this marker
-                this.symbol.highlighted = params.selected;
+                this.renderable.highlighted = params.selected;
                 return true;    // return true to fire a EVENT_OBJECT_SELECTED event
             });
             /**
@@ -68,8 +68,8 @@ define([
             // If the feature has geometry then process it, otherwise defer until needed
             if (feature.geometry) {
                 this.processGeometry(feature.geometry);
-                this.symbol = new WildlandFireSymbol(this); // Either a Placemark or a SurfaceShape depending on geometry
-                this.symbol.pickDelgate = this;
+                this.renderable = new WildlandFireSymbol(this); // Either a Placemark or a SurfaceShape depending on geometry
+                this.renderable.pickDelgate = this;
             } else {
                 this.geometryType = constants.GEOMETRY_UNKNOWN;
                 this.geometry = null;

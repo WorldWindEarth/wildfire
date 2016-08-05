@@ -42,8 +42,8 @@ define([
                         feature = features[i];
                         fire = new WildlandFire(this, feature);
                         self.fires.push(fire);
-                        if (fire.symbol) {
-                            self.layer.addRenderable(fire.symbol);
+                        if (fire.renderable) {
+                            self.layer.addRenderable(fire.renderable);
                         }
                     }
                     deferredFires.resolve(self.fires);

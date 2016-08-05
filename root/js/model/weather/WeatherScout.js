@@ -80,7 +80,7 @@ define([
             // Make selectable via picking (see SelectController): adds the "select" method
             selectable.makeSelectable(this, function (params) {   // define the callback that selects this marker
                 this.isMovable(params.selected);
-                this.symbol.highlighted = params.selected;
+                this.renderable.highlighted = params.selected;
                 return true;    // return true to fire a EVENT_OBJECT_SELECTED event
             });
 
@@ -137,22 +137,22 @@ define([
             /** The unique id used to identify this particular weather object */
             this.id = args.id || util.guid();
             /** The renderable, symbolic representation of this object */
-            this.symbol = new WeatherMapSymbol(this); // a composite renderable of several placemark components
-            this.symbol.pickDelgate = this;
+            this.renderable = new WeatherMapSymbol(this); // a composite renderable of several placemark components
+            this.renderable.pickDelgate = this;
  
             // Synchronize the renderable to the observable properties of this weatehr scout
 
 //            this.name.subscribe(function (newName) {
-//                self.symbol.skyCover.label = newName;
+//                self.renderable.skyCover.label = newName;
 //            });
 //            this.latitude.subscribe(function (newLat) {
-//                self.symbol.handleObjectMovedEvent(self);
+//                self.renderable.handleObjectMovedEvent(self);
 //            });
 //            this.longitude.subscribe(function (newLon) {
-//                self.symbol.handleObjectMovedEvent(self);
+//                self.renderable.handleObjectMovedEvent(self);
 //            });          
             
-            this.globe.dateTime.subscribe(this.symbol.handleTimeChangedEvent);
+            this.globe.dateTime.subscribe(this.renderable.handleTimeChangedEvent);
             
             // Self subscribe to move operations so we can update the forecast and place
             // when the move is finished. We don't want to update during the move itself.

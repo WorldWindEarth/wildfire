@@ -87,11 +87,11 @@ define([
                 return;
             }
             if (this.selectedScout !== null) {
-                this.selectedScout.symbol.highlighted = false;
+                this.selectedScout.renderable.highlighted = false;
                 this.selectedScout.isMovable = false;
             }
             if (scout !== null) {
-                scout.symbol.highlighted = true;
+                scout.renderable.highlighted = true;
                 scout.isMovable = true;
                 this.selectedScout = scout;
             }
@@ -122,12 +122,12 @@ define([
 
         // Internal method to add the scout to the layer.
         WeatherScoutManager.prototype.doAddScoutToLayer = function (scout) {
-            this.layer.addRenderable(scout.symbol);
+            this.layer.addRenderable(scout.renderable);
         };
 
         // Internal method to remove the scout's renderable from its layer.
         WeatherScoutManager.prototype.doRemoveScoutFromLayer = function (scout) {
-            var i, max, renderable = scout.symbol;
+            var i, max, renderable = scout.renderable;
             // Remove the renderable from the renderable layer
             for (i = 0, max = this.layer.renderables.length; i < max; i++) {
                 if (this.layer.renderables[i] === renderable) {
