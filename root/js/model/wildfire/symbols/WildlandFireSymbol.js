@@ -21,6 +21,11 @@ define([
         ww) {
         "use strict";
 
+        /**
+         * Constructs a point or (multi)polygon renderable to represent a fire.
+         * @param {WildlandFire} fire The fire to render.
+         * @constructor
+         */
         var WildlandFireSymbol = function (fire) {
 
             // Inherit Renderable properties
@@ -33,26 +38,48 @@ define([
             var marker,
                 i, numRings, ring,
                 j, numPoints, perimeter,
-                shape, attributes, highlightAttributes;
+                shape, shapeAttributes, shapeHighlightAttributes,
+                point, pointAttributes, pointHightlightAttributes;
 
-            // Create and set attributes for fire perimeter polygons
-            attributes = new WorldWind.ShapeAttributes(null);
-            attributes.outlineColor = WorldWind.Color.RED;
-            attributes.interiorColor = new WorldWind.Color(0, 0, 0, 0.5);
-
-            highlightAttributes = new WorldWind.ShapeAttributes(attributes);
-            highlightAttributes.interiorColor = new WorldWind.Color(1, 1, 1, 0.5);
+     
 
             // Create the symbol components
             if (fire.geometryType === constants.GEOMETRY_POINT) {
-                // Points are symbolized with an ICS Fire Location symbol
-                marker = new IcsMarker(fire.geometry.y, fire.geometry.x, "ics-fire-location");
-                marker.pickDelegate = fire;
+                // Create and set the attributes for fire point location
+                pointAttributes = new WorldWind.PlacemarkAttributes(null);
+                pointAttributes.imageSource = constants.IMAGE_PATH + 'ics/Fire_Location24.png';
+                pointAttributes.depthTest = true;
+                pointAttributes.imageScale = 1.5;
+                pointAttributes.imageOffset = new WorldWind.Offset(
+                    WorldWind.OFFSET_FRACTION, 0.5,
+                    WorldWind.OFFSET_FRACTION, 0.0);
+                pointAttributes.labelAttributes.offset = new WorldWind.Offset(
+                    WorldWind.OFFSET_FRACTION, 0.5,
+                    WorldWind.OFFSET_FRACTION, 1.0);
+                pointAttributes.labelAttributes.color = WorldWind.Color.WHITE;
+                pointAttributes.labelAttributes.depthTest = true;
+                pointAttributes.drawLeaderLine = true;
+                pointAttributes.leaderLineAttributes.outlineColor = WorldWind.Color.RED;
+                pointAttributes.leaderLineAttributes.outlineWidth = 2;
+
+                pointHightlightAttributes = new WorldWind.PlacemarkAttributes(pointAttributes);
+                pointHightlightAttributes.imageScale = pointAttributes.imageScale * 1.2;
+                point = new WorldWind.Position(fire.geometry.y, fire.geometry.x, 0);
+                marker = new WorldWind.Placemark(point, false, pointAttributes);
+                marker.highlightAttributes = pointHightlightAttributes;
+                marker.altitudeMode = WorldWind.CLAMP_TO_GROUND;
                 marker.label = fire.name;
                 marker.attributes.labelAttributes.color = WorldWind.Color.YELLOW;
+                marker.pickDelegate = fire;
                 this.shapes.push(marker);
 
             } else if (fire.geometryType === constants.GEOMETRY_POLYGON) {
+                // Create and set attributes for fire perimeter polygons
+                shapeAttributes = new WorldWind.ShapeAttributes(null);
+                shapeAttributes.outlineColor = WorldWind.Color.RED;
+                shapeAttributes.interiorColor = new WorldWind.Color(0, 0, 0, 0.5);
+                shapeHighlightAttributes = new WorldWind.ShapeAttributes(shapeAttributes);
+                shapeHighlightAttributes.interiorColor = new WorldWind.Color(1, 1, 1, 0.5);
                 // Polygons are rendered as SurfacePolygons
                 for (i = 0, numRings = fire.geometry.rings.length; i < numRings; i++) {
                     ring = fire.geometry.rings[i];
@@ -60,8 +87,8 @@ define([
                     for (j = 0, numPoints = ring.length; j < numPoints; j++) {
                         perimeter.push(new WorldWind.Location(ring[j][1], ring[j][0]));
                     }
-                    shape = new WorldWind.SurfacePolygon(perimeter, attributes);
-                    shape.highlightAttributes = highlightAttributes;
+                    shape = new WorldWind.SurfacePolygon(perimeter, shapeAttributes);
+                    shape.highlightAttributes = shapeHighlightAttributes;
 
                     this.shapes.push(shape);
                 }
@@ -85,6 +112,7 @@ define([
             }
             
             for (var i = 0, max = this.shapes.length; i < max; i++) {
+                this.shapes[i].highlighted = this.highlighted;
                 this.shapes[i].render(dc);
             }
         };
