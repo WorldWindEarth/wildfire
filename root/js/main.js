@@ -110,6 +110,7 @@ require(['knockout', 'jquery', 'bootstrap', 'worldwind',
 
             globe.layerManager.addDataLayer(new WorldWind.RenderableLayer(constants.LAYER_NAME_MARKERS), {enabled: true, pickEnabled: true});
             globe.layerManager.addDataLayer(new WorldWind.RenderableLayer(constants.LAYER_NAME_WEATHER), {enabled: true, pickEnabled: true});
+            globe.layerManager.addDataLayer(new WorldWind.RenderableLayer(constants.LAYER_NAME_WILDLAND_FIRES), {enabled: true, pickEnabled: true});
 
             // Initialize the Explorer object
             explorer.initialize(globe);
