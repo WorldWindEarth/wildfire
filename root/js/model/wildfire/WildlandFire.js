@@ -9,19 +9,30 @@ define([
     'model/util/ContextSensitive',
     'model/services/GeoMacService',
     'model/util/Openable',
+    'model/util/Selectable',
     'model/util/Log',
+    'model/wildfire/symbols/WildlandFireSymbol',
     'model/util/WmtUtil',
     'model/Constants'],
     function (
         contextSensitive,
         geoMac,
         openable,
+        selectable,
         log,
+        WildlandFireSymbol,
         util,
         constants) {
         "use strict";
 
-        var WildlandFire = function (feature) {
+        /**
+         * 
+         * @param {WildlandFireManager} manager The manager for this wildland fire
+         * @param {Object} feature A JSON feature object returned by the GeoMacService
+         * @returns {WildlandFire} 
+         * @constructor
+         */
+        var WildlandFire = function (manager, feature) {
             var attributes = feature.attributes || {};
 
             // Make openable via menus: Fires the EVENT_OBJECT_OPENED event on success.
@@ -35,6 +46,11 @@ define([
                 //messenger.infoGrowl("Show menu with delete, open, and lock/unlock", "TODO");
             });
 
+            // Make selectable via picking (see SelectController): adds the "select" method
+            selectable.makeSelectable(this, function (params) {   // define the callback that selects this marker
+                this.symbol.highlighted = params.selected;
+                return true;    // return true to fire a EVENT_OBJECT_SELECTED event
+            });
             /**
              * The unique id used to identify this particular object within WMTweb session. It is not persistant.
              */
@@ -52,6 +68,8 @@ define([
             // If the feature has geometry then process it, otherwise defer until needed
             if (feature.geometry) {
                 this.processGeometry(feature.geometry);
+                this.symbol = new WildlandFireSymbol(this); // Either a Placemark or a SurfaceShape depending on geometry
+                this.symbol.pickDelgate = this;
             } else {
                 this.geometryType = constants.GEOMETRY_UNKNOWN;
                 this.geometry = null;
@@ -59,7 +77,7 @@ define([
             }
         };
         /**
-         * 
+         * Load
          * @param {type} deferred
          */
         WildlandFire.prototype.loadDeferredGeometry = function (deferred) {
@@ -128,24 +146,6 @@ define([
                 this.longitude = this.extents.centroidLongitude();
             }
         };
-
-
-//        WildlandFire.prototype.goto = function () {
-//            var controller = require("wmt/controller/Controller"),
-//                deferred = $.Deferred();
-//
-//            if (this.geometry) {
-//                controller.lookAtLatLon(this.latitude, this.longitude);
-//            } else {
-//                // Load the geometry
-//                this.loadDeferredGeometry(deferred);
-//                $.when(deferred).done(function (self) {
-//                    controller.lookAtLatLon(self.latitude, self.longitude);
-//                });
-//
-//            }
-//        };
-
 
         return WildlandFire;
 
