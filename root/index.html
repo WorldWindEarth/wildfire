@@ -330,8 +330,8 @@
                             </h4>
                         </div>
                         <div id="wildfire-body" class="section-body collapse in">
-                            <!-- Bind the list to the 'fireLookouts' observableArray -->
-                            <div data-bind="template: { name: 'fire-lookout-template', foreach: fireLookouts}"></div>
+                            <!-- Bind the list to the 'wildfires' array -->
+                            <div data-bind="template: { name: 'wildfire-template', foreach: wildfires}"></div>
                         </div>
                     </div>
                 </div>
@@ -591,6 +591,19 @@
             </div>
         </script>
 
+        <!--
+        Wildfire Template
+        This script renders the individual wildfire view model items in the Wildfire panel.
+        -->
+        <script type="text/html" id="wildfire-template">
+            <div class="btn-group btn-block">
+                <button type="button" class="btn btn-default"
+                        style="display: block; width: 100%"
+                        data-bind="click: $root.gotoWildfire">
+                    <span data-bind="text: $data.name"></span>
+                </button>
+            </div>
+        </script>
 
         <!--
         Server Template
