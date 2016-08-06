@@ -50,6 +50,8 @@ require(['knockout', 'jquery', 'bootstrap', 'worldwind',
     'views/WeatherScoutEditor',
     'views/WeatherViewModel',
     'views/WildfireViewModel',
+    'model/globe/layers/GeoMacCurrentPerimetersLayer',
+    'model/globe/layers/GeoMacHistoricPerimetersLayer',
     'model/globe/layers/UsgsContoursLayer',
     'model/globe/layers/UsgsImageryTopoBaseMapLayer',
     'model/globe/layers/UsgsTopoBaseMapLayer'],
@@ -70,6 +72,8 @@ require(['knockout', 'jquery', 'bootstrap', 'worldwind',
                 WeatherScoutEditor,
                 WeatherViewModel,
                 WildfireViewModel,
+                GeoMacCurrentPerimetersLayer,
+                GeoMacHistoricPerimetersLayer,
                 UsgsContoursLayer,
                 UsgsImageryTopoBaseMapLayer,
                 UsgsTopoBaseMapLayer) { // this callback gets executed when all required modules are loaded
@@ -107,6 +111,8 @@ require(['knockout', 'jquery', 'bootstrap', 'worldwind',
             //globe.layerManager.addBaseLayer(new WorldWind.OpenStreetMapImageLayer(null), {enabled: false, opacity: 0.7, detailHint: config.imageryDetailHint});
 
             globe.layerManager.addOverlayLayer(new UsgsContoursLayer(), {enabled: false});
+            globe.layerManager.addOverlayLayer(new GeoMacCurrentPerimetersLayer(), {enabled: true});
+            globe.layerManager.addOverlayLayer(new GeoMacHistoricPerimetersLayer(), {enabled: false});
 
             globe.layerManager.addDataLayer(new WorldWind.RenderableLayer(constants.LAYER_NAME_MARKERS), {enabled: true, pickEnabled: true});
             globe.layerManager.addDataLayer(new WorldWind.RenderableLayer(constants.LAYER_NAME_WEATHER), {enabled: true, pickEnabled: true});
