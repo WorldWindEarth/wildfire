@@ -71,10 +71,13 @@ body {
 }
 
 .main {
-    padding: 0px;
-    padding-left: 15px;
-    padding-right: 15px;
-    padding-bottom: 15px;
+    top: 51px;
+    position: fixed;
+    height: calc(100vh);
+    padding: 1px;
+    padding-left: 1px;
+    padding-right: 1px;
+    padding-bottom: 25px;
 }
 
 .non-interactive { 
@@ -109,6 +112,34 @@ body {
 .section-heading {
 }
 
+.split {
+    -webkit-box-sizing: border-box;
+    -moz-box-sizing: border-box;
+    box-sizing: border-box;
+}
+.gutter {
+    background-color: #eee;
+
+    background-repeat: no-repeat;
+    background-position: 50%;
+    z-index: 900 !important ;
+}
+
+.gutter.gutter-horizontal {
+    background-image: url('grips/vertical.png');
+    cursor: ew-resize;
+}
+
+.gutter.gutter-vertical {
+    background-image: url('grips/horizontal.png');
+    cursor: ns-resize;
+}
+
+
+.row {
+    margin-right: 0;
+    margin-left: 0;
+}
 .sub-header {
     padding-bottom: 10px;
     border-bottom: 1px solid #eee;
