@@ -29,12 +29,16 @@ define([
          * 
          * @param {WildlandFireManager} manager The manager for this wildland fire
          * @param {Object} feature A JSON feature object returned by the GeoMacService
+         * @param {String} featureType A string identifing the feature type (e.g., point or perimeter)
          * @returns {WildlandFire} 
          * @constructor
          */
-        var WildlandFire = function (manager, feature) {
-            var attributes = feature.attributes || {};
+        var WildlandFire = function (manager, feature, featureType) {
+            var attributes = feature.attributes || {},
+                self = this;
 
+            this.manager = manager;
+            
             // Make openable via menus: Fires the EVENT_OBJECT_OPENED event on success.
             openable.makeOpenable(this, function () {
                 //messenger.infoGrowl("The open feature has not been implemented yet.", "Sorry");
@@ -51,6 +55,7 @@ define([
                 this.renderable.highlighted = params.selected;
                 return true;    // return true to fire a EVENT_OBJECT_SELECTED event
             });
+            
             /**
              * The unique id used to identify this particular object within WMTweb session. It is not persistant.
              */
@@ -63,18 +68,21 @@ define([
                 || attributes.inc_num
                 || 'Unknown';
             this.featureId = attributes.objectid;
-            this.featureType = attributes.incidentname ? constants.WILDLAND_FIRE_POINT : constants.WILDLAND_FIRE_PERIMETER;
+            this.featureType = featureType;
 
-            // If the feature has geometry then process it, otherwise defer until needed
+            // If the supplied feature has geometry then process it, otherwise defer until needed
             if (feature.geometry) {
                 this.processGeometry(feature.geometry);
                 this.renderable = new WildlandFireSymbol(this); // Either a Placemark or a SurfaceShape depending on geometry
                 this.renderable.pickDelgate = this;
             } else {
-                this.geometryType = constants.GEOMETRY_UNKNOWN;
-                this.geometry = null;
-                this.extents = null;
-            }
+                var deferredRenderable = $.Deferred();
+                this.loadDeferredGeometry(deferredRenderable);
+                $.when(deferredRenderable).done(function () {
+                    self.renderable = new WildlandFireSymbol(self); // Either a Placemark or a SurfaceShape depending on geometry
+                    self.renderable.pickDelgate = self;
+                });
+            } 
         };
         /**
          * Load
@@ -85,7 +93,11 @@ define([
             if (this.featureType === constants.WILDLAND_FIRE_POINT) {
                 geoMac.getActiveFireFeature(this.featureId,
                     function (feature) {
-                        self.processGeometry(feature.geometry);
+                        if (feature) {
+                            self.processGeometry(feature.geometry);
+                        } else {
+                            log.warning("WildlandFireSymbol", "loadDeferredGeometry", "featureMissing");
+                        }
                         if (deferred) {
                             deferred.resolve(self);
                         }
@@ -94,7 +106,11 @@ define([
             else if (this.featureType === constants.WILDLAND_FIRE_PERIMETER) {
                 geoMac.getActivePerimeterFeature(this.featureId,
                     function (feature) {
-                        self.processGeometry(feature.geometry);
+                        if (feature) {
+                            self.processGeometry(feature.geometry);
+                        } else {
+                            log.warning("WildlandFireSymbol", "loadDeferredGeometry", "featureMissing");
+                        }                        
                         if (deferred) {
                             deferred.resolve(self);
                         }

@@ -40,7 +40,7 @@ define([
                 function (features) {
                     for (i = 0, max = features.length; i < max; i++) {
                         feature = features[i];
-                        fire = new WildlandFire(this, feature);
+                        fire = new WildlandFire(this, feature, constants.WILDLAND_FIRE_POINT);
                         self.fires.push(fire);
                         if (fire.renderable) {
                             self.layer.addRenderable(fire.renderable);
@@ -48,22 +48,31 @@ define([
                     }
                     deferredFires.resolve(self.fires);
                 });
-                
-            // Load the current fire perimeters (without geometry to improve query performance)
-            geoMacService.activeFirePerimeters(
-                false, // don't include Geometry
-                function (features) {
-                    for (i = 0, max = features.length; i < max; i++) {
-                        feature = features[i];
-                        self.fires.push(new WildlandFire(this, feature));
-                    }
-                    deferredPerimeters.resolve(self.fires);
-                });
-                
-            $.when(deferredFires, deferredPerimeters).done(function () {
+            $.when(deferredFires).done(function () {
                 // Notify views of the new fires
                 self.fire(events.EVENT_WILDLAND_FIRES_ADDED, self.fires());
             });
+                
+            // Load the current fire perimeters (without geometry to improve query performance)
+//            geoMacService.activeFirePerimeters(
+//                false, // don't include Geometry
+//                function (features) {
+//                    for (i = 0, max = features.length; i < max; i++) {
+//                        feature = features[i];
+//                        self.fires.push(new WildlandFire(this, feature, constants.WILDLAND_FIRE_PERIMETER));
+//                        if (fire.renderable) {
+//                            self.layer.addRenderable(fire.renderable);
+//                        }                    
+//                    }
+//                    deferredPerimeters.resolve(self.fires);
+//                });
+//                
+//            $.when(deferredFires, deferredPerimeters).done(function () {
+//                // Notify views of the new fires
+//                self.fire(events.EVENT_WILDLAND_FIRES_ADDED, self.fires());
+//            });
+
+        
         };
 
 
