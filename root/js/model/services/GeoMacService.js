@@ -4,12 +4,21 @@
  */
 
 /*global define, $ */
-/*
+
+/**
+ * The GeoMAC ArcGIS REST services.
+ * See: http://wildfire.cr.usgs.gov/arcgis/rest/services/geomac_fires/MapServer
  * 
- * @param {Log} log
- * @param {WmtUtil} util
- * @param {Constants} constants
- * @returns {LandfireResource}
+ *  Layers:
+ *      Large Fire Points (1)
+ *      Fire Perimeters (2)
+ *      MODIS Thermal Satellite (3)
+ *      Inactive Fire Perimeters (4)
+ *      
+ * @param {type} log
+ * @param {type} util
+ * @param {type} constants
+ * @returns {GeoMacService_L15.GeoMacService}
  */
 define([
     'model/util/Log',
@@ -391,6 +400,28 @@ define([
             getFeature: function(layerId, objectId, callback) {
                 var url = constants.GEOMAC_REST_SERVICE + '/' + layerId + '/' +objectId,
                     query = 'f=json';
+
+                console.log(url + '?' + query);
+
+                $.ajax({
+                    url: url,
+                    data: query,
+                    success: function (response) {
+                        var json = JSON.parse(response);
+                        callback(json.feature);
+                    }
+                });
+            },
+            /**
+             * Gets the record count from the MapServer REST service layer.
+             * Example output:
+             *  {"count":165}
+             * @param {String} layerId
+             * @param {Function} callback
+             */            
+            getRecordCount: function(layerId, callback) {
+                var url = constants.GEOMAC_REST_SERVICE + '/' + layerId,
+                    query = '&returnCountOnly=true&f=json';
 
                 console.log(url + '?' + query);
 
