@@ -157,7 +157,7 @@ define(['jquery',
                 log.info('Explorer', 'restoreSession', 'Restoring the model and view.');
                 this.markerManager.restoreMarkers();
                 this.weatherManager.restoreScouts();
-                this.restoreSessionView();
+                //this.restoreSessionView();
                 // Update all time sensitive objects
                 this.globe.updateDateTime(new Date());
 
