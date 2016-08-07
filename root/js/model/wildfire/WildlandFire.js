@@ -63,12 +63,24 @@ define([
             this.name = attributes.incidentname
                 || attributes.fire_name
                 || 'Fire';
-            this.state = attributes.state || attributes.inc_num.substr(0,2);
             this.number = attributes.uniquefireidentifier
                 || attributes.inc_num
                 || 'Unknown';
+            this.acres = attributes.acres;
+            this.currentDate = new Date(attributes.datecurrent);
+            this.discoveryDate = new Date(attributes.firediscoverydatetime);
             this.featureId = attributes.objectid;
             this.featureType = featureType;
+            this.fireCause = attributes.firecause;
+            this.hotlink = attributes.hotlink || "#";
+            this.isComplex = attributes.iscomplex;
+            this.percentContained = attributes.percentcontained;
+            this.reportDate = new Date(attributes.reportdatetime);
+            this.state = attributes.state || attributes.inc_num.substr(0,2);
+            this.status = attributes.status;
+            
+            // FOR DEBUGGING ONLY
+            this.featureAttributes = attributes;
 
             // If the supplied feature has geometry then process it, otherwise defer until needed
             if (feature.geometry) {
@@ -83,6 +95,8 @@ define([
                     self.renderable.pickDelgate = self;
                 });
             } 
+            /** DOM element id to display when this object is selected in the globe. */
+            this.viewTemplateName = 'wildland-fire-view-template';
         };
         /**
          * Load
