@@ -118,7 +118,7 @@ body {
     box-sizing: border-box;
 }
 .gutter {
-    background-color: #eee;
+    background-color: #aaa;
     background-repeat: no-repeat;
     background-position: 50%;
     z-index: 900 !important ;
