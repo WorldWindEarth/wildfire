@@ -24,6 +24,7 @@ define(['knockout', 'model/Constants'],
                 /** "Goto" function centers the globe on a selected marker */
                 self.gotoMarker = function (marker) {
                     globe.goto(marker.latitude(), marker.longitude());
+                    globe.selectController.doSelect(marker);
                 };
 
                 /** "Edit" function invokes a modal dialog to edit the marker attributes */
