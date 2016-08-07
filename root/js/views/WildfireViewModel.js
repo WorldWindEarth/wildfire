@@ -27,11 +27,13 @@ define(['knockout', 'model/Constants'],
 
                     if (wildfire.geometry) {
                         globe.goto(wildfire.latitude, wildfire.longitude);
+                        globe.selectController.doSelect(wildfire);
                     } else {
                         // Load the geometry
                         wildfire.loadDeferredGeometry(deferred);
                         $.when(deferred).done(function (self) {
                             globe.goto(wildfire.latitude, wildfire.longitude);
+                            globe.selectController.doSelect(wildfire);
                         });
                     }
                 };
