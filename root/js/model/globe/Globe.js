@@ -162,11 +162,8 @@ define(['knockout',
             if (showBackground || showBackground === undefined) {
                 // Add TimeZone support
                 this.timeZoneLayer = new TimeZoneLayer();
-                this.layerManager.addOverlayLayer(this.timeZoneLayer, {
-                    enabled: true,
-                    pickEnabled: true
-                });
-                this.layerManager.addEffectLayer(new EnhancedAtmosphereLayer(this));
+                this.layerManager.addOverlayLayer(this.timeZoneLayer, {enabled: true, pickEnabled: true});
+                this.layerManager.addEffectLayer(new EnhancedAtmosphereLayer(this), {opacity: 0.5});
             }
 
 
