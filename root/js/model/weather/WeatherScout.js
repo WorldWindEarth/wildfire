@@ -162,7 +162,7 @@ define([
 
             this.refresh();
         };
-
+        
         /**
          * Invalid Weather object
          */

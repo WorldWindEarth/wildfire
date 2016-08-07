@@ -13,8 +13,9 @@
  */
 define(['knockout',
     'jquery',
+    'vis',
     'model/Constants'],
-    function (ko, $, constants) {
+    function (ko, $, vis, constants) {
 
         /**
          * The view model for the Output panel.
@@ -29,12 +30,14 @@ define(['knockout',
             this.selectedItem = this.globe.selectController.lastSelectedItem;
 
             this.viewTemplateName = ko.observable(null);
+            this.afterRenderFunction = null;
 
             this.selectedItem.subscribe(function (newItem) {
                 // Determine if the new item has a view template
                 if (newItem !== null) {
                     if (typeof newItem.viewTemplateName !== "undefined") {
                         self.viewTemplateName(newItem.viewTemplateName);
+                        self.afterRenderFunction = newItem.visualize;
                     } else {
                         self.viewTemplateName(null);
                     }
