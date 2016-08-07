@@ -17,7 +17,7 @@ body {
         display: block;
         padding-top: 0px;
         padding-left: 20px;
-        padding-right: 20px;
+        padding-right: 5px;
         padding-bottom: 20px;
         overflow-x: hidden;
         overflow-y: auto;
@@ -71,10 +71,13 @@ body {
 }
 
 .main {
-    padding: 0px;
-    padding-left: 15px;
-    padding-right: 15px;
-    padding-bottom: 15px;
+    top: 51px;
+    position: fixed;
+    height: calc(100vh);
+    padding: 1px;
+    padding-left: 1px;
+    padding-right: 1px;
+    padding-bottom: 25px;
 }
 
 .non-interactive { 
@@ -109,6 +112,33 @@ body {
 .section-heading {
 }
 
+.split {
+    -webkit-box-sizing: border-box;
+    -moz-box-sizing: border-box;
+    box-sizing: border-box;
+}
+.gutter {
+    background-color: #aaa;
+    background-repeat: no-repeat;
+    background-position: 50%;
+    z-index: 900 !important ;
+}
+
+.gutter.gutter-horizontal {
+    background-image: url('images/grips/vertical.png');
+    cursor: ew-resize;
+}
+
+.gutter.gutter-vertical {
+    background-image: url('images/grips/horizontal.png');
+    cursor: ns-resize;
+}
+
+
+.row {
+    margin-right: 0;
+    margin-left: 0;
+}
 .sub-header {
     padding-bottom: 10px;
     border-bottom: 1px solid #eee;
@@ -128,8 +158,15 @@ body {
     word-wrap: break-word;
 }
 
+.globe-button {
+    background:rgba(255,255,255,0.3);
+}
+/*.globe-button:hover {
+    background: rgba(255,255,255,0.7); 
+    color:rgba(255,255,255,0.8);
+}*/
 
-#canvas-wrap canvas { 
+#globe canvas { 
     position: relative;
     top: 0;
     left: 0; 
@@ -139,7 +176,6 @@ body {
     padding-left: 0;
     padding-right: 0
 }
-
 
 #timeControlButtons {
     position: absolute;  /*sets it's position relative to the document instead of the container. Allows the bottom property to be used to force the element to the bottom of the view.  */
