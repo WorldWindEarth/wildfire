@@ -22,6 +22,7 @@ define(['knockout', 'model/Constants'],
                 /** "Goto" function centers the globe on a selected weatherScout */
                 self.gotoWeatherScout = function (weatherScout) {
                     globe.goto(weatherScout.latitude(), weatherScout.longitude());
+                    globe.selectController.doSelect(weatherScout);
                 };
 
                 /** "Edit" function invokes a modal dialog to edit the weatherScout attributes */
