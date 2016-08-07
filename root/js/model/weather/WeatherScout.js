@@ -139,7 +139,9 @@ define([
             /** The renderable, symbolic representation of this object */
             this.renderable = new WeatherMapSymbol(this); // a composite renderable of several placemark components
             this.renderable.pickDelgate = this;
- 
+            /** DOM element id to display when this object is selected in the globe. */
+            this.viewTemplateName = 'weather-scout-view-template';
+
             // Synchronize the renderable to the observable properties of this weatehr scout
 
 //            this.name.subscribe(function (newName) {
