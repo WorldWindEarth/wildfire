@@ -128,7 +128,7 @@
         <!--
         Main Content
         -->
-        <div id="main" class="container-fluid">
+        <div id="main" class="container-full">
             <div class="row">
                 <!--
                 Left Sidebar
@@ -339,7 +339,7 @@
                 <!--
                 Explorer
                 -->
-                <div class="col-sm-8 col-sm-offset-4 col-md-9 col-md-offset-3 main">
+                <div id="explorer" class="col-sm-8 col-sm-offset-4 col-md-9 col-md-offset-3 main">
                     <!-- 
                     Globe View (bound to the GlobeViewModel) 
                     -->
@@ -354,12 +354,12 @@
                         Globe Buttons
                         -->
                         <div style="position: absolute; top: 0; width: 100%">
-                            <div id="globeButtons" class="interactive" style='float: right; margin-top: 10px; margin-right: 20px; max-width: 100px'>
+                            <div id="globe-buttons" class="interactive" style='float: right; margin-top: 30px; max-width: 100px'>
                                 <span class="btn-group" style="float: left">
                                     <!-- Add Marker button and palette -->
                                     <button type="button"
-                                            class="btn btn-primary btn-sm"
-                                            style="padding-top: 0; padding-bottom: 0;"
+                                            class="btn btn-primary btn-sm globe-button"
+                                            style="padding-top: 0; padding-bottom: 0; padding-right: 0"
                                             data-bind="click: armDropMarker">
                                         <span class="glyphicon glyphicon-plus" aria-hidden="true"></span>
                                         <img width="28px" height="28px;"
@@ -367,7 +367,7 @@
                                     </button>
                                     <!-- Marker palette dropdown button-->
                                     <button type="button"
-                                            class="btn btn-primary btn-sm dropdown-toggle"
+                                            class="btn btn-primary btn-sm globe-button dropdown-toggle"
                                             data-toggle="dropdown"
                                             aria-haspopup="true">
                                         <span class="caret"></span>
@@ -386,10 +386,10 @@
                                 </span>
                                 <!--Add Weather button-->
                                 <button type="button"
-                                        class="btn btn-primary btn-md"
+                                        class="btn btn-primary btn-sm globe-button"
                                         style="float: left; padding-top: 0; padding-bottom: 0; height: 30px;"
                                         data-bind="click: armDropScout">
-                                    <span class="glyphicon glyphicon-plus" aria-hidden="true"></span>
+                                    <span class="glyphicon glyphicon-plus" style="padding-right: 5px;" aria-hidden="true"> </span>
                                     <span class="glyphicon glyphicon-cloud" aria-hidden="true"></span>
                                 </button>                                 
                             </div>
