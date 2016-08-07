@@ -353,7 +353,7 @@
                         <!-- 
                         Globe Buttons
                         -->
-                        <div style="position: absolute; top: 0; width: 100%">
+                        <div class="non-interactive" style="position: absolute; top: 0; width: 100%">
                             <div id="globe-buttons" class="interactive" style='float: right; margin-top: 30px; max-width: 100px'>
                                 <span class="btn-group" style="float: left">
                                     <!-- Add Marker button and palette -->
@@ -443,7 +443,7 @@
                     </div>
                     <!-- Output View (bound to the OutputViewModel) -->
                     <div id="output" class="row split">
-                        <div data-bind="template: {
+                        <div style="height: 100%;" data-bind="template: {
                             if: viewTemplateName()!==null,
                             name: viewTemplateName,
                             data: selectedItem
@@ -465,7 +465,6 @@
             <div id="opacity-slider" auto-focus></div>
         </div>
     </div>
-
 
     <!--
     Marker Editor Dialog
@@ -579,20 +578,88 @@
         </div>
     </script>
 
-        <!--
-        Wildfire Template
-        This script renders the individual wildfire view model items in the Wildfire panel.
-        -->
-        <script type="text/html" id="wildfire-template">
-            <div class="btn-group btn-block">
-                <button type="button" class="btn btn-default"
-                        style="display: block; width: 100%"
-                        data-bind="click: $root.gotoWildfire">
-                    <span data-bind="text: $data.name"></span>
-                </button>
-            </div>
-        </script>
+    <!--
+    Wildfire Template
+    This script renders the individual wildfire view model items in the Wildfire panel.
+    -->
+    <script type="text/html" id="wildfire-template">
+        <div class="btn-group btn-block">
+            <button type="button" class="btn btn-default"
+                    style="display: block; width: 100%"
+                    data-bind="click: $root.gotoWildfire">
+                <span data-bind="text: $data.name"></span>
+            </button>
+        </div>
+    </script>
 
+    <!--
+    Basic Marker View Template
+    This script renders the selected wildland fire object the output panel.
+    -->
+    <script type="text/html" id="basic-marker-view-template">
+    <!-- ko if: $data -->
+        <div id="basic-marker-output" class="panel panel-default" style="height: 100%;">
+            <div class="panel-heading">
+            <h1 class="panel-title">
+                <span class="glyphicon glyphicon-map-marker" aria-hidden="true"
+                    style="padding-top:4px; padding-bottom:4px"></span>
+                <span data-bind="text: $data.name()"></span>
+              </h1>
+            </div>
+            <div class="panel-body" style="height: calc(100% - 40px); overflow-y: scroll;">
+            </div>
+       </div>
+    <!-- /ko -->
+    </script>  
+    
+    <!--
+    Wildland Fire View Template
+    This script renders the selected wildland fire object the output panel.
+    -->
+    <script type="text/html" id="wildland-fire-view-template">
+    <!-- ko if: $data -->
+        <div id="wildland-fire-output" class="panel panel-default" style="height: 100%;">
+            <div class="panel-heading">
+            <h1 class="panel-title">
+                <span class="glyphicon glyphicon-fire" aria-hidden="true"
+                    style="padding-top:4px; padding-bottom:4px"></span>
+                <span data-bind="text: $data.name + ' Incident'"></span>
+              </h1>
+            </div>
+            <div class="panel-body" style="height: calc(100% - 40px); overflow-y: scroll;">
+              <h3 data-bind="text: 'Incident Name: ' + $data.name"></h3>
+              <h3 data-bind="text: 'Incident Number: ' + $data.number"></h3>
+              <h4 data-bind="text: 'Acres: ' + $data.acres"></h4>
+              <h4 data-bind="text: 'Percent Contained: ' + $data.percentContained + '%'"></h4>
+              <h4 data-bind="text: 'Discovery Date: ' + $data.discoveryDate"></h4>
+              <h4 data-bind="text: 'Report Date: ' + $data.reportDate"></h4>
+              <h4 data-bind="text: 'Fire Cause: ' + $data.fireCause"></h4>
+              <h4>Hotlink: <a target="_blank" data-bind="attr: { href: $data.hotlink, title: $data.hotlink}, text: $data.hotlink"></a></h4>
+            </div>
+       </div>
+    <!-- /ko -->
+    </script>  
+    
+    <!--
+    Weather View Template
+    This script renders the selected wildland fire object the output panel.
+    -->
+    <script type="text/html" id="weather-scout-view-template">
+    <!-- ko if: $data -->
+        <div id="weather-scout-output" class="panel panel-default" style="height: 100%;">
+            <div class="panel-heading">
+            <h1 class="panel-title">
+                <span class="glyphicon glyphicon-cloud" aria-hidden="true"
+                    style="padding-top:4px; padding-bottom:4px"></span>
+                <span data-bind="text: $data.name()"></span>
+              </h1>
+            </div>
+            <div class="panel-body" style="height: calc(100% - 40px); overflow-y: scroll;">
+            </div>
+       </div>
+    <!-- /ko -->
+    </script>  
+    
     <!--
     Server Template
     This server-template script renders a server's tab content
@@ -627,25 +694,25 @@
     This server-layer-template script recursively renders a server's layer list items
     -->
     <script type="text/html" id="server-layer-template">
-    <li>
-        <input type="checkbox" data-bind="click: $root.onServerLayerClicked, checked: isChecked, visible: isLayer"/>
-        <span data-bind="text: title"></span>
-        <!-- ko if: layers().length -->
-        <ul>
-            <!-- ko template: { name: 'server-layer-template', foreach: layers } -->
+        <li>
+            <input type="checkbox" data-bind="click: $root.onServerLayerClicked, checked: isChecked, visible: isLayer"/>
+            <span data-bind="text: title"></span>
+            <!-- ko if: layers().length -->
+            <ul>
+                <!-- ko template: { name: 'server-layer-template', foreach: layers } -->
+                <!-- /ko -->
+            </ul>
             <!-- /ko -->
-        </ul>
-        <!-- /ko -->
-    </li>
-</script>
+        </li>
+    </script>
 
-<!--
-Hello World Template
-This test template renders 'Hello World'
--->
-<script type="text/html" id="hello-world-template">
-    <p>Hello World!</p>
-</script>
+    <!--
+    Hello World Template
+    This test template renders 'Hello World'
+    -->
+    <script type="text/html" id="hello-world-template">
+        <p>Hello World!</p>
+    </script>
 
 <!--
 Window Splitter
