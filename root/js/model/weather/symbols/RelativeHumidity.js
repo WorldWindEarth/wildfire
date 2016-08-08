@@ -26,7 +26,7 @@ define(['model/Constants',
          * @returns {RelativeHumidity}
          */
         var RelativeHumidity = function (latitude, longitude, relHumidityPct) {
-            WorldWind.GeographicText.call(this, new WorldWind.Position(latitude, longitude, constants.WEATHER_MAP_SYMBOL_ALTITUDE), relHumidityPct);
+            WorldWind.GeographicText.call(this, new WorldWind.Position(latitude, longitude, constants.MAP_SYMBOL_ALTITUDE_WEATHER), relHumidityPct);
 
             this.altitudeMode = WorldWind.RELATIVE_TO_GROUND;
             this.alwaysOnTop = false;

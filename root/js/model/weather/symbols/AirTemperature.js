@@ -19,7 +19,7 @@ define(['model/Constants',
          * @returns {AirTemperature}
          */
         var AirTemperature = function (latitude, longitude, airTempF) {
-            WorldWind.GeographicText.call(this, new WorldWind.Position(latitude, longitude, constants.WEATHER_MAP_SYMBOL_ALTITUDE), airTempF);
+            WorldWind.GeographicText.call(this, new WorldWind.Position(latitude, longitude, constants.MAP_SYMBOL_ALTITUDE_WEATHER), airTempF);
 
             this.altitudeMode = WorldWind.RELATIVE_TO_GROUND;
             this.alwaysOnTop = false;

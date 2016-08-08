@@ -13,7 +13,7 @@ define(['model/Constants',
         "use strict";
 
         var SkyCoverPlacemark = function (latitude, longitude, skyCoverPct, eyeDistanceScaling) {
-            WorldWind.Placemark.call(this, new WorldWind.Position(latitude, longitude, constants.WEATHER_MAP_SYMBOL_ALTITUDE), eyeDistanceScaling);
+            WorldWind.Placemark.call(this, new WorldWind.Position(latitude, longitude, constants.MAP_SYMBOL_ALTITUDE_WEATHER), eyeDistanceScaling);
 
             this.altitudeMode = WorldWind.RELATIVE_TO_GROUND;
 
