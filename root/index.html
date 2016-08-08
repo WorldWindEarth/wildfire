@@ -386,13 +386,21 @@
                                         </li>
                                     </ul>
                                 </span>
-                                <!--Add Weather button-->
+                                <!--Add Weather Scout button-->
                                 <button type="button"
                                         class="btn btn-primary btn-sm globe-button"
                                         style="float: left; padding-top: 0; padding-bottom: 0; height: 30px;"
                                         data-bind="click: armDropScout">
                                     <span class="glyphicon glyphicon-plus" style="padding-right: 5px;" aria-hidden="true"> </span>
                                     <span class="glyphicon glyphicon-cloud" aria-hidden="true"></span>
+                                </button>                                 
+                                <!--Add Fire Lookout button-->
+                                <button type="button"
+                                        class="btn btn-primary btn-sm globe-button"
+                                        style="float: left; padding-top: 0; padding-bottom: 0; height: 30px;"
+                                        data-bind="click: armDropLookout">
+                                    <span class="glyphicon glyphicon-plus" style="padding-right: 5px;" aria-hidden="true"> </span>
+                                    <span class="glyphicon glyphicon-fire" aria-hidden="true"></span>
                                 </button>                                 
                             </div>
                         </div>
@@ -647,7 +655,7 @@
     
     <!--
     Weather Scout View Template
-    This script renders the selected wildland fire object the output panel.
+    This script renders the selected weather scout object the output panel.
     -->
     <script type="text/html" id="weather-scout-view-template">
     <!-- ko if: $data -->
@@ -661,6 +669,26 @@
             </div>
             <div class="panel-body" style="height: calc(100% - 70px); overflow-y: scroll;">
                 <div data-bind="visualizeWeather: $data" style="height: 200px; padding-right: 15px"></div>
+            </div>
+       </div>
+    <!-- /ko -->
+    </script>  
+    
+    <!--
+    Fire Lookout View Template
+    This script renders the selected wildland fire object the output panel.
+    -->
+    <script type="text/html" id="fire-lookout-view-template">
+    <!-- ko if: $data -->
+        <div id="fire-lookout-output" class="panel panel-default" style="height: 100%;">
+            <div class="panel-heading">
+            <h1 class="panel-title">
+                <span class="glyphicon glyphicon-fire" aria-hidden="true"
+                    style="padding-top:4px; padding-bottom:4px"></span>
+                <span data-bind="text: $data.name()"></span>
+              </h1>
+            </div>
+            <div class="panel-body" style="height: calc(100% - 70px); overflow-y: scroll;">
             </div>
        </div>
     <!-- /ko -->

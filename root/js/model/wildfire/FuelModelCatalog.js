@@ -15,8 +15,8 @@
  * @author Bruce Schubert
  */
 define([
-    'wmt/resource/FuelModelResource',
-    'wmt/util/Log'],
+    'model/services/FuelModelService',
+    'model/util/Log'],
     function (
         restService,
         log) {

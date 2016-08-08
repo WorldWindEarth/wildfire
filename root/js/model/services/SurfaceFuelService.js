@@ -57,21 +57,21 @@
  * @param {type} log
  * @param {type} messenger
  * @param {type} util
- * @param {type} wmt
- * @returns {SurfaceFuelResource}
+ * @param {type} constants
+ * @returns {SurfaceFuelService}
  */
 define([
-    'wmt/util/Log',
-    'wmt/util/Messenger',
-    'wmt/util/WmtUtil',
-    'wmt/Wmt'],
+    'model/util/Log',
+    'model/util/Messenger',
+    'model/util/WmtUtil',
+    'model/Constants'],
     function (
         log,
         messenger,
         util,
-        wmt) {
+        constants) {
         "use strict";
-        var SurfaceFuelResource = {
+        var SurfaceFuelService = {
             /**
              * Gets a surface fuel tuple that is compatible with SurfaceFireResource.
              * 
@@ -87,7 +87,7 @@ define([
                     return;
                 }
 
-                var url = util.currentDomain() + wmt.SURFACEFUEL_REST_SERVICE,
+                var url = constants.SURFACEFUEL_REST_SERVICE,
                     formData = new FormData(),
                     model = JSON.stringify(fuelModel),
                     moisture = JSON.stringify(fuelMoisture);
@@ -143,7 +143,7 @@ define([
                     return;
                 }
 
-                var url = util.currentDomain() + wmt.SURFACEFUEL_REST_SERVICE + '/conditioned',
+                var url = constants.SURFACEFUEL_REST_SERVICE + '/conditioned',
                     formData = new FormData(),
                     model = JSON.stringify(fuelModel),
                     sun = JSON.stringify(sunlight),
@@ -188,6 +188,6 @@ define([
                 });
             }
         };
-        return SurfaceFuelResource;
+        return SurfaceFuelService;
     }
 );

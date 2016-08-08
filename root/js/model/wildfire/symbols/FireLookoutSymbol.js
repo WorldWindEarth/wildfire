@@ -47,13 +47,13 @@ define([
                 modelNo = surfaceFire ? lookout.surfaceFire.fuelBed.fuelModel.modelCode : '-';
 
             // Create the fire lookout symbol components
-            this.diamond = new WildfireDiamond(lookout.latitude, lookout.longitude, Math.round(head), Math.round(flanks), Math.round(heal));
-            this.dirOfSpread = new DirOfSpread(lookout.latitude, lookout.longitude, Math.round(dir));
-            this.flameLengthHead = new FlameLengthHead(lookout.latitude, lookout.longitude, head || '-');
-            this.fuelModelNo = new FuelModelNo(lookout.latitude, lookout.longitude, modelNo);
+            this.diamond = new WildfireDiamond(lookout.latitude(), lookout.longitude(), Math.round(head), Math.round(flanks), Math.round(heal));
+            this.dirOfSpread = new DirOfSpread(lookout.latitude(), lookout.longitude(), Math.round(dir));
+            this.flameLengthHead = new FlameLengthHead(lookout.latitude(), lookout.longitude(), head || '-');
+            this.fuelModelNo = new FuelModelNo(lookout.latitude(), lookout.longitude(), modelNo);
 
-            if (wmt.configuration.fireLookoutLabels === wmt.FIRE_LOOKOUT_LABEL_NAME) {
-                this.diamond.label = lookout.name;
+            if (config.fireLookoutLabels === constants.FIRE_LOOKOUT_LABEL_NAME) {
+                this.diamond.label = lookout.name();
             }
 
 
@@ -66,14 +66,14 @@ define([
 
             // EVENT_OBJECT_MOVED handler that synchronizes the renderables with the model's location
             this.handleObjectMovedEvent = function (lookout) {
-                self.diamond.position.latitude = lookout.latitude;
-                self.diamond.position.longitude = lookout.longitude;
-                self.dirOfSpread.position.latitude = lookout.latitude;
-                self.dirOfSpread.position.longitude = lookout.longitude;
-                self.flameLengthHead.position.latitude = lookout.latitude;
-                self.flameLengthHead.position.longitude = lookout.longitude;
-                self.fuelModelNo.position.latitude = lookout.latitude;
-                self.fuelModelNo.position.longitude = lookout.longitude;
+                self.diamond.position.latitude = lookout.latitude();
+                self.diamond.position.longitude = lookout.longitude();
+                self.dirOfSpread.position.latitude = lookout.latitude();
+                self.dirOfSpread.position.longitude = lookout.longitude();
+                self.flameLengthHead.position.latitude = lookout.latitude();
+                self.flameLengthHead.position.longitude = lookout.longitude();
+                self.fuelModelNo.position.latitude = lookout.latitude();
+                self.fuelModelNo.position.longitude = lookout.longitude();
             };
             // EVENT_FIRE_BEHAVIOR_CHANGED handler 
             this.handleFireBehaviorChangedEvent = function (lookout) {
@@ -97,10 +97,10 @@ define([
             this.handlePlaceChangedEvent = function (lookout) {
                 if (config.fireLookoutLabels === constants.FIRE_LOOKOUT_LABEL_PLACE) {
                     // Display the place name
-                    self.diamond.label = lookout.toponym || null;
+                    self.diamond.label = lookout.toponym() || null;
                 } else if (config.fireLookoutLabels === constants.FIRE_LOOKOUT_LABEL_LATLON) {
                     // Display "Lat Lon"
-                    self.diamond.label = lookout.latitude.toFixed(3) + ' ' + lookout.longitude.toFixed(3);
+                    self.diamond.label = lookout.latitude().toFixed(3) + ' ' + lookout.longitude().toFixed(3);
                 }
             };
 

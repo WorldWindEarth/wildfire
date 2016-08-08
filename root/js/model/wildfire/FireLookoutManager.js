@@ -6,37 +6,57 @@
 /*global define*/
 
 define([
-    'wmt/model/FireLookout',
-    'wmt/util/Log',
-    'wmt/util/Publisher',
-    'wmt/Wmt'],
+    'knockout',
+    'model/wildfire/FireLookout',
+    'model/util/Log',
+    'model/Constants',
+    'model/Events'],
     function (
+        ko,
         FireLookout,
         log,
-        publisher,
-        wmt) {
+        constants,
+        events) {
         "use strict";
-        var FireLookoutManager = function (model) {
-            // Mix-in Publisher capability (publish/subscribe pattern)
-            publisher.makePublisher(this);
-            this.model = model;
-            this.lookouts = [];
+        var FireLookoutManager = function (globe, layer) {
+            var self = this;
+            
+            this.globe = globe;
+            this.layer = layer || globe.findLayer(constants.LAYER_NAME_FIRE_LOOKOUTS);
+            if (!layer) {
+                log.error("FireLookoutManager", "constructor", "missingLayer");
+            }
+            this.lookouts = ko.observableArray();
+            
+            // Subscribe to "arrayChange" events in the lookouts array.
+            // Here is where we add/remove lookouts from WW layer.
+            this.lookouts.subscribe(function (changes) {
+                // See: http://blog.stevensanderson.com/2013/10/08/knockout-3-0-release-candidate-available/
+                changes.forEach(function (change) {
+                    if (change.status === 'added' && change.moved === undefined) {
+                        // Ensure the name is unique by appending a suffix if reqd.
+                        // (but not if the array reordered -- i.e., moved items)
+                        self.doEnsureUniqueName(change.value);
+                        self.doAddLookoutToLayer(change.value);
+                    }
+                    else if (change.status === 'deleted' && change.moved === undefined) {
+                        // When a scout is removed we must remove the renderable,
+                        // (but not if the array reordered -- i.e., moved items)
+                        self.doRemoveLookoutFromLayer(change.value);
+                    }
+                });
+            }, null, "arrayChange");
+
         };
+        
+        
         /**
          * Adds the given lookout to to the manager.
          * @param {FireLookout} lookout
          */
         FireLookoutManager.prototype.addLookout = function (lookout) {
-            // Ensure we have a unique name by appending a (n) to duplicates.
-            lookout.name = this.generateUniqueName(lookout.name || "Fire Lookout");
-            // Subscribe to removal notifications
-            lookout.on(wmt.EVENT_OBJECT_REMOVED, this.removeLookout, this);
             // Place the lookout under the management of this module
             this.lookouts.push(lookout);
-            // Notify views that we have a new lookout
-            this.fire(wmt.EVENT_FIRE_LOOKOUT_ADDED, lookout);
-            // Now that views are attached, invoke a refresh which will notify the view of any updates as they occur.
-            lookout.refresh();
         };
         /**
          * Finds the fire lookout with the given id.
@@ -45,8 +65,8 @@ define([
          */
         FireLookoutManager.prototype.findLookout = function (id) {
             var lookout, i, len;
-            for (i = 0, len = this.lookouts.length; i < len; i += 1) {
-                lookout = this.lookouts[i];
+            for (i = 0, len = this.lookouts().length; i < len; i += 1) {
+                lookout = this.lookouts()[i];
                 if (lookout.id === id) {
                     return lookout;
                 }
@@ -59,23 +79,7 @@ define([
          * @returns {Boolean}
          */
         FireLookoutManager.prototype.removeLookout = function (lookout) {
-            var i, max,
-                removed;
-            // Find the lookout item with the given id (should create an associative array)
-            for (i = 0, max = this.lookouts.length; i < max; i++) {
-                if (this.lookouts[i].id === lookout.id) {
-                    removed = this.lookouts.splice(i, 1);
-                    break;
-                }
-            }
-            if (removed && removed.length > 0) {
-                // Remove our subscription/reference to the lookout
-                lookout.cancelSubscription(wmt.EVENT_OBJECT_REMOVED, this.removeLookout, this);
-                // Notify others.
-                this.fire(wmt.EVENT_FIRE_LOOKOUT_REMOVED, removed[0]);
-                return true;
-            }
-            return false;
+            this.lookouts.remove(lookout);
         };
         
         /**
@@ -84,16 +88,37 @@ define([
         FireLookoutManager.prototype.refreshLookouts = function () {
             var i, max;
 
-            for (i = 0, max = this.lookouts.length; i < max; i++) {
-                this.lookouts[i].refresh();
+            for (i = 0, max = this.lookouts().length; i < max; i++) {
+                this.lookouts()[i].refresh();
             }
+        };
+                // Internal method to add the lookout to the layer.
+        FireLookoutManager.prototype.doAddLookoutToLayer = function (lookout) {
+            this.layer.addRenderable(lookout.renderable);
+        };
+
+        // Internal method to remove the lookout's renderable from its layer.
+        FireLookoutManager.prototype.doRemoveLookoutFromLayer = function (lookout) {
+            var i, max, renderable = lookout.renderable;
+            // Remove the renderable from the renderable layer
+            for (i = 0, max = this.layer.renderables.length; i < max; i++) {
+                if (this.layer.renderables[i] === renderable) {
+                    this.layer.renderables.splice(i, 1);
+                    break;
+                }
+            }
+        };
+        
+        // Internal method to ensure the name is unique by appending a suffix if reqd.
+        FireLookoutManager.prototype.doEnsureUniqueName = function (lookout) {
+            lookout.name(this.generateUniqueName(lookout));
         };
         
         /**
          * Saves the fire lookouts collection to local storage.
          */
         FireLookoutManager.prototype.saveLookouts = function () {
-            var validLookouts = this.lookouts.filter(
+            var validLookouts = this.lookouts().filter(
                 function (lookout) {
                     return !lookout.invalid;
                 }),
@@ -108,13 +133,14 @@ define([
                     'fuelModelManualSelect',
                     'moistureScenarioName'
                 ]);
-            localStorage.setItem(wmt.STORAGE_KEY_FIRE_LOOKOUTS, string);
+            localStorage.setItem(constants.STORAGE_KEY_FIRE_LOOKOUTS, string);
         };
+        
         /**
          * Restores the fire lookouts collection from local storage.
          */
         FireLookoutManager.prototype.restoreLookouts = function () {
-            var string = localStorage.getItem(wmt.STORAGE_KEY_FIRE_LOOKOUTS),
+            var string = localStorage.getItem(constants.STORAGE_KEY_FIRE_LOOKOUTS),
                 array,
                 item,
                 i, max;
@@ -142,43 +168,54 @@ define([
                 }
             }
         };
+        
         /**
          * Generates a unique name by appending a suffix '(n)'.
          * @param {String} name
          * @returns {String}
          */
-        FireLookoutManager.prototype.generateUniqueName = function (name) {
-            var uniqueName = name.trim(),
+        FireLookoutManager.prototype.generateUniqueName = function (lookout) {
+            var uniqueName = lookout.name().trim(),
+                otherLookout,
                 isUnique,
                 suffixes,
                 seqNos,
-                n,
-                i,
-                len;
+                n, i, len;
+
+            // Loop while name not unique
             do {
                 // Assume uniqueness, set to false if we find a matching name
                 isUnique = true;
-                for (i = 0, len = this.lookouts.length; i < len; i += 1) {
-                    if (this.lookouts[i].name === uniqueName) {
 
+                // Test the name for uniqueness with the other scouts
+                for (i = 0, len = this.lookouts().length; i < len; i += 1) {
+                    otherLookout = this.lookouts()[i];
+                    if (otherLookout === lookout) {
+                        continue; // Don't test with self
+                    }
+                    if (otherLookout.name() === uniqueName) {
                         isUnique = false;
+
                         // check for existing suffix '(n)' and increment
                         suffixes = uniqueName.match(/[(]\d+[)]$/);
                         if (suffixes) {
+                            // increment an existing suffix's sequence number
                             seqNos = suffixes[0].match(/\d+/);
                             n = parseInt(seqNos[0], 10) + 1;
                             uniqueName = uniqueName.replace(/[(]\d+[)]$/, '(' + n + ')');
                         } else {
                             // else if no suffix, create one
-                            uniqueName += ' (2)'; // The first duplicate is #2
+                            uniqueName += ' (2)';   // The first duplicate is #2
                         }
-                        // Break out of for loop and recheck uniqueness
+                        // Break out of the for loop and recheck uniqueness
                         break;
                     }
                 }
             } while (!isUnique);
+
             return uniqueName;
         };
+        
         return FireLookoutManager;
     }
 );

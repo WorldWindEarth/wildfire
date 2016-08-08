@@ -5,20 +5,22 @@
 
 /*global WorldWind*/
 
-define(['knockout', 'jquery', 'jqueryui',
+define(['knockout', 
+        'jquery', 
+        'jqueryui',
         'model/markers/BasicMarker',
-        'model/Config',
-        'model/Constants',
         'model/Explorer',
+        'model/wildfire/FireLookout',
         'model/util/WmtUtil',
         'model/weather/WeatherScout',
         'worldwind'
     ],
-    function (ko, $, jqueryui,
+    function (ko, 
+              $, 
+              jqueryui,
               BasicMarker,
-              config,
-              constants,
               explorer,
+              FireLookout,
               util,
               WeatherScout,
               ww) {
@@ -27,6 +29,7 @@ define(['knockout', 'jquery', 'jqueryui',
          *
          * @param {Globe} globe The globe object
          * @param {MarkerManager} markerManager
+         * @param {FireLookoutManager} lookoutManager
          * @param {WeatherManager} weatherManager
          * @constructor
          */
@@ -34,7 +37,7 @@ define(['knockout', 'jquery', 'jqueryui',
             var self = this,
                 markerManager = params.markerManager,
                 weatherManager = params.weatherManager,
-                commonAttributes = BasicMarker.commonAttributes();
+                lookoutManager = params.lookoutManager;
 
             // Save a reference to the auto-update time observable for the view view
             self.autoUpdateTime = explorer.autoUpdateTimeEnabled;
@@ -59,11 +62,19 @@ define(['knockout', 'jquery', 'jqueryui',
                 self.dropObject = self.selectedMarkerTemplate();
             };
             /**
-             * Arms the click-drop handler to add a weather scoute to the globe. See: handleClick below.
+             * Arms the click-drop handler to add a weather scout to the globe. See: handleClick below.
              */
             self.armDropScout = function () {
                 self.dropIsArmed(true);
                 self.dropCallback = self.dropScoutCallback;
+                self.dropObject = null;
+            };
+            /**
+             * Arms the click-drop handler to add a fire lookout to the globe. See: handleClick below.
+             */
+            self.armDropLookout = function () {
+                self.dropIsArmed(true);
+                self.dropCallback = self.dropLookoutCallback;
                 self.dropObject = null;
             };
 
@@ -83,6 +94,12 @@ define(['knockout', 'jquery', 'jqueryui',
             // when the globe is clicked while dropIsArmed is true.
             self.dropScoutCallback = function (position) {
                 weatherManager.addScout(new WeatherScout(weatherManager, position));
+            };
+            
+            // This "Drop" action callback creates and adds a fire lookout to the globe
+            // when the globe is clicked while dropIsArmed is true.
+            self.dropLookoutCallback = function (position) {
+                lookoutManager.addLookout(new FireLookout(lookoutManager, position));
             };
 
             /**

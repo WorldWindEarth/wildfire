@@ -5,37 +5,42 @@
 
 /*global define, $*/
 
-define(['require',
+define([
     'knockout',
-    'model/wildire/FuelModelCatalog',
-    'model/wildire/FuelMoistureCatalog',
-    'model/services/LandfireResource',
+    'model/wildfire/symbols/FireLookoutSymbol',
+    'model/wildfire/FuelModelCatalog',
+    'model/wildfire/FuelMoistureCatalog',
+    'model/services/LandfireService',
     'model/util/Log',
-    'wmt/resource/SolarResource',
-    'model/services/SurfaceFireResource',
-    'model/services/SurfaceFuelResource',
+    'model/services/SolarService',
+    'model/services/SurfaceFireService',
+    'model/services/SurfaceFuelService',
     'model/globe/Terrain',
-    'model/services/TerrainResource',
+    'model/services/TerrainService',
     'model/services/WeatherService',
     'model/weather/WeatherScout',
     'model/util/WmtUtil',
-    'wmt/Wmt'],
+    'model/Config',
+    'model/Constants',
+    'model/Events'],
     function (
-        require,
         ko,
+        FireLookoutSymbol,
         fuelModelCatalog,
         fuelMoistureCatalog,
-        landfireResource,
+        landfireService,
         log,
-        solarResource,
-        surfaceFireResource,
-        surfaceFuelResource,
+        solarService,
+        surfaceFireService,
+        surfaceFuelService,
         Terrain,
-        terrainResource,
-        weatherResource,
+        terrainService,
+        weatherService,
         WeatherScout,
         util,
-        wmt) {
+        config,
+        constants,
+        events) {
         "use strict";
 
 
@@ -45,42 +50,48 @@ define(['require',
          * @param {Object} params
          * @returns {FireLookout}
          */
-        var FireLookout = function (params) {
+        var FireLookout = function(manager, position, params) {
             var args = params || {},
-                self = this,
-                model = require("wmt/controller/Controller").model;
-
+                self = this;
+                
             // FireLookout inherits the weather forecasting capabilites of the WeatherScout
-            WeatherScout.call(this, params);
+            WeatherScout.call(this, manager, position, params);
 
             /**
              * Override the WeatherScout name set by the parent
              */
             this.name(args.name || 'Fire Lookout');
-            this.toponym(args.toponym);
 
             /**
              * Override the parent WeatherScout's Openable implementation with a FireLookoutDialog
              */
             this.openMe = function () {
-                   var $element = $("#fire-lookout-editor"),        
-                        editorViewModel = ko.dataFor($element.get(0)); // get the view model bound to the element
-                    
-                    if (editorViewModel) {
-                        editorViewModel.open(this);
-                        return true; // return true to fire EVENT_OBJECT_OPENED event.
-                    }
-                    log.warning("FireLookout", "openMe", "#fire-lookout-editor element was not found.")
+//                   var $element = $("#fire-lookout-editor"),        
+//                        editorViewModel = ko.dataFor($element.get(0)); // get the view model bound to the element
+//                    
+//                    if (editorViewModel) {
+//                        editorViewModel.open(this);
+//                        return true; // return true to fire EVENT_OBJECT_OPENED event.
+//                    }
+//                    log.warning("FireLookout", "openMe", "#fire-lookout-editor element was not found.")
                     return false;             
                 };
+            /**
+             * Override the parent WeatherScout's Removeable implementation
+             */
+            this.removeMe = function () {
+                // TODO: Could ask for confirmation; return false if veto'd
+                manager.removeLookout(self); // Removes the lookout from the manager's observableArray
+                return true;    // return true to fire a EVENT_OBJECT_REMOVED            
+            };
 
             // Persistent properties
-            this.fuelModelNo = args.fuelModelNo || wmt.configuration.defaultFuelModelNo;
+            this.fuelModelNo = args.fuelModelNo || config.defaultFuelModelNo;
             this.fuelModelManualSelect = args.fuelModelManualSelect || false;
-            this.moistureScenarioName = args.moistureScenarioName || wmt.configuration.defaultFuelMoistureScenario;
+            this.moistureScenarioName = args.moistureScenarioName || config.defaultFuelMoistureScenario;
 
             // Dynamic properties
-            this.sunlight = model.sunlight;
+            this.sunlight = null;
             this.terrain = Terrain.ZERO;
             this.surfaceFuel = null;
 
@@ -88,15 +99,21 @@ define(['require',
             this.refreshInProgress = false;
             this.refreshPending = false;
 
-
+            /** The renderable, symbolic representation of this object */
+            this.renderable = new FireLookoutSymbol(this); // a composite renderable of several placemark components
+            this.renderable.pickDelgate = this;
+            /** DOM element id to display when this object is selected in the globe. */
+            this.viewTemplateName = 'fire-lookout-view-template';
             // Self subscribe to weather updates generated by parent so we can update the fire behavior
-            this.on(wmt.EVENT_WEATHER_CHANGED, this.refreshFireBehavior, this);
+            this.on(events.EVENT_WEATHER_CHANGED, this.refreshFireBehavior, this);
             // Self subscribe to place updates generated by parent so we can update the fire behavior
-            this.on(wmt.EVENT_PLACE_CHANGED, this.refreshFuelModel, this);
-            // Subscribe to applicaiton time events so we can update the fire behavior.
-            model.on(wmt.EVENT_TIME_CHANGED, this.refreshFireBehavior, this);
-
+            this.on(events.EVENT_PLACE_CHANGED, this.refreshFuelModel, this);
+            // Subscribe to application date/time events so we can update the fire behavior.
+            this.globe.dateTime.subscribe(function() {
+                self.refreshFireBehavior();
+            });
         };
+        
         FireLookout.prototype = Object.create(WeatherScout.prototype);
 
         Object.defineProperties(FireLookout.prototype, {
@@ -131,7 +148,7 @@ define(['require',
             }
             var self = this;
             try {
-                landfireResource.FBFM13(this.latitude, this.longitude, function (fuelModelNo) {
+                landfireService.FBFM13(this.latitude(), this.longitude(), function (fuelModelNo) {
                     self.fuelModel = fuelModelCatalog.getFuelModel(parseInt(fuelModelNo, 10));
                     self.refreshFireBehavior();
                 });
@@ -161,8 +178,6 @@ define(['require',
             this.refreshInProgress = true;
             // Note: using require() to get around circular dependency with Controller.
             var self = this,
-                model = require("wmt/controller/Controller").model,
-                globe = model.globe,
                 deferredSunlight = $.Deferred(),
                 deferredFuel = $.Deferred(),
                 weatherTuple,
@@ -170,11 +185,11 @@ define(['require',
                 shaded = 'false';
 
             // Create a weather tuple for the current applciation time
-            this.activeWeather = this.getForecastAtTime(model.applicationTime);
-            weatherTuple = weatherResource.makeTuple(self.activeWeather);
+            this.activeWeather = this.getForecastAtTime(this.globe.dateTime());
+            weatherTuple = weatherService.makeTuple(self.activeWeather);
             // Refresh Terrain
-            this.terrain = globe.getTerrainAtLatLon(this.latitude, this.longitude);
-            terrainTuple = terrainResource.makeTuple(this.terrain.aspect, this.terrain.slope, this.terrain.elevation);
+            this.terrain = this.globe.getTerrainAtLatLon(this.latitude(), this.longitude());
+            terrainTuple = terrainService.makeTuple(this.terrain.aspect, this.terrain.slope, this.terrain.elevation);
 
             // Get the sunlight at this time and place,
             // resolving deferredSunlight when done.
@@ -205,15 +220,15 @@ define(['require',
                 }
                 // Retrieve the computed fire behavior using 
                 // conditioned fuel, weather and terrain.
-                surfaceFireResource.surfaceFire(
+                surfaceFireService.surfaceFire(
                     resolvedFuel, weatherTuple, terrainTuple,
                     function (json) {
                         //Callback to process JSON result
                         //log.info('FireLookout', 'refresh-deferred', JSON.stringify(json));
                         self.surfaceFire = json;
 
-                        log.info('FireLookout', 'refreshFireBehavior', self.name + ': EVENT_FIRE_BEHAVIOR_CHANGED');
-                        self.fire(wmt.EVENT_FIRE_BEHAVIOR_CHANGED, self);
+                        log.info('FireLookout', 'refreshFireBehavior', self.name() + ': EVENT_FIRE_BEHAVIOR_CHANGED');
+                        self.fire(events.EVENT_FIRE_BEHAVIOR_CHANGED, self);
 
                         // Fire off another refresh if a request was queued 
                         // while this request was being fullfilled.
@@ -236,11 +251,10 @@ define(['require',
          * when the query and processing is complete.
          */
         FireLookout.prototype.refreshSunlight = function (deferred) {
-            var self = this,
-                model = require("wmt/controller/Controller").model;
+            var self = this;
 
             // Get the sunlight at this time and location
-            solarResource.sunlightAtLatLonTime(this.latitude, this.longitude, model.applicationTime,
+            solarService.sunlightAtLatLonTime(this.latitude(), this.longitude(), this.globe.dateTime(),
                 function (json) { // Callback to process JSON result
                     self.sunlight = json;
                     if (deferred) {
@@ -266,7 +280,7 @@ define(['require',
             fuelMoisture, deferredFuel) {
             var self = this;
             // Get the conditioned fuel at this location
-            surfaceFuelResource.conditionedSurfaceFuel(
+            surfaceFuelService.conditionedSurfaceFuel(
                 fuelModel, sunlight, weatherTuple, terrainTuple, shaded, fuelMoisture,
                 function (json, textStatus, jqXHR) { // Callback to process JSON result
                     //log.info('FireLookout', 'processSurfaceFuel', JSON.stringify(json));

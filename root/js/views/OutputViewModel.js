@@ -34,13 +34,7 @@ define(['knockout',
                 this.selectedItem.subscribe(function (newItem) {
                     // Determine if the new item has a view template
                     if (newItem !== null) {
-                        if (typeof newItem === "WeatherScout") {
-                            self.viewTemplateName("weather-scout-view-template");
-                        } else if (typeof newItem === "WildlandFire") {
-                            self.viewTemplateName("wildland-fire-view-template");
-                        } else if (typeof newItem === "BasicMarker") {
-                            self.viewTemplateName("basic-marker-view-template");
-                        } else if (typeof newItem.viewTemplateName !== "undefined") {
+                        if (typeof newItem.viewTemplateName !== "undefined") {
                             self.viewTemplateName(newItem.viewTemplateName);
                         } else {
                             self.viewTemplateName(null);

@@ -30,6 +30,7 @@ define([
     'model/util/Log',
     'model/util/Movable',
     'model/services/PlaceService',
+    'model/util/Publisher',
     'model/util/Removable',
     'model/util/Selectable',
     'model/weather/symbols/WeatherMapSymbol',
@@ -44,6 +45,7 @@ define([
         log,
         movable,
         PlaceService,
+        publisher,
         removable,
         selectable,
         WeatherMapSymbol,
@@ -68,6 +70,8 @@ define([
             var args = params || {},
                 self = this;
                 
+            publisher.makePublisher(this);
+            
             /** A reference to the globe; used by the WeatherMapSymbol. */
             this.globe = manager.globe;
             
@@ -141,7 +145,6 @@ define([
             this.renderable.pickDelgate = this;
             /** DOM element id to display when this object is selected in the globe. */
             this.viewTemplateName = 'weather-scout-view-template';
-
             // Synchronize the renderable to the observable properties of this weatehr scout
 
 //            this.name.subscribe(function (newName) {

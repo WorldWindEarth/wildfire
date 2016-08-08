@@ -6,17 +6,17 @@
 /*global define, $ */
 
 define([
-    'wmt/util/Log',
-    'wmt/util/Messenger',
-    'wmt/util/WmtUtil',
-    'wmt/Wmt'],
+    'model/util/Log',
+    'model/util/Messenger',
+    'model/util/WmtUtil',
+    'model/Constants'],
     function (
         log,
         messenger,
         util,
-        wmt) {
+        constants) {
         "use strict";
-        var SurfaceFireResource = {
+        var SurfaceFireService = {
             /**
              * Gets the computed fire behavior.
              * 
@@ -93,7 +93,7 @@ define([
                     return;
                 }
 
-                var url = util.currentDomain() + wmt.SURFACEFIRE_REST_SERVICE,
+                var url = constants.SURFACEFIRE_REST_SERVICE,
                     formData = new FormData();
 
                 // This technique will passing SurfaceFuel, Weather and Terrain as text/plain.
@@ -117,6 +117,6 @@ define([
                 });
             }
         };
-        return SurfaceFireResource;
+        return SurfaceFireService;
     }
 );

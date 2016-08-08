@@ -15,8 +15,8 @@
  * @author Bruce Schubert
  */
 define([
-    'wmt/resource/FuelMoistureResource',
-    'wmt/util/Log'],
+    'model/services/FuelMoistureService',
+    'model/util/Log'],
     function (
         restService,
         log) {

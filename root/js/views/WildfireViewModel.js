@@ -19,7 +19,7 @@ define(['knockout', 'model/Constants'],
                 var self = this;
 
                 self.wildfires = wildfireManager.fires;
-                //self.fireLookouts = fireLookoutManager.lookouts;
+                self.fireLookouts = fireLookoutManager.lookouts;
 
                 /** "Goto" function centers the globe on a selected wildfire */
                 self.gotoWildfire = function (wildfire) {

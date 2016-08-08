@@ -12,15 +12,15 @@
  * @returns {FuelModelResource_L39.FuelModelResource}
  */
 define([
-    'wmt/util/Log',
-    'wmt/util/WmtUtil',
-    'wmt/Wmt'],
+    'model/util/Log',
+    'model/util/WmtUtil',
+    'model/Constants'],
     function (
         Log,
         WmtUtil,
-        Wmt) {
+        constants) {
         "use strict";
-        var FuelModelResource = {
+        var FuelModelService = {
             /**
              * 
              * @param {String} category Fuel model category: either "all", "standard" or "original".
@@ -29,7 +29,7 @@ define([
              */
             fuelModels: function (category, callback, async) {
 
-                var url = WmtUtil.currentDomain() + Wmt.FUELMODELS_REST_SERVICE,
+                var url = constants.FUELMODELS_REST_SERVICE,
                     query = "mime-type=application/json"
                     + "&category=" + category;
                 console.log(url + '?' + query);
@@ -73,7 +73,7 @@ define([
              *};
              */
             fuelModel: function (modelNo, callback) {
-                var url = WmtUtil.currentDomain() + Wmt.FUELMODELS_REST_SERVICE + "/" + modelNo,
+                var url = constants.FUELMODELS_REST_SERVICE + "/" + modelNo,
                     query = "mime-type=application/json";
                 console.log(url + '?' + query);
                 // Deferred callback - synchronous
@@ -83,6 +83,6 @@ define([
                 });
             }
         };
-        return FuelModelResource;
+        return FuelModelService;
     }
 );

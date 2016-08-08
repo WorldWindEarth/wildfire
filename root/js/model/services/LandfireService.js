@@ -270,17 +270,17 @@
  *}
  */
 define([
-    'wmt/util/Log',
-    'wmt/util/Messenger',
-    'wmt/util/WmtUtil',
-    'wmt/Wmt'],
+    'model/util/Log',
+    'model/util/Messenger',
+    'model/util/WmtUtil',
+    'model/Constants'],
     function (
         log,
         messenger,
         util,
-        wmt) {
+        constants) {
         "use strict";
-        var LandfireResource = {
+        var LandfireService = {
             /**
              * Identfies the "original 13" fuel model no at the given lat/lon.
              * @param {Number} latitude
@@ -321,7 +321,7 @@ define([
 
                 if (this.layers === undefined) {
                     $.ajax({
-                        url: wmt.LANDFIRE_REST_SERVICE,
+                        url: constants.LANDFIRE_REST_SERVICE,
                         data: 'f=json',
                         async: false,
                         success: function (response) {
@@ -354,7 +354,7 @@ define([
              * @param {Function(String)} callback Callback: function(value){} receives map layer value at lat/lon.
              */
             identify: function (latitude, longitude, layerId, callback) {
-                var url = wmt.LANDFIRE_REST_SERVICE + '/identify',
+                var url = constants.LANDFIRE_REST_SERVICE + '/identify',
                     query = 'geometry=' + longitude + ',' + latitude    // x,y
                     + '&geometryType=esriGeometryPoint'
                     + '&sr=4326'
@@ -404,6 +404,6 @@ define([
             }
 
         };
-        return LandfireResource;
+        return LandfireService;
     }
 );

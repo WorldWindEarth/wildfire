@@ -6,13 +6,13 @@
 /*global define, $ */
 
 define([
-    'wmt/util/Log',
-    'wmt/util/WmtUtil',
-    'wmt/Wmt'],
+    'model/util/Log',
+    'model/util/WmtUtil',
+    'model/Constants'],
     function (
         Log,
         WmtUtil,
-        Wmt) {
+        constants) {
         "use strict";
         var TerrainResource = {
             makeTuple: function (aspect, slope, elevation) {
@@ -38,7 +38,7 @@ define([
              */
             terrainTuple: function (aspect, slope, elevation, callback) {
                 // TODO: assert the input values
-                var url = WmtUtil.currentDomain() + Wmt.TERRAIN_REST_SERVICE,
+                var url = constants.TERRAIN_REST_SERVICE,
                     query = "mime-type=application/json"
                     + "&aspect=" + aspect
                     + "&slope=" + slope

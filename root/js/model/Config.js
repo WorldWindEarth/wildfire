@@ -35,8 +35,10 @@ define(['jquery',
          * </ul>
          */
         var Config = {
-            imageryDetailHint: (window.screen.width < 768 ? -0.1 : (window.screen.width < 1024 ? 0.0 : (window.screen.width < 1280 ? 0.1 : 0.2))),
+            defaultFuelModelNo: 5, // Brush
+            defaultFuelMoistureScenario: 'Very Low Dead, Fully Cured Herb',
             fireLookoutLabels: constants.FIRE_LOOKOUT_LABEL_LATLON,
+            imageryDetailHint: (window.screen.width < 768 ? -0.1 : (window.screen.width < 1024 ? 0.0 : (window.screen.width < 1280 ? 0.1 : 0.2))),
             markerLabels: constants.MARKER_LABEL_NAME,
             startupLatitude: 34.29,
             startupLongitude: -119.29,
@@ -50,6 +52,7 @@ define(['jquery',
             terrainSampleRadius: 30,
             viewControlOrientation: "vertical",
             weatherScoutLabels: constants.WEATHER_SCOUT_LABEL_PLACE, // Options: LATLON, NAME, NONE, PLACE
+            wxForecastDurationHours: 48
       };
 
         return Config;

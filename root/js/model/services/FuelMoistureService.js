@@ -8,21 +8,21 @@
  * 
  * @param {Log} log Consol logger.
  * @param {WmtUtil} util Utilities.
- * @param {Wmt} wmt Constants.
- * @returns {FuelMoistureResource}
+ * @param {Wmt} constants Constants.
+ * @returns {FuelMoistureService}
  * 
  * @author Bruce Schubert
  */
 define([
-    'wmt/util/Log',
-    'wmt/util/WmtUtil',
-    'wmt/Wmt'],
+    'model/util/Log',
+    'model/util/WmtUtil',
+    'model/Constants'],
     function (
         log,
         util,
-        wmt) {
+        constants) {
         "use strict";
-        var FuelMoistureResource = {
+        var FuelMoistureService = {
             /**
              * 
              * @param {String} conditions  Either "hot_and_dry", "cool_and_wet", or
@@ -31,7 +31,7 @@ define([
              */
             fuelMoistureTuple: function (conditions, callback) {
                 // TODO: Assert conditions are valid
-                var url = util.currentDomain() + wmt.FUELMOISTURE_REST_SERVICE,
+                var url = constants.FUELMOISTURE_REST_SERVICE,
                     query = "mime-type=application/json"
                     + "&conditions=" + conditions;
                 console.log(url + '?' + query);
@@ -76,7 +76,7 @@ define([
              */
             fuelMoistureScenarios: function (callback, async) {
                 // TODO: Assert conditions are valid
-                var url = util.currentDomain() + wmt.FUELMOISTURE_REST_SERVICE + "/scenarios",
+                var url = constants.FUELMOISTURE_REST_SERVICE + "/scenarios",
                     query = "mime-type=application/json";
                 
                 console.log(url + '?' + query);
@@ -93,6 +93,6 @@ define([
                 }
             }
         };
-        return FuelMoistureResource;
+        return FuelMoistureService;
     }
 );

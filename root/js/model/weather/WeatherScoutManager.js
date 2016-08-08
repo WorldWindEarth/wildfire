@@ -78,26 +78,6 @@ define([
         };
 
         /**
-         * Selects the given marker; deselects other markers
-         * @param {Marker} scout The marker to Select
-         */
-        WeatherScoutManager.prototype.selectScout = function (scout) {
-
-            if (this.selectedScout === scout) {
-                return;
-            }
-            if (this.selectedScout !== null) {
-                this.selectedScout.renderable.highlighted = false;
-                this.selectedScout.isMovable = false;
-            }
-            if (scout !== null) {
-                scout.renderable.highlighted = true;
-                scout.isMovable = true;
-                this.selectedScout = scout;
-            }
-        };
-
-        /**
          * Removes the given scout from the manager.
          * @param {WeatherScout} scout
          */

@@ -118,6 +118,7 @@ require(['knockout', 'jquery', 'bootstrap', 'worldwind',
             globe.layerManager.addDataLayer(new WorldWind.RenderableLayer(constants.LAYER_NAME_MARKERS), {enabled: true, pickEnabled: true});
             globe.layerManager.addDataLayer(new WorldWind.RenderableLayer(constants.LAYER_NAME_WEATHER), {enabled: true, pickEnabled: true});
             globe.layerManager.addDataLayer(new WorldWind.RenderableLayer(constants.LAYER_NAME_WILDLAND_FIRES), {enabled: true, pickEnabled: true});
+            globe.layerManager.addDataLayer(new WorldWind.RenderableLayer(constants.LAYER_NAME_FIRE_LOOKOUTS), {enabled: true, pickEnabled: true});
 
             // Initialize the Explorer object
             explorer.initialize(globe);
@@ -127,7 +128,8 @@ require(['knockout', 'jquery', 'bootstrap', 'worldwind',
             // --------------------------------------------------------
             ko.applyBindings(new GlobeViewModel(globe, { 
                 markerManager: explorer.markerManager, 
-                weatherManager: explorer.weatherManager}), document.getElementById('globe'));
+                weatherManager: explorer.weatherManager,
+                lookoutManager: explorer.lookoutManager}), document.getElementById('globe'));
             ko.applyBindings(new HeaderViewModel(), document.getElementById('header'));
             ko.applyBindings(new ProjectionsViewModel(globe), document.getElementById('projections'));
             ko.applyBindings(new SearchViewModel(globe), document.getElementById('search'));
@@ -137,7 +139,7 @@ require(['knockout', 'jquery', 'bootstrap', 'worldwind',
             ko.applyBindings(new MarkerEditor(), document.getElementById('marker-editor'));
             ko.applyBindings(new WeatherViewModel(globe, explorer.weatherManager), document.getElementById('weather'));
             ko.applyBindings(new WeatherScoutEditor(), document.getElementById('weather-scout-editor'));
-            ko.applyBindings(new WildfireViewModel(globe, explorer.wildfireManager, null), document.getElementById('wildfire'));
+            ko.applyBindings(new WildfireViewModel(globe, explorer.wildfireManager, explorer.lookoutManager), document.getElementById('wildfire'));
             ko.applyBindings(new OuputViewModel(globe), document.getElementById('output'));
 
             // -----------------------------------------------------------

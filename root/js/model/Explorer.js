@@ -21,6 +21,9 @@
 define(['jquery',
         'knockout',
         'model/Constants',
+        'model/wildfire/FireLookoutManager',
+        'model/wildfire/FuelModelCatalog',
+        'model/wildfire/FuelMoistureCatalog',
         'model/util/Log',
         'model/markers/MarkerManager',
         'model/util/Settings',
@@ -30,6 +33,9 @@ define(['jquery',
     function ($,
               ko,
               constants,
+              FireLookoutManager,
+              fuelModelCatalog,
+              fuelMoistureCatalog,
               log,
               MarkerManager,
               settings,
@@ -59,6 +65,7 @@ define(['jquery',
                 this.markerManager = new MarkerManager(globe);
                 this.weatherManager = new WeatherScoutManager(globe);
                 this.wildfireManager = new WildlandFireManager(globe);
+                this.lookoutManager = new FireLookoutManager(globe);
 
                 // Configure the objects used to animate the globe when performing "go to" operations
                 this.goToAnimator = new WorldWind.GoToAnimator(this.wwd);
@@ -81,6 +88,10 @@ define(['jquery',
                     }
                 }, 30000);  // Update every 30 seconds
 
+
+                fuelModelCatalog.initialize();
+                fuelMoistureCatalog.initialize();
+                
                 // Setup to track the cursor position relative to the World Window's canvas. Listen to touch events in order
                 // to recognize and ignore simulated mouse events in mobile browsers.
                 window.addEventListener("mousemove", function (event) {

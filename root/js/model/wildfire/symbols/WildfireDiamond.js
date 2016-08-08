@@ -6,7 +6,7 @@
 /*global define, WorldWind*/
 
 define([
-    'model/Constatns',
+    'model/Constants',
     'worldwind'],
     function (
         constants,
