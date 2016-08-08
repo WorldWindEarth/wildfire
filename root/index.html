@@ -448,8 +448,7 @@
                         <div style="height: 100%;" data-bind="template: {
                             if: viewTemplateName()!==null,
                             name: viewTemplateName,
-                            data: selectedItem,
-                            afterRender: afterRenderFunction
+                            data: selectedItem
                             }">
                         </div>
                     </div>
@@ -609,7 +608,10 @@
                 <span data-bind="text: $data.name()"></span>
               </h1>
             </div>
-            <div class="panel-body" style="height: calc(100% - 40px); overflow-y: scroll;">
+            <div class="panel-body" style="height: calc(100% - 70px); overflow-y: scroll;">
+                <h3>Name: <span data-bind="text: $data.name()"></span></h3>
+                <h4>Location: <span data-bind="text: $data.location()"></span></h4>
+                <h4>Nearby Place: <span data-bind="text: $data.toponym()"></span></h4>
             </div>
        </div>
     <!-- /ko -->
@@ -629,7 +631,7 @@
                 <span data-bind="text: $data.name + ' Incident'"></span>
               </h1>
             </div>
-            <div class="panel-body" style="height: calc(100% - 40px); overflow-y: scroll;">
+            <div class="panel-body" style="height: calc(100% - 70px); overflow-y: scroll;">
               <h3 data-bind="text: 'Incident Name: ' + $data.name"></h3>
               <h3 data-bind="text: 'Incident Number: ' + $data.number"></h3>
               <h4 data-bind="text: 'Acres: ' + $data.acres"></h4>
@@ -644,7 +646,7 @@
     </script>  
     
     <!--
-    Weather View Template
+    Weather Scout View Template
     This script renders the selected wildland fire object the output panel.
     -->
     <script type="text/html" id="weather-scout-view-template">
@@ -657,8 +659,8 @@
                 <span data-bind="text: $data.name()"></span>
               </h1>
             </div>
-            <div class="panel-body" style="height: calc(100% - 40px); overflow-y: scroll;">
-                <div id="visualization"></div>
+            <div class="panel-body" style="height: calc(100% - 70px); overflow-y: scroll;">
+                <div data-bind="visualizeWeather: $data" style="height: 200px; padding-right: 15px"></div>
             </div>
        </div>
     <!-- /ko -->
