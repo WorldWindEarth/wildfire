@@ -31,6 +31,7 @@ define([
                 i, max,
                 feature,
                 fire,
+                name1, name2,
                 deferredFires = $.Deferred(),
                 deferredPerimeters = $.Deferred();
 
@@ -49,8 +50,25 @@ define([
                     deferredFires.resolve(self.fires);
                 });
             $.when(deferredFires).done(function () {
-                // Notify views of the new fires
-                self.fire(events.EVENT_WILDLAND_FIRES_ADDED, self.fires());
+                // Sort fires by State, Name
+//                self.fires.sort(function (a, b) {
+//                    if (a.state < b.state) {
+//                        return -1;
+//                    }
+//                    if (a.state > b.state) {
+//                        return 1;
+//                    }
+//                    name1 = a.name.toLowerCase();
+//                    name2 = b.name.toLowerCase();
+//                    if (name1 < name2) {
+//                        return -1;
+//                    }
+//                    if (name1 > name2) {
+//                        return 1;
+//                    }
+//                    return 0;
+                    // Notify subscriabers of the new fires collection
+                    self.fire(events.EVENT_WILDLAND_FIRES_ADDED, self.fires());
             });
                 
             // Load the current fire perimeters (without geometry to improve query performance)
@@ -81,13 +99,12 @@ define([
          * @param {WildlandFire} fire
          */
         WildlandFireManager.prototype.addFire = function (fire) {
-
-            // Manage this object
             this.fires.push(fire);
-            
-            //this.layer.addRenderable(fire)
+            if (fire.renderable) {
+                this.layer.addRenderable(fire.renderable);
+            }            
 
-            // Notify views of the new wx scount
+            // Notify subscribers of the new wildland fire
             this.fire(events.EVENT_WILDLAND_FIRE_ADDED, fire);
         };
 
