@@ -15,6 +15,7 @@ requirejs.config({
         'knockout': 'libs/knockout/knockout-3.4.0.debug',
         'jquery': 'libs/jquery/jquery-2.1.3',
         'jqueryui': 'libs/jquery-ui/jquery-ui-1.11.4',
+        'jquery-fancytree': 'libs/jquery.fancytree/jquery.fancytree-all',
         'jquery-growl': 'libs/jquery-plugins/jquery.growl',
         'bootstrap': 'libs/bootstrap/v3.3.6/bootstrap',
         'moment': 'libs/moment/moment-2.14.1',
@@ -34,7 +35,7 @@ requirejs.config({
 /**
  * A top-level require call executed by the Application.
  */
-require(['knockout', 'jquery', 'bootstrap', 'worldwind',
+require(['knockout', 'jquery', 'jqueryui', 'bootstrap', 'worldwind',
     'model/Config',
     'model/Constants',
     'model/Explorer',
@@ -56,7 +57,7 @@ require(['knockout', 'jquery', 'bootstrap', 'worldwind',
     'model/globe/layers/UsgsContoursLayer',
     'model/globe/layers/UsgsImageryTopoBaseMapLayer',
     'model/globe/layers/UsgsTopoBaseMapLayer'],
-        function (ko, $, bootstrap, ww,
+        function (ko, $, jqueryui, bootstrap, ww,
                 config,
                 constants,
                 explorer,
