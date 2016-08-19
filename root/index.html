@@ -23,7 +23,9 @@
         <!-- Bootstrap's 'Slate' theme provides the main styling -->
         <link rel="stylesheet" type="text/css" href="css/libs/bootstrap/v3.3.6/bootstrap.min.css"/>
         <link rel="stylesheet" type="text/css" href="css/libs/bootstrap/v3.3.6/bootstrap-slate.min.css"/>
-        <!-- JQuery-Growl plugin for growl style messages-->
+        <!-- JQuery.fancytree plugin for tree view displays-->
+        <link rel="stylesheet" type="text/css" href="css/libs/jquery.fancytree/ui.fancytree.css" class="skinswitcher">
+        <!-- JQuery.growl plugin for growl style messages-->
         <link rel="stylesheet" type="text/css" href="css/libs/jquery-plugins/jquery.growl.css"/>
         <!-- Font Awesome provides icons -->
         <link rel="stylesheet" type="text/css" href="css/libs/fa/v4.6.2/font-awesome.min.css"/>
@@ -332,8 +334,9 @@
                             </h4>
                         </div>
                         <div id="wildfire-body" class="section-body collapse in">
+                            <div id="wildfire-tree"></div>
                             <!-- Bind the list to the 'wildfires' array -->
-                            <div data-bind="template: { name: 'wildfire-template', foreach: wildfires}"></div>
+                            <!--<div data-bind="template: { name: 'wildfire-template', foreach: wildfires}"></div>-->
                         </div>
                     </div>
                 </div>
