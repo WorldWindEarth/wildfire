@@ -23,6 +23,7 @@
  */
 define([
     'knockout',
+    'd3',
     'model/Constants',
     'model/util/ContextSensitive',
     'model/Events',
@@ -38,6 +39,7 @@ define([
     'model/util/WmtUtil'],
     function (
         ko,
+        d3,
         constants,
         contextSensitive,
         events,
@@ -54,7 +56,6 @@ define([
         "use strict";
 
         /**
-         * 
          * 
          * @param {Object} params Parameters object containing:
          * {    

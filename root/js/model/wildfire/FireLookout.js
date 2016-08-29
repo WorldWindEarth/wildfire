@@ -7,6 +7,7 @@
 
 define([
     'knockout',
+    'd3',
     'model/wildfire/symbols/FireLookoutSymbol',
     'model/wildfire/FuelModelCatalog',
     'model/wildfire/FuelMoistureCatalog',
@@ -25,6 +26,7 @@ define([
     'model/Events'],
     function (
         ko,
+        d3,
         FireLookoutSymbol,
         fuelModelCatalog,
         fuelMoistureCatalog,

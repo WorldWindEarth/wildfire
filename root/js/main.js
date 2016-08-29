@@ -19,6 +19,7 @@ requirejs.config({
         'jquery-growl': 'libs/jquery-plugins/jquery.growl',
         'bootstrap': 'libs/bootstrap/v3.3.6/bootstrap',
         'moment': 'libs/moment/moment-2.14.1',
+        'd3': 'libs/d3/d3',
         'vis': 'libs/vis/v4.16.1/vis',
         'worldwind': 'libs/emxsys/webworldwind/worldwindlib.debug',
         'model': 'model' // root application path
