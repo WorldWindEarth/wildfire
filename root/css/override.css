@@ -3,7 +3,7 @@ Copyright (c) 2016, Bruce Schubert.
 The Modified BSD License (3-clause license)
 */
 body {
-    padding-top: 50px;
+    /*padding-top: 50px;*/
     /* Move the content down because we have a fixed navbar that is 50px tall */
 }
 
@@ -51,6 +51,14 @@ body {
     }
 }
 
+.container-split {
+    /*maximum size, excluding the nav-bar*/
+    position: fixed;
+    top: 54px;
+    height: calc(100vh - 54px);
+    width: 100vw;
+}
+
 .container-full {
     margin: 0 auto;
     width: 100%;
@@ -71,13 +79,10 @@ body {
 }
 
 .main {
-    top: 51px;
-    position: fixed;
-    height: calc(100vh);
-    padding: 1px;
-    padding-left: 1px;
-    padding-right: 1px;
-    padding-bottom: 25px;
+    padding: 0px;
+    padding-left: 15px;
+    padding-right: 15px;
+    padding-bottom: 15px;
 }
 
 .non-interactive { 
@@ -109,14 +114,6 @@ body {
     user-select: none;
 }
 
-.section-heading {
-}
-
-.split {
-    -webkit-box-sizing: border-box;
-    -moz-box-sizing: border-box;
-    box-sizing: border-box;
-}
 .gutter {
     background-color: #aaa;
     background-repeat: no-repeat;
@@ -134,11 +131,33 @@ body {
     cursor: ns-resize;
 }
 
-
 .row {
     margin-right: 0;
     margin-left: 0;
 }
+
+.section-heading {
+}
+
+/*split window container class*/
+.split {
+    -webkit-box-sizing: border-box;
+    -moz-box-sizing: border-box;
+    box-sizing: border-box;
+
+    overflow-y: auto;
+    overflow-x: hidden;
+}
+
+.split.split-horizontal, .gutter.gutter-horizontal {
+    height: 100%;
+    float: left;
+}
+
+.split.split-vertical {
+}
+
+
 .sub-header {
     padding-bottom: 10px;
     border-bottom: 1px solid #eee;

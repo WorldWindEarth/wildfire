@@ -132,12 +132,12 @@
         <!--
         Main Content
         -->
-        <div id="main" class="container-full">
-            <div class="row">
+        <div id="main" class="container-split">
+            <!--<div class="row">-->
                 <!--
                 Left Sidebar
                 -->
-                <div id="left-sidebar" class="col-sm-4 col-md-3 sidebar-left tab-content">
+                <div id="left-sidebar" class="split split-horizontal tab-content">
                     <!--
                     Home tab
                     -->
@@ -344,11 +344,11 @@
                 <!--
                 Explorer
                 -->
-                <div id="explorer" class="col-sm-8 col-sm-offset-4 col-md-9 col-md-offset-3 main">
+                <div id="explorer" class="split split-horizontal">
                     <!-- 
                     Globe View (bound to the GlobeViewModel) 
                     -->
-                    <div id="globe" class="split"  style="height: 100%;">
+                    <div id="globe" class="split split-vertical"  style="height: 100%;">
                         <!--Set canvas' tabindex so keydown events can be captured by the KeyboardController -->
                         <canvas id="canvasOne" tabindex='1'
                                 style="width: 100%; height: 100%; background-color: rgb(0,0,0); border:1px solid #000000;"
@@ -455,7 +455,7 @@
                         </div>
                     </div>
                     <!-- Output View (bound to the OutputViewModel) -->
-                    <div id="output" class="row split">
+                    <div id="output" class="row split split-vertical">
                         <div style="height: 100%;" data-bind="template: {
                             if: viewTemplateName()!==null,
                             name: viewTemplateName,
@@ -464,7 +464,7 @@
                         </div>
                     </div>
                 </div>
-            </div>
+            <!--</div>-->
 
         </div>
     </div>
@@ -610,93 +610,93 @@
     This script renders the selected wildland fire object the output panel.
     -->
     <script type="text/html" id="basic-marker-view-template">
-    <!-- ko if: $data -->
+        <!-- ko if: $data -->
         <div id="basic-marker-output" class="panel panel-default" style="height: 100%;">
             <div class="panel-heading">
-            <h1 class="panel-title">
-                <span class="glyphicon glyphicon-map-marker" aria-hidden="true"
-                    style="padding-top:4px; padding-bottom:4px"></span>
-                <span data-bind="text: $data.name()"></span>
-              </h1>
+                <h1 class="panel-title">
+                    <span class="glyphicon glyphicon-map-marker" aria-hidden="true"
+                          style="padding-top:4px; padding-bottom:4px"></span>
+                    <span data-bind="text: $data.name()"></span>
+                </h1>
             </div>
             <div class="panel-body" style="height: calc(100% - 70px); overflow-y: scroll;">
                 <h3>Name: <span data-bind="text: $data.name()"></span></h3>
                 <h4>Location: <span data-bind="text: $data.location()"></span></h4>
                 <h4>Nearby Place: <span data-bind="text: $data.toponym()"></span></h4>
             </div>
-       </div>
-    <!-- /ko -->
+        </div>
+        <!-- /ko -->
     </script>  
-    
+
     <!--
     Wildland Fire View Template
     This script renders the selected wildland fire object the output panel.
     -->
     <script type="text/html" id="wildland-fire-view-template">
-    <!-- ko if: $data -->
+        <!-- ko if: $data -->
         <div id="wildland-fire-output" class="panel panel-default" style="height: 100%;">
             <div class="panel-heading">
-            <h1 class="panel-title">
-                <span class="glyphicon glyphicon-fire" aria-hidden="true"
-                    style="padding-top:4px; padding-bottom:4px"></span>
-                <span data-bind="text: $data.name + ' Incident'"></span>
-              </h1>
+                <h1 class="panel-title">
+                    <span class="glyphicon glyphicon-fire" aria-hidden="true"
+                          style="padding-top:4px; padding-bottom:4px"></span>
+                    <span data-bind="text: $data.name + ' Incident'"></span>
+                </h1>
             </div>
             <div class="panel-body" style="height: calc(100% - 70px); overflow-y: scroll;">
-              <h3 data-bind="text: 'Incident Name: ' + $data.name"></h3>
-              <h3 data-bind="text: 'Incident Number: ' + $data.number"></h3>
-              <h4 data-bind="text: 'Acres: ' + $data.acres"></h4>
-              <h4 data-bind="text: 'Percent Contained: ' + $data.percentContained + '%'"></h4>
-              <h4 data-bind="text: 'Discovery Date: ' + $data.discoveryDate"></h4>
-              <h4 data-bind="text: 'Report Date: ' + $data.reportDate"></h4>
-              <h4 data-bind="text: 'Fire Cause: ' + $data.fireCause"></h4>
-              <h4>Hotlink: <a target="_blank" data-bind="attr: { href: $data.hotlink, title: $data.hotlink}, text: $data.hotlink"></a></h4>
+                <h3 data-bind="text: 'Incident Name: ' + $data.name"></h3>
+                <h3 data-bind="text: 'Incident Number: ' + $data.number"></h3>
+                <h4 data-bind="text: 'Acres: ' + $data.acres"></h4>
+                <h4 data-bind="text: 'Percent Contained: ' + $data.percentContained + '%'"></h4>
+                <h4 data-bind="text: 'Discovery Date: ' + $data.discoveryDate"></h4>
+                <h4 data-bind="text: 'Report Date: ' + $data.reportDate"></h4>
+                <h4 data-bind="text: 'Fire Cause: ' + $data.fireCause"></h4>
+                <h4>Hotlink: <a target="_blank" data-bind="attr: { href: $data.hotlink, title: $data.hotlink}, text: $data.hotlink"></a></h4>
             </div>
-       </div>
-    <!-- /ko -->
+        </div>
+        <!-- /ko -->
     </script>  
-    
+
     <!--
     Weather Scout View Template
     This script renders the selected weather scout object the output panel.
     -->
     <script type="text/html" id="weather-scout-view-template">
-    <!-- ko if: $data -->
+        <!-- ko if: $data -->
         <div id="weather-scout-output" class="panel panel-default" style="height: 100%;">
             <div class="panel-heading">
-            <h1 class="panel-title">
-                <span class="glyphicon glyphicon-cloud" aria-hidden="true"
-                    style="padding-top:4px; padding-bottom:4px"></span>
-                <span data-bind="text: $data.name()"></span>
-              </h1>
+                <h1 class="panel-title">
+                    <span class="glyphicon glyphicon-cloud" aria-hidden="true"
+                          style="padding-top:4px; padding-bottom:4px"></span>
+                    <span data-bind="text: $data.name()"></span>
+                </h1>
             </div>
             <div class="panel-body" style="height: calc(100% - 70px); overflow-y: scroll;">
                 <div data-bind="visualizeWeather: $data" style="height: 200px; padding-right: 15px"></div>
             </div>
-       </div>
-    <!-- /ko -->
+        </div>
+        <!-- /ko -->
     </script>  
-    
+
     <!--
     Fire Lookout View Template
     This script renders the selected wildland fire object the output panel.
     -->
     <script type="text/html" id="fire-lookout-view-template">
-    <!-- ko if: $data -->
+        <!-- ko if: $data -->
         <div id="fire-lookout-output" class="panel panel-default" style="height: 100%;">
             <div class="panel-heading">
-            <h1 class="panel-title">
-                <span class="glyphicon glyphicon-fire" aria-hidden="true"
-                    style="padding-top:4px; padding-bottom:4px"></span>
-                <span data-bind="text: $data.name()"></span>
-              </h1>
+                <h1 class="panel-title">
+                    <span class="glyphicon glyphicon-fire" aria-hidden="true"
+                          style="padding-top:4px; padding-bottom:4px"></span>
+                    <span data-bind="text: $data.name()"></span>
+                </h1>
             </div>
             <div class="panel-body" style="height: calc(100% - 70px); overflow-y: scroll;">
             </div>
-       </div>
-    <!-- /ko -->
+        </div>
+        <!-- /ko -->
     </script>  
-    
+
     <!--
     Server Template
     This server-template script renders a server's tab content
@@ -731,38 +731,47 @@
     This server-layer-template script recursively renders a server's layer list items
     -->
     <script type="text/html" id="server-layer-template">
-        <li>
-            <input type="checkbox" data-bind="click: $root.onServerLayerClicked, checked: isChecked, visible: isLayer"/>
-            <span data-bind="text: title"></span>
-            <!-- ko if: layers().length -->
-            <ul>
-                <!-- ko template: { name: 'server-layer-template', foreach: layers } -->
-                <!-- /ko -->
-            </ul>
+    <li>
+        <input type="checkbox" data-bind="click: $root.onServerLayerClicked, checked: isChecked, visible: isLayer"/>
+        <span data-bind="text: title"></span>
+        <!-- ko if: layers().length -->
+        <ul>
+            <!-- ko template: { name: 'server-layer-template', foreach: layers } -->
             <!-- /ko -->
-        </li>
-    </script>
+        </ul>
+        <!-- /ko -->
+    </li>
+</script>
 
-    <!--
-    Hello World Template
-    This test template renders 'Hello World'
-    -->
-    <script type="text/html" id="hello-world-template">
-        <p>Hello World!</p>
-    </script>
+<!--
+Hello World Template
+This test template renders 'Hello World'
+-->
+<script type="text/html" id="hello-world-template">
+    <p>Hello World!</p>
+</script>
 
 <!--
 Window Splitter
 -->
 <script src="js/libs/split/split.js" type="text/javascript"></script>
 <script type="text/javascript">
+    // -----------------------------------------------------------
+    // Add the window splitters
+    // -----------------------------------------------------------
+    Split(['#left-sidebar', '#explorer'], {
+        direction: 'horizontal',
+        minSize: [5, 240],
+        sizes: [20, 80],
+        snapOffset: 50,
+        gutterSize: 10
+    });
     Split(['#globe', '#output'], {
-    direction: 'vertical',
-            minSize: 40,
-            sizes: [80, 20],
-            gutterSize: 8,
-            cursor: 'row-resize'
-    })
+        direction: 'vertical',
+        minSize: [100, 5],
+        sizes: [80, 20],
+        gutterSize: 10
+    });    
 </script>
 
 
