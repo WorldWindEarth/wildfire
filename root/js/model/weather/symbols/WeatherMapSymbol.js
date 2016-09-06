@@ -22,6 +22,7 @@
  * @author Bruce Schubert
  */
 define(['model/weather/symbols/AirTemperature',
+        'model/weather/symbols/Background',
         'model/weather/symbols/ForecastTime',
         'model/weather/symbols/RelativeHumidity',
         'model/weather/symbols/SkyCover',
@@ -32,6 +33,7 @@ define(['model/weather/symbols/AirTemperature',
         'worldwind'],
     function (
               AirTemperature,
+              Background,
               ForecastTime,
               RelativeHumidity,
               SkyCover,
@@ -55,6 +57,7 @@ define(['model/weather/symbols/AirTemperature',
             this.wxScout = wxScout;
 
             // Create the composite weather map symbol components
+            this.background = new Background(wxScout.latitude(), wxScout.longitude());
             this.skyCover = new SkyCover(wxScout.latitude(), wxScout.longitude());
             this.windBarb = new WindBarb(wxScout.latitude(), wxScout.longitude());
             this.airTemperature = new AirTemperature(wxScout.latitude(), wxScout.longitude(), 'F');
@@ -64,6 +67,7 @@ define(['model/weather/symbols/AirTemperature',
             // Add a reference to our wx model object to the principle renderables.
             // The "movable" wxScoute will generate EVENT_OBJECT_MOVED events. 
             // See the SelectController.
+            this.background.pickDelegate = wxScout;
             this.skyCover.pickDelegate = wxScout;
             this.windBarb.pickDelegate = wxScout;
             this.airTemperature.pickDelegate = wxScout;
@@ -75,6 +79,8 @@ define(['model/weather/symbols/AirTemperature',
 
             // EVENT_OBJECT_MOVED handler that synchronizes the composite renderables with the model's location
             this.handleObjectMovedEvent = function (wxScout) {
+                self.background.position.latitude = wxScout.latitude();
+                self.background.position.longitude = wxScout.longitude();
                 self.skyCover.position.latitude = wxScout.latitude();
                 self.skyCover.position.longitude = wxScout.longitude();
                 self.windBarb.position.latitude = wxScout.latitude();
@@ -148,6 +154,10 @@ define(['model/weather/symbols/AirTemperature',
             // Tilt the wind barb to match the view
             //this.windBarb.imageTilt = dc.navigatorState.tilt; -- Disabled: visbility diminished when tilted
 
+            //this.background.enabled = this.highlighted;
+            this.background.highlighted = this.highlighted;
+
+            this.background.render(dc);
             this.skyCover.render(dc);
             this.airTemperature.render(dc);
             this.relHumidity.render(dc);
