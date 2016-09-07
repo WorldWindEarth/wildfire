@@ -6,6 +6,7 @@
 /*global define, $, WorldWind */
 
 define([
+    'model/wildfire/symbols/Background',
     'model/wildfire/symbols/DirOfSpread',
     'model/wildfire/symbols/FlameLengthHead',
     'model/util/Formatter',
@@ -17,6 +18,7 @@ define([
     'model/Events',
     'worldwind'],
     function (
+        Background,
         DirOfSpread,
         FlameLengthHead,
         formatter,
@@ -47,6 +49,7 @@ define([
                 modelNo = surfaceFire ? lookout.surfaceFire.fuelBed.fuelModel.modelCode : '-';
 
             // Create the fire lookout symbol components
+            this.background = new Background(lookout.latitude(), lookout.longitude());
             this.diamond = new WildfireDiamond(lookout.latitude(), lookout.longitude(), Math.round(head), Math.round(flanks), Math.round(heal));
             this.dirOfSpread = new DirOfSpread(lookout.latitude(), lookout.longitude(), Math.round(dir));
             this.flameLengthHead = new FlameLengthHead(lookout.latitude(), lookout.longitude(), head || '-');
@@ -59,6 +62,7 @@ define([
 
             // Add a reference to our lookout object to the principle renderables.
             // The "movable" wxModel will generate EVENT_OBJECT_MOVED events. See SelectController.
+            this.background.pickDelegate = lookout;
             this.diamond.pickDelegate = lookout;
             this.dirOfSpread.pickDelegate = lookout;
             this.flameLengthHead.pickDelegate = lookout;
@@ -66,6 +70,8 @@ define([
 
             // EVENT_OBJECT_MOVED handler that synchronizes the renderables with the model's location
             this.handleObjectMovedEvent = function (lookout) {
+                self.background.position.latitude = lookout.latitude();
+                self.background.position.longitude = lookout.longitude();
                 self.diamond.position.latitude = lookout.latitude();
                 self.diamond.position.longitude = lookout.longitude();
                 self.dirOfSpread.position.latitude = lookout.latitude();
@@ -119,9 +125,13 @@ define([
          */
         FireBehaviorSymbol.prototype.render = function (dc) {
 
+            // Enable the background/border when selected/highlighted
+            this.background.enabled = this.highlighted;
+
             // Rotate and dir of spread arrot to match the view
             this.dirOfSpread.imageRotation = dc.navigatorState.heading;
 
+            this.background.render(dc);
             this.diamond.render(dc);
             this.dirOfSpread.render(dc);
             this.flameLengthHead.render(dc);
