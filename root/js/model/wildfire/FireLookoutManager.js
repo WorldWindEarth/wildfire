@@ -27,6 +27,7 @@ define([
                 log.error("FireLookoutManager", "constructor", "missingLayer");
             }
             this.lookouts = ko.observableArray();
+            this.selectedLookout = null;
             
             // Subscribe to "arrayChange" events in the lookouts array.
             // Here is where we add/remove lookouts from WW layer.
@@ -92,7 +93,11 @@ define([
                 this.lookouts()[i].refresh();
             }
         };
-                // Internal method to add the lookout to the layer.
+        // Internal method to ensure the name is unique by appending a suffix if reqd.
+        FireLookoutManager.prototype.doEnsureUniqueName = function (lookout) {
+            lookout.name(this.generateUniqueName(lookout));
+        };
+        // Internal method to add the lookout to the layer.
         FireLookoutManager.prototype.doAddLookoutToLayer = function (lookout) {
             this.layer.addRenderable(lookout.renderable);
         };
@@ -109,31 +114,44 @@ define([
             }
         };
         
-        // Internal method to ensure the name is unique by appending a suffix if reqd.
-        FireLookoutManager.prototype.doEnsureUniqueName = function (lookout) {
-            lookout.name(this.generateUniqueName(lookout));
-        };
         
         /**
          * Saves the fire lookouts collection to local storage.
          */
         FireLookoutManager.prototype.saveLookouts = function () {
-            var validLookouts = this.lookouts().filter(
-                function (lookout) {
-                    return !lookout.invalid;
-                }),
-                string = JSON.stringify(validLookouts, [
-                    'id',
-                    'name',
-                    'toponym',
-                    'latitude',
-                    'longitude',
-                    'isMovable',
-                    'fuelModelNo',
-                    'fuelModelManualSelect',
-                    'moistureScenarioName'
-                ]);
-            localStorage.setItem(constants.STORAGE_KEY_FIRE_LOOKOUTS, string);
+            var validLookouts = [],
+                lookoutsString,
+                i, len, lookout;
+        
+            // Knockout's toJSON cannot process a WeatherScout/FireLookout object...
+            // it appears to recurse and a call stack limit is reached.
+            // So we create a simplfied the object here to pass to ko.toJSON()
+            for (i = 0, len = this.lookouts().length; i < len; i++) {
+                lookout = this.lookouts()[i];
+                if (!lookout.invalid) {
+                    validLookouts.push({
+                        id: lookout.id,
+                        name: lookout.name,
+                        latitude: lookout.latitude,
+                        longitude: lookout.longitude,
+                        isMovable: lookout.isMovable,
+                        fuelModelNo: lookout.fuelModelNo,
+                        fuelModelManualSelect: lookout.fuelModelManualSelect,
+                        moistureScenarioName: lookout.moistureScenarioName
+                    });
+                }
+            } 
+            lookoutsString = ko.toJSON(validLookouts, [
+                'id',
+                'name',
+                'latitude',
+                'longitude',
+                'isMovable',
+                'fuelModelNo',
+                'fuelModelManualSelect',
+                'moistureScenarioName'
+            ]);
+            localStorage.setItem(constants.STORAGE_KEY_FIRE_LOOKOUTS, lookoutsString);
         };
         
         /**
@@ -141,9 +159,8 @@ define([
          */
         FireLookoutManager.prototype.restoreLookouts = function () {
             var string = localStorage.getItem(constants.STORAGE_KEY_FIRE_LOOKOUTS),
-                array,
-                item,
-                i, max;
+                array, i, max, item,
+                position, params;
             if (!string || string === 'null') {
                 return;
             }
@@ -151,22 +168,19 @@ define([
             array = JSON.parse(string);
             for (i = 0, max = array.length; i < max; i++) {
                 item = array[i];
-                if (isNaN(item.latitude) || isNaN(item.longitude)) {
-                    log.error("FireLookoutManager", "restoreLookouts", "Invalid lat/lon. Ignored.");
-                } else {
-                    this.addLookout(new FireLookout({
-                        id: array[i].id,
-                        name: array[i].name,
-                        toponym: array[i].toponym,
-                        latitude: array[i].latitude,
-                        longitude: array[i].longitude,
-                        isMovable: array[i].isMovable,
-                        fuelModelNo: array[i].fuelModelNo,
-                        fuelModelManualSelect: array[i].fuelModelManualSelect,
-                        moistureScenarioName: array[i].moistureScenarioName
-                    }));
-                }
-            }
+                position = new WorldWind.Position(item.latitude, item.longitude, 0);
+                params = {
+                    id: item.id,
+                    name: item.name,
+                    latitude: item.latitude,
+                    longitude: item.longitude,
+                    isMovable: item.isMovable,
+                    fuelModelNo: item.fuelModelNo,
+                    fuelModelManualSelect: item.fuelModelManualSelect,
+                    moistureScenarioName: item.moistureScenarioName
+                };
+                this.addLookout(new FireLookout(this, position, params));
+            }                                
         };
         
         /**

@@ -40,6 +40,7 @@ require(['knockout', 'jquery', 'jqueryui', 'bootstrap', 'worldwind',
     'model/Config',
     'model/Constants',
     'model/Explorer',
+    'views/FireLookoutEditor',
     'model/globe/Globe',
     'views/GlobeViewModel',
     'views/HeaderViewModel',
@@ -62,6 +63,7 @@ require(['knockout', 'jquery', 'jqueryui', 'bootstrap', 'worldwind',
                 config,
                 constants,
                 explorer,
+                FireLookoutEditor,
                 Globe,
                 GlobeViewModel,
                 HeaderViewModel,
@@ -142,6 +144,7 @@ require(['knockout', 'jquery', 'jqueryui', 'bootstrap', 'worldwind',
             ko.applyBindings(new WeatherViewModel(globe, explorer.weatherManager), document.getElementById('weather'));
             ko.applyBindings(new WeatherScoutEditor(), document.getElementById('weather-scout-editor'));
             ko.applyBindings(new WildfireViewModel(globe, explorer.wildfireManager, explorer.lookoutManager), document.getElementById('wildfire'));
+            ko.applyBindings(new FireLookoutEditor(), document.getElementById('fire-lookout-editor'));
             ko.applyBindings(new OuputViewModel(globe), document.getElementById('output'));
 
             // -----------------------------------------------------------

@@ -334,11 +334,19 @@
                         </h4>
                     </div>
                     <div id="wildfire-body" class="section-body collapse in">
-                        <div id="wildfire-tree"></div>
+                        <!--Active Wildfires-->
+                        <h2>Wildfires</h2>
                         <!-- Bind the list to the 'wildfires' array -->
                         <!--<div data-bind="template: { name: 'wildfire-template', foreach: wildfires}"></div>-->
+                        <div id="wildfire-tree"></div>
+                        
+                        <!--Fire Lookouts-->
+                        <h2>Fire Lookouts</h2>
+                        <!-- Bind the list to the 'fireLookouts' observableArray -->
+                        <div data-bind="template: { name: 'fire-lookout-template', foreach: fireLookouts}"></div>
                     </div>
                 </div>
+
             </div>
 
             <!--
@@ -497,6 +505,17 @@
                    data-bind="value: scout().name">
         </div>
     </div>
+    
+    <!--
+    Fire Lookout Editor Dialog
+    -->
+    <div style="display: none">
+        <div id="fire-lookout-editor">
+            <label for="name">Name</label>
+            <input type="text" name="name" id="name" class="text ui-widget-content ui-corner-all"
+                   data-bind="value: lookout().name">
+        </div>
+    </div>
 
     <!--
     Layer Template
@@ -585,6 +604,28 @@
             <!-- Delete Button -->
             <button type="button" class="btn btn-default glyphicon glyphicon-trash"
                     data-bind="click: $parent.removeWeatherScout"></button>
+        </div>
+    </script>
+    
+    <!--
+    Fire Lookout Template
+    This script renders the individual fire lookout items in the Wildfire panel.
+    -->
+    <script type="text/html" id="fire-lookout-template">
+        <div class="btn-group btn-block">
+            <button type="button" class="btn btn-default"
+                    style="display: block; width: 70%"
+                    data-bind="click: $root.gotoFireLookout">
+                <span data-bind="text: $data.name"></span>
+                <br/>
+                <span data-bind="text: $data.location"></span>
+            </button>
+            <!-- Edit Button -->
+            <button type="button" class="btn btn-default glyphicon glyphicon-pencil"
+                    data-bind="click: $parent.editFireLookout"></button>
+            <!-- Delete Button -->
+            <button type="button" class="btn btn-default glyphicon glyphicon-trash"
+                    data-bind="click: $parent.removeFireLookout"></button>
         </div>
     </script>
 

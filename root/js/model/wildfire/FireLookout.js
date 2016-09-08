@@ -68,16 +68,16 @@ define([
              * Override the parent WeatherScout's Openable implementation with a FireLookoutDialog
              */
             this.openMe = function () {
-//                   var $element = $("#fire-lookout-editor"),        
-//                        editorViewModel = ko.dataFor($element.get(0)); // get the view model bound to the element
-//                    
-//                    if (editorViewModel) {
-//                        editorViewModel.open(this);
-//                        return true; // return true to fire EVENT_OBJECT_OPENED event.
-//                    }
-//                    log.warning("FireLookout", "openMe", "#fire-lookout-editor element was not found.")
-                    return false;             
-                };
+                var $element = $("#fire-lookout-editor"),        
+                     editorViewModel = ko.dataFor($element.get(0)); // get the view model bound to the element
+
+                 if (editorViewModel) { // FireLookoutEditor.js
+                     editorViewModel.open(this);
+                     return true; // return true to fire EVENT_OBJECT_OPENED event.
+                 }
+                 log.warning("FireLookout", "openMe", "#fire-lookout-editor element was not found.")
+                 return false;             
+             };
             /**
              * Override the parent WeatherScout's Removeable implementation
              */

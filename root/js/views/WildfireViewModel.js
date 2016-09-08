@@ -21,7 +21,7 @@ define(['knockout', 'jquery', 'jqueryui', 'jquery-fancytree', 'model/Constants']
                 parent;
 
             this.wildfires = wildfireManager.fires; // observableArray
-            this.fireLookouts = fireLookoutManager.lookouts;
+            this.fireLookouts = fireLookoutManager.lookouts; // observableArray
 
             var glyph_opts = {
                 map: {
@@ -121,6 +121,7 @@ define(['knockout', 'jquery', 'jqueryui', 'jquery-fancytree', 'model/Constants']
             /** "Goto" function centers the globe on a selected fireLookout */
             this.gotoFireLookout = function (fireLookout) {
                 globe.goto(fireLookout.latitude(), fireLookout.longitude());
+                globe.selectController.doSelect(fireLookout);
             };
             /** "Edit" function invokes a modal dialog to edit the fireLookout attributes */
             this.editFireLookout = function (fireLookout) {
