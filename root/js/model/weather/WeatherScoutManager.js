@@ -129,7 +129,7 @@ define([
             // Knockout's toJSON cannot process a WeatherScout object...
             // it appears to recurse and a call stack limit is reached.
             // So we create a simplfied the object here to pass to toJSON.
-            for (var i = 0, len = this.scouts().length; i < len; i++) {
+            for (i = 0, len = this.scouts().length; i < len; i++) {
                 scout = this.scouts()[i];
                 if (!scout.invalid) {
                     validScouts.push({
