@@ -137,7 +137,7 @@ define([
                 highlightAttributes = new WorldWind.PlacemarkAttributes(normalAttributes);
                 highlightAttributes.imageScale = normalAttributes.imageScale * 1.2;
 
-                this.placemark = new WorldWind.Placemark(position, true, normalAttributes); // eye distance scaling enabled
+                this.placemark = new WorldWind.Placemark(position, false, normalAttributes); // eye distance scaling disabled
                 this.placemark.altitudeMode = WorldWind.RELATIVE_TO_GROUND;
                 this.placemark.eyeDistanceScalingThreshold = 2000000;
                 this.placemark.highlightAttributes = highlightAttributes;
