@@ -149,7 +149,7 @@ define(['jquery',
                 this.wwd.redraw();
 
                 this.globe.goto(latitude, longitude, tgtEyeAltMsl, function () {
-                    self.updateSpatialData();
+                    self.updateGlobePositions();
                 });
             },
             /**
@@ -169,7 +169,7 @@ define(['jquery',
                 this.markerManager.restoreMarkers();
                 this.weatherManager.restoreScouts();
                 this.lookoutManager.restoreLookouts();
-                //this.restoreSessionView();
+                this.restoreSessionView();
                 // Update all time sensitive objects
                 this.globe.updateDateTime(new Date());
 
@@ -198,7 +198,7 @@ define(['jquery',
             /**
              * Updates the view model with current globe viewpoint.
              */
-            updateSpatialData: function () {
+            updateGlobePositions: function () {
                 var wwd = this.wwd,
                     mousePoint = this.mousePoint,
                     centerPoint = new WorldWind.Vec2(wwd.canvas.width / 2, wwd.canvas.height / 2);
@@ -225,9 +225,9 @@ define(['jquery',
                 }
                 self.updateTimeout = window.setTimeout(function () {
                     // Update the geospatial view models
-                    self.updateSpatialData();
+                    self.updateGlobePositions();
                     self.updateTimeout = null;
-                }, self.updateInterval);
+                }, self.updateInterval); 
             },
             handleMouseEvent: function (event) {
                 if (this.isTouchDevice) {
