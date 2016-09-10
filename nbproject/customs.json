@@ -1,0 +1,10 @@
+{
+    "elements": {
+        "div": {},
+        "form": {},
+        "text": {}
+    },
+    "attributes": {
+        "aria-expanded": {}
+    }
+}
