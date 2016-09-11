@@ -182,6 +182,10 @@ body {
     word-wrap: break-word;
 }
 
+.vis-time-axis .vis-text {
+  color: #AAA;
+}
+
 #globe {
     overflow: hidden;
 }
