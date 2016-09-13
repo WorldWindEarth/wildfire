@@ -89,12 +89,12 @@
                                 <span class="hidden-sm" aria-hidden="true">Weather</span>
                             </a>
                         </li>
-                        <!-- Wildfire navigation button -->
+                        <!-- Fires navigation button -->
                         <li>
-                            <a href="#wildfire" role="tab" data-toggle="tab">
+                            <a href="#fires" role="tab" data-toggle="tab">
                                 <span class="glyphicon glyphicon-fire visible-sm-block" aria-hidden="true"
                                       style="padding-top:4px; padding-bottom:4px"></span>
-                                <span class="hidden-sm" aria-hidden="true">Wildfire</span>
+                                <span class="hidden-sm" aria-hidden="true">Fires</span>
                             </a>
                         </li>
                         <!-- Search box and button (bound to SearchViewModel)-->
@@ -320,26 +320,26 @@
                 </div>
 
                 <!--
-                Wildfire View (bound to WildfireViewModel)
+                Fires View (bound to FiresViewModel)
                 -->
-                <div id="wildfire" class="tab-pane" role="tabpanel">
+                <div id="fires" class="tab-pane" role="tabpanel">
                     <div class="section-heading">
                         <h4 class="sub-header">
                             <span class="glyphicon glyphicon-fire" aria-hidden="true"
                                   style="padding-right:5px;"></span>
-                            Wildfire
-                            <a class="section-toggle" data-toggle="collapse" href="#wildfire-body"></a>
+                            Fires
+                            <a class="section-toggle" data-toggle="collapse" href="#fires-body"></a>
                         </h4>
                     </div>
-                    <div id="wildfire-body" class="section-body collapse in">
+                    <div id="fires-body" class="section-body collapse in">
                         <!--Active Wildfires-->
-                        <h2>Wildfires</h2>
+                        <h4>Wildfires</h4>
                         <!-- Bind the list to the 'wildfires' array -->
                         <!--<div data-bind="template: { name: 'wildfire-template', foreach: wildfires}"></div>-->
                         <div id="wildfire-tree"></div>
 
                         <!--Fire Lookouts-->
-                        <h2>Fire Lookouts</h2>
+                        <h4>Fire Lookouts</h4>
                         <!-- Bind the list to the 'fireLookouts' observableArray -->
                         <div data-bind="template: { name: 'fire-lookout-template', foreach: fireLookouts}"></div>
                     </div>
@@ -685,7 +685,7 @@
 
     <!--
     Fire Lookout View Template
-    This script renders the selected wildland fire object the output panel.
+    This script renders the selected fire lookout object in the output panel.
     -->
     <script type="text/html" id="fire-lookout-view-template">
         <!-- ko if: $data -->
@@ -698,6 +698,21 @@
                 </h1>
             </div>
             <div class="panel-body" style="height: calc(100% - 70px); overflow-y: scroll;">
+                <div>
+                   <h4>Wildfire Diamond</h4>
+                   <!--Custom knockout binding-->
+                   <div data-bind="visualizeWildfireDiamond: $data" style="width: 200px; height: 200px; padding-right: 15px"></div>
+                </div>
+                <div>
+                   <h4>Haul Chart<h4>
+                   <!--Custom knockout binding-->
+                   <div data-bind="visualizeHaulChart: $data" style="padding-right: 15px"></div>
+                </div>
+                <div>
+                   <h4>Fuel Model</h4>
+                   <!--Custom knockout binding-->
+                   <div data-bind="visualizeFuelModel: $data" style="padding-right: 15px"></div>
+                </div>
             </div>
         </div>
         <!-- /ko -->
@@ -824,14 +839,14 @@
         Split(['#left-sidebar', '#explorer'], {
         direction: 'horizontal',
                 minSize: [5, 240],
-                sizes: [20, 80],
+                sizes: [25, 75],
                 snapOffset: 50,
                 gutterSize: 10
         });
         Split(['#globe', '#output'], {
         direction: 'vertical',
                 minSize: [100, 5],
-                sizes: [80, 20],
+                sizes: [60, 40],
                 gutterSize: 10
         });
     </script>

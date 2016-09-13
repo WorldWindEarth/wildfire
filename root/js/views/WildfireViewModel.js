@@ -1,142 +1,363 @@
-/*
- * The MIT License - http://www.opensource.org/licenses/mit-license
- * Copyright (c) 2016 Bruce Schubert.
+/* 
+ * Copyright (c) 2016 Bruce Schubert <bruce@emxsys.com>.
+ * Released under the MIT License
+ * http://www.opensource.org/licenses/mit-license.php
  */
 
-/*global WorldWind*/
+/**
+ * Wildfire content module
+ *
+ * @param {type} ko
+ * @param {type} $
+ * @param {type} d3
+ * @param {type} vis
+ * 
+ * @returns {WildfireOutputView}
+ */
+define(['knockout',
+    'jquery',
+    'd3',
+    'moment',
+    'vis'],
+        function (ko, $, d3, moment, vis) {
 
-define(['knockout', 'jquery', 'jqueryui', 'jquery-fancytree', 'model/Constants'],
-    function (ko, $, jqueryui, fancytree, constants) {
-        "use strict";
-        /**
-         *
-         * @param {Globe} globe
-         * @param {WildlandFireManager} wildfireManager
-         * @param {FireLookoutManager} fireLookoutManager
-         * @constructor
-         */
-        function WildfireViewModel(globe, wildfireManager, fireLookoutManager) {
-            var self = this,
-                fire, i, len, lastState, state, tree, fireNode, stateNode, rootNode,
-                parent;
+            /**
+             * The view model for an individual Wildfire.
+             * @constructor
+             */
+            function WildfireOutputView() {
+                var self = this;
 
-            this.wildfires = wildfireManager.fires; // observableArray
-            this.fireLookouts = fireLookoutManager.lookouts; // observableArray
+                // Define the custom binding used in the #wildfire-view-template template
+                ko.bindingHandlers.visualizePercentContained = {
+                    init: function (element, valueAccessor, allBindings, viewModel, bindingContext) {
+                        // This will be called when the binding is first applied to an element
+                        // Set up any initial state, event handlers, etc. here
+                    },
+                    update: function (element, valueAccessor, allBindings, viewModel, bindingContext) {
+                        // This will be called once when the binding is first applied to an element,
+                        // and again whenever any observables/computeds that are accessed change
+                        // Update the DOM element based on the supplied values here.
+                        self.percentContained(element, viewModel);
+                    }
+                };
+                // Define the custom binding used in the #wildfire-view-template template
+                ko.bindingHandlers.visualizeWildfireDates = {
+                    init: function (element, valueAccessor, allBindings, viewModel, bindingContext) {
+                        // This will be called when the binding is first applied to an element
+                        // Set up any initial state, event handlers, etc. here
+                    },
+                    update: function (element, valueAccessor, allBindings, viewModel, bindingContext) {
+                        // This will be called once when the binding is first applied to an element,
+                        // and again whenever any observables/computeds that are accessed change
+                        // Update the DOM element based on the supplied values here.
+                        self.dateRange(element, viewModel);
+                    }
+                };
+                // Define the custom binding used in the #wildfire-view-template template
+                ko.bindingHandlers.visualizeWildfireSize = {
+                    init: function (element, valueAccessor, allBindings, viewModel, bindingContext) {
+                        // This will be called when the binding is first applied to an element
+                        // Set up any initial state, event handlers, etc. here
+                    },
+                    update: function (element, valueAccessor, allBindings, viewModel, bindingContext) {
+                        // This will be called once when the binding is first applied to an element,
+                        // and again whenever any observables/computeds that are accessed change
+                        // Update the DOM element based on the supplied values here.
+                        self.wildfireSize(element, viewModel);
+                    }
+                };
+            }
 
-            var glyph_opts = {
-                map: {
-                    doc: "glyphicon glyphicon-fire",
-                    docOpen: "glyphicon glyphicon-file",
-                    checkbox: "glyphicon glyphicon-unchecked",
-                    checkboxSelected: "glyphicon glyphicon-check",
-                    checkboxUnknown: "glyphicon glyphicon-share",
-                    dragHelper: "glyphicon glyphicon-play",
-                    dropMarker: "glyphicon glyphicon-arrow-right",
-                    error: "glyphicon glyphicon-warning-sign",
-                    expanderClosed: "glyphicon glyphicon-menu-right",
-                    expanderLazy: "glyphicon glyphicon-menu-right", // glyphicon-plus-sign
-                    expanderOpen: "glyphicon glyphicon-menu-down", // glyphicon-collapse-down
-                    folder: "glyphicon glyphicon-folder-close",
-                    folderOpen: "glyphicon glyphicon-folder-open",
-                    loading: "glyphicon glyphicon-refresh glyphicon-spin"
-                }
+            /**
+             * Display the wildfire's timeline with a vis.js Timeline.
+             * See: http://visjs.org/docs/timeline/
+             * 
+             * @param {type} element DOM element where the Timeline will be attached
+             * @param {type} wildfire The Wildfire model element
+             */
+            WildfireOutputView.prototype.dateRange = function (element, wildfire) {
+                var discovered = moment(wildfire.discoveryDate),
+                        lastReported = moment(wildfire.reportDate),
+                        duration = moment.duration(discovered.diff(lastReported, 'days'), 'days');
+
+                // Create a DataSet (allows two way data-binding)
+                // See: http://visjs.org/docs/timeline/#Data_Format
+                var items = new vis.DataSet([
+                    {id: 1, content: 'Discovered', start: discovered, title: discovered.format('llll')},
+                    {id: 2, content: 'Last Report', start: lastReported, title: lastReported.format('llll')},
+                    {id: 3,
+                        start: discovered,
+                        end: lastReported,
+                        content: duration.humanize(),
+                        type: 'background'}
+                ]);
+
+                // Configuration for the Timeline
+                // See: http://visjs.org/docs/timeline/#Configuration_Options
+                var options = {
+                    align: 'center',
+                    zoomable: false
+                };
+
+                // Create a Timeline
+                // See: http://visjs.org/docs/timeline/
+                var timeline = new vis.Timeline(element, items, options);
             };
 
-            // Populate the JQuery.fancytree source data with wildfires.
-            // The wildfires array should be sorted by state.
-            $("#wildfire-tree").fancytree({
-                source: [],
-                checkbox: false,
-                extensions: ["glyph", "wide"],
-                glyph: glyph_opts,
-                selectMode: 2,
-                toggleEffect: {
-                    effect: "drop",
-                    options: {direction: "left"},
-                    duration: 400},
-                wide: {
-                    iconWidth: "1em", // Adjust this if @fancy-icon-width != "16px"
-                    iconSpacing: "0.5em", // Adjust this if @fancy-icon-spacing != "3px"
-                    levelOfs: "1.5em"     // Adjust this if ul padding != "16px"
-                },
-                icon: function (event, data) {
-                    // if( data.node.isFolder() ) {
-                    //   return "glyphicon glyphicon-book";
-                    // }
-                },
-                activate: function (event, data) {
-                    var node = data.node;
-                    // acces node attributes
-                    $("#echoActive").text(node.title);
-                    if (!$.isEmptyObject(node.data)) {
-                        self.gotoWildfire(node.data);
-                    }
+
+            /**
+             * Display the percent contained in a radial progress chart via d3, 
+             * with the uncontained percentage displayed in red (e.g., uncontrolled fire).
+             * See: https://github.com/d3/d3/blob/master/API.md
+             * 
+             * @param {type} element DOM element where the Timeline will be attached
+             * @param {type} wildfire The Wildfire model element
+             */
+            WildfireOutputView.prototype.percentContained = function (element, wildfire) {
+                var progress = wildfire.percentContained / 100.0;
+                var colors = {
+                    'pink': '#E1499A',
+                    'yellow': '#f0ff08',
+                    'green': '#47e495',
+                    'red': '#ff0000'
+                };
+
+                // The DOM element to contain the chart
+                // See: https://github.com/d3/d3/blob/master/API.md#selecting-elements
+                var parent = d3.select(element);
+
+                var color = colors.red;
+
+                // Chart dimensions
+                var radius = 40;
+                var border = 5;
+                var padding = 5;
+                var twoPi = Math.PI * 2;
+                var formatPercent = d3.format('.0%');
+                var boxSize = (radius + padding) * 2;
+
+                // Generate a 360 arc.
+                // See: https://github.com/d3/d3/blob/master/API.md#arcs
+                var arc = d3.arc()
+                        .startAngle(0)
+                        .innerRadius(radius)
+                        .outerRadius(radius - border);
+
+                var svg = parent.append('svg')
+                        .attr('width', boxSize)
+                        .attr('height', boxSize);
+
+                var defs = svg.append('defs');
+
+                var filter = defs.append('filter')
+                        .attr('id', 'blur');
+
+                filter.append('feGaussianBlur')
+                        .attr('in', 'SourceGraphic')
+                        .attr('stdDeviation', '7');
+
+                var g = svg.append('g')
+                        .attr('transform', 'translate(' + boxSize / 2 + ',' + boxSize / 2 + ')');
+
+                var meter = g.append('g')
+                        .attr('class', 'progress-meter');
+
+                meter.append('path')
+                        .attr('class', 'background')
+                        .attr('fill', '#ccc')
+                        .attr('fill-opacity', 0.5)
+                        .attr('d', arc.endAngle(twoPi));
+
+                var foreground = meter.append('path')
+                        .attr('class', 'foreground')
+                        .attr('fill', color)
+                        .attr('fill-opacity', 1)
+                        .attr('stroke', color)
+                        .attr('stroke-width', 5)
+                        .attr('stroke-opacity', 1)
+                        .attr('filter', 'url(#blur)');
+
+                var front = meter.append('path')
+                        .attr('class', 'foreground')
+                        .attr('fill', color)
+                        .attr('fill-opacity', 1);
+
+                var numberText = meter.append('text')
+                        .attr('fill', '#fff')
+                        .attr('text-anchor', 'middle')
+                        .attr('dy', '.35em');
+
+                var remaining = 1 - progress;
+                foreground.attr('d', arc.endAngle(twoPi * remaining));
+                front.attr('d', arc.endAngle(twoPi * remaining));
+                numberText.text(formatPercent(progress));
+            };
+
+            /**
+             * Display the wildfire size as a category in a segmented chart via d3.
+             * See: https://github.com/d3/d3/blob/master/API.md
+             * 
+             * @param {type} element DOM element where the Timeline will be attached
+             * @param {type} wildfire The Wildfire model element
+             */
+            WildfireOutputView.prototype.wildfireSize = function (element, wildfire) {
+                var Needle, arc, arcEndRad, arcStartRad, barWidth, chart, chartInset, degToRad, el,
+                        endPadRad, height, i, margin, needle, numSections, padRad, percToDeg,
+                        percToRad, percent, radius, ref, sectionIndx, sectionPerc, startPadRad,
+                        svg, totalPercent, width;
+
+                percent = 0.65;
+
+                numSections = 5;
+                barWidth = 5;
+                sectionPerc = 1 / numSections / 2;
+                padRad = 0.05;
+                chartInset = 10;
+                totalPercent = 0.75;
+                el = d3.select(element);
+
+                margin = {
+                    top: 20,
+                    right: 20,
+                    bottom: 30,
+                    left: 20
+                };
+                width = element.offsetWidth - margin.left - margin.right;
+                height = width;
+                radius = Math.min(width, height) / 2;
+
+                percToDeg = function (perc) {
+                    return perc * 360;
+                };
+                percToRad = function (perc) {
+                    return degToRad(percToDeg(perc));
+                };
+                degToRad = function (deg) {
+                    return deg * Math.PI / 180;
+                };
+
+                svg = el.append('svg')
+                        .attr('width', width + margin.left + margin.right)
+                        .attr('height', height + margin.top + margin.bottom);
+
+                chart = svg.append('g')
+                        .attr('transform',
+                                'translate(' + (width + margin.left) / 2 + ', ' + (height + margin.top) / 2 + ')');
+
+                for (sectionIndx = i = 1, ref = numSections; 1 <= ref ? i <= ref : i >= ref; sectionIndx = 1 <= ref ? ++i : --i) {
+                    arcStartRad = percToRad(totalPercent);
+                    arcEndRad = arcStartRad + percToRad(sectionPerc);
+                    totalPercent += sectionPerc;
+                    startPadRad = sectionIndx === 0 ? 0 : padRad / 2;
+                    endPadRad = sectionIndx === numSections ? 0 : padRad / 2;
+                    arc = d3.arc()
+                            .outerRadius(radius - chartInset)
+                            .innerRadius(radius - chartInset - barWidth)
+                            .startAngle(arcStartRad + startPadRad)
+                            .endAngle(arcEndRad - endPadRad);
+                    chart.append('path')
+                            .attr('class', 'arc chart-color' + sectionIndx)
+                            .attr('d', arc);
                 }
-            });
-            
-            // Subscribe to "arrayChange" events ...
-            // documented here: http://blog.stevensanderson.com/2013/10/08/knockout-3-0-release-candidate-available/
-            this.wildfires.subscribe(function (changes) {
-                tree = $("#wildfire-tree").fancytree("getTree");
-                rootNode = $("#wildfire-tree").fancytree("getRootNode");
-                changes.forEach(function (change) {
-                    if (change.status === 'added' && change.moved === undefined) {
-                        fire = change.value;
-                        stateNode = tree.getNodeByKey(fire.state);
-                        if (stateNode === null) {
-                            stateNode = rootNode.addChildren({
-                                title: fire.state,
-                                key: fire.state,
-                                children: [],
-                                folder: true
-                            });
-                        }
-                        fireNode = stateNode.addChildren({
-                            title: fire.name,
-                            key: fire.id,
-                            data: fire
+                Needle = function () {
+                    function Needle(len, radius1) {
+                        this.len = len;
+                        this.radius = radius1;
+                    }
+                    Needle.prototype.drawOn = function (el, perc) {
+                        el.append('circle').attr('class', 'needle-center').attr('cx', 0).attr('cy', 0).attr('r', this.radius);
+                        return el.append('path').attr('class', 'needle').attr('d', this.mkCmd(perc));
+                    };
+                    Needle.prototype.animateOn = function (el, perc) {
+                        var self;
+                        self = this;
+                        return el.transition()
+                                .delay(500)
+                                .ease('elastic')
+                                .duration(3000)
+                                .selectAll('.needle')
+                                .tween('progress', function () {
+                            return function (percentOfPercent) {
+                                var progress;
+                                progress = percentOfPercent * perc;
+                                return d3.select(this).attr('d', self.mkCmd(progress));
+                            };
                         });
-                    } else if (change.status === 'deleted' && change.moved === undefined) {
+                    };
+                    Needle.prototype.mkCmd = function (perc) {
+                        var centerX, centerY, leftX, leftY, rightX, rightY, thetaRad, topX, topY;
+                        thetaRad = percToRad(perc / 2);
+                        centerX = 0;
+                        centerY = 0;
+                        topX = centerX - this.len * Math.cos(thetaRad);
+                        topY = centerY - this.len * Math.sin(thetaRad);
+                        leftX = centerX - this.radius * Math.cos(thetaRad - Math.PI / 2);
+                        leftY = centerY - this.radius * Math.sin(thetaRad - Math.PI / 2);
+                        rightX = centerX - this.radius * Math.cos(thetaRad + Math.PI / 2);
+                        rightY = centerY - this.radius * Math.sin(thetaRad + Math.PI / 2);
+                        return 'M ' + leftX + ' ' + leftY + ' L ' + topX + ' ' + topY + ' L ' + rightX + ' ' + rightY;
+                    };
+                    return Needle;
+                }();
+                //needle = new Needle(90, 15);
+                //needle.drawOn(chart, percent);
+                //needle.animateOn(chart, percent);
+            };
 
-                    }
-                });
-                rootNode.sortChildren(null, true);
-            }, null, "arrayChange"); // Subscribe to "arrayChange" events ...
+//            WildfireOutputView.prototype.percentContainedxx = function (element, wildfire) {
+//                var percentContained = wildfire.percentContained;
+//                var width = 960,
+//                        height = 500,
+//                        twoPi = 2 * Math.PI,
+//                        progress = percentContained,
+//                        total = 1308573, // must be hard-coded if server doesn't report Content-Length
+//                        formatPercent = d3.format(".0%");
+//
+//                var arc = d3.svg.arc()
+//                        .startAngle(0)
+//                        .innerRadius(180)
+//                        .outerRadius(240);
+//
+//                var svg = d3.select(element).append("svg")
+//                        .attr("width", width)
+//                        .attr("height", height)
+//                        .append("g")
+//                        .attr("transform", "translate(" + width / 2 + "," + height / 2 + ")");
+//
+//                var meter = svg.append("g")
+//                        .attr("class", "progress-meter");
+//
+//                meter.append("path")
+//                        .attr("class", "background")
+//                        .attr("d", arc.endAngle(twoPi));
+//
+//                var foreground = meter.append("path")
+//                        .attr("class", "foreground");
+//
+//                var text = meter.append("text")
+//                        .attr("text-anchor", "middle")
+//                        .attr("dy", ".35em");
+//
+//                d3.json("https://api.github.com/repos/mbostock/d3/git/blobs/2e0e3b6305fa10c1a89d1dfd6478b1fe7bc19c1e?" + Math.random())
+//                        .on("progress", function () {
+//                            var i = d3.interpolate(progress, d3.event.loaded / total);
+//                            d3.transition().tween("progress", function () {
+//                                return function (t) {
+//                                    progress = i(t);
+//                                    foreground.attr("d", arc.endAngle(twoPi * progress));
+//                                    text.text(formatPercent(progress));
+//                                };
+//                            });
+//                        })
+//                        .get(function (error, data) {
+//                            meter.transition().delay(250).attr("transform", "scale(0)");
+//                        });
+//            };
 
-            /** "Goto" function centers the globe on a selected wildfire */
-            this.gotoWildfire = function (wildfire) {
-                var deferred = $.Deferred();
-                if (wildfire.geometry) {
-                    globe.goto(wildfire.latitude, wildfire.longitude);
-                    globe.selectController.doSelect(wildfire);
-                } else {
-                    // Load the geometry
-                    wildfire.loadDeferredGeometry(deferred);
-                    $.when(deferred).done(function (self) {
-                        globe.goto(wildfire.latitude, wildfire.longitude);
-                        globe.selectController.doSelect(wildfire);
-                    });
-                }
-            };
-            /** "Goto" function centers the globe on a selected fireLookout */
-            this.gotoFireLookout = function (fireLookout) {
-                globe.goto(fireLookout.latitude(), fireLookout.longitude());
-                globe.selectController.doSelect(fireLookout);
-            };
-            /** "Edit" function invokes a modal dialog to edit the fireLookout attributes */
-            this.editFireLookout = function (fireLookout) {
-                if (fireLookout.isOpenable) {
-                    fireLookout.open();
-                }
-            };
-            /** "Remove" function removes a fireLookout from the globe */
-            this.removeFireLookout = function (fireLookout) {
-                if (fireLookout.isRemovable) {
-                    fireLookout.remove();
-                }
-            };
+
+
+            return WildfireOutputView;
         }
-
-        return  WildfireViewModel;
-    }
 );
+

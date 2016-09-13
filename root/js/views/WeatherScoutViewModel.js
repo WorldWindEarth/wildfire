@@ -5,27 +5,26 @@
  */
 
 /**
- * Output content module
+ * WeatherScout content module.
  *
  * @param {type} ko
  * @param {type} $
- * @returns {WeatherOutputView}
+ * @param {type} d3
+ * @param {type} vis
+ * @returns {WeatherScoutView}
  */
 define(['knockout',
     'jquery',
     'd3',
-    'vis',
-    'model/Constants'],
-        function (ko, $, d3, vis, constants) {
+    'vis'],
+        function (ko, $, d3, vis) {
 
             /**
-             * The view model for the Output panel.
+             * The view for an individual WeatherScout.
              * @constructor
              */
-            function WeatherOutputView(globe) {
+            function WeatherScoutView() {
                 var self = this;
-
-                this.globe = globe;
 
                 // Define the custom binding used in the #wildfire-view-template template
                 ko.bindingHandlers.visualizeTemperature = {
@@ -56,7 +55,7 @@ define(['knockout',
             }
 
             // Generate a vis.js graph for the weather
-            WeatherOutputView.prototype.drawAirTemperatureGraph = function (element, wxScout) {
+            WeatherScoutView.prototype.drawAirTemperatureGraph = function (element, wxScout) {
                 var forecasts = wxScout.getForecasts(),
                         i, len, wx,
                         items = [],
@@ -101,7 +100,7 @@ define(['knockout',
             
             
             // Generate a vis.js graph for the weather
-            WeatherOutputView.prototype.drawRelativeHumidityGraph = function (element, wxScout) {
+            WeatherScoutView.prototype.drawRelativeHumidityGraph = function (element, wxScout) {
                 var forecasts = wxScout.getForecasts(),
                         i, len, wx,
                         items = [],
@@ -145,7 +144,7 @@ define(['knockout',
                 var graph2d = new vis.Graph2d(element, dataset, groups, options);
             }
 
-            return WeatherOutputView;
+            return WeatherScoutView;
         }
 );
 

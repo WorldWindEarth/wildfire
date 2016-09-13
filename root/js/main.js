@@ -41,6 +41,7 @@ require(['knockout', 'jquery', 'jqueryui', 'bootstrap', 'worldwind',
     'model/Constants',
     'model/Explorer',
     'views/FireLookoutEditor',
+    'views/FiresViewModel',
     'model/globe/Globe',
     'views/GlobeViewModel',
     'views/HeaderViewModel',
@@ -53,7 +54,6 @@ require(['knockout', 'jquery', 'jqueryui', 'bootstrap', 'worldwind',
     'views/SearchViewModel',
     'views/WeatherScoutEditor',
     'views/WeatherViewModel',
-    'views/WildfireViewModel',
     'model/globe/layers/GeoMacCurrentPerimetersLayer',
     'model/globe/layers/GeoMacHistoricPerimetersLayer',
     'model/globe/layers/UsgsContoursLayer',
@@ -64,6 +64,7 @@ require(['knockout', 'jquery', 'jqueryui', 'bootstrap', 'worldwind',
                 constants,
                 explorer,
                 FireLookoutEditor,
+                FiresViewModel,
                 Globe,
                 GlobeViewModel,
                 HeaderViewModel,
@@ -76,7 +77,6 @@ require(['knockout', 'jquery', 'jqueryui', 'bootstrap', 'worldwind',
                 SearchViewModel,
                 WeatherScoutEditor,
                 WeatherViewModel,
-                WildfireViewModel,
                 GeoMacCurrentPerimetersLayer,
                 GeoMacHistoricPerimetersLayer,
                 UsgsContoursLayer,
@@ -143,7 +143,7 @@ require(['knockout', 'jquery', 'jqueryui', 'bootstrap', 'worldwind',
             ko.applyBindings(new MarkerEditor(), document.getElementById('marker-editor'));
             ko.applyBindings(new WeatherViewModel(globe, explorer.weatherManager), document.getElementById('weather'));
             ko.applyBindings(new WeatherScoutEditor(), document.getElementById('weather-scout-editor'));
-            ko.applyBindings(new WildfireViewModel(globe, explorer.wildfireManager, explorer.lookoutManager), document.getElementById('wildfire'));
+            ko.applyBindings(new FiresViewModel(globe, explorer.wildfireManager, explorer.lookoutManager), document.getElementById('fires'));
             ko.applyBindings(new FireLookoutEditor(), document.getElementById('fire-lookout-editor'));
             ko.applyBindings(new OuputViewModel(globe), document.getElementById('output'));
 
