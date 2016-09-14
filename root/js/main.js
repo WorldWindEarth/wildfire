@@ -56,6 +56,7 @@ require(['knockout', 'jquery', 'jqueryui', 'bootstrap', 'worldwind',
     'views/WildfireViewModel',
     'model/globe/layers/GeoMacCurrentPerimetersLayer',
     'model/globe/layers/GeoMacHistoricPerimetersLayer',
+    'model/globe/layers/LandfireFbfm13Layer',
     'model/globe/layers/UsgsContoursLayer',
     'model/globe/layers/UsgsImageryTopoBaseMapLayer',
     'model/globe/layers/UsgsTopoBaseMapLayer'],
@@ -79,6 +80,7 @@ require(['knockout', 'jquery', 'jqueryui', 'bootstrap', 'worldwind',
                 WildfireViewModel,
                 GeoMacCurrentPerimetersLayer,
                 GeoMacHistoricPerimetersLayer,
+                LandfireFbfm13Layer,
                 UsgsContoursLayer,
                 UsgsImageryTopoBaseMapLayer,
                 UsgsTopoBaseMapLayer) { // this callback gets executed when all required modules are loaded
@@ -116,6 +118,7 @@ require(['knockout', 'jquery', 'jqueryui', 'bootstrap', 'worldwind',
             //globe.layerManager.addBaseLayer(new WorldWind.OpenStreetMapImageLayer(null), {enabled: false, opacity: 0.7, detailHint: config.imageryDetailHint});
 
             globe.layerManager.addOverlayLayer(new UsgsContoursLayer(), {enabled: false});
+            //globe.layerManager.addOverlayLayer(new LandfireFbfm13Layer(), {enabled: false});
             globe.layerManager.addOverlayLayer(new GeoMacCurrentPerimetersLayer(), {enabled: true});
             globe.layerManager.addOverlayLayer(new GeoMacHistoricPerimetersLayer(), {enabled: false});
 
