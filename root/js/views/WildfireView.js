@@ -5,28 +5,28 @@
  */
 
 /**
- * Output content module
+ * Wildfire content module
  *
  * @param {type} ko
  * @param {type} $
- * @returns {WildfireOutputView}
+ * @param {type} d3
+ * @param {type} vis
+ * 
+ * @returns {WildfireView}
  */
 define(['knockout',
     'jquery',
     'd3',
     'moment',
-    'vis',
-    'model/Constants'],
-        function (ko, $, d3, moment, vis, constants) {
+    'vis'],
+        function (ko, $, d3, moment, vis) {
 
             /**
-             * The view model for the Wildfire Output panel.
+             * The view model for an individual Wildfire.
              * @constructor
              */
-            function WildfireOutputView(globe) {
+            function WildfireView() {
                 var self = this;
-
-                this.globe = globe;
 
                 // Define the custom binding used in the #wildfire-view-template template
                 ko.bindingHandlers.visualizePercentContained = {
@@ -76,7 +76,7 @@ define(['knockout',
              * @param {type} element DOM element where the Timeline will be attached
              * @param {type} wildfire The Wildfire model element
              */
-            WildfireOutputView.prototype.dateRange = function (element, wildfire) {
+            WildfireView.prototype.dateRange = function (element, wildfire) {
                 var discovered = moment(wildfire.discoveryDate),
                         lastReported = moment(wildfire.reportDate),
                         duration = moment.duration(discovered.diff(lastReported, 'days'), 'days');
@@ -114,7 +114,7 @@ define(['knockout',
              * @param {type} element DOM element where the Timeline will be attached
              * @param {type} wildfire The Wildfire model element
              */
-            WildfireOutputView.prototype.percentContained = function (element, wildfire) {
+            WildfireView.prototype.percentContained = function (element, wildfire) {
                 var progress = wildfire.percentContained / 100.0;
                 var colors = {
                     'pink': '#E1499A',
@@ -194,7 +194,14 @@ define(['knockout',
                 numberText.text(formatPercent(progress));
             };
 
-            WildfireOutputView.prototype.wildfireSize = function (element, wildfire) {
+            /**
+             * Display the wildfire size as a category in a segmented chart via d3.
+             * See: https://github.com/d3/d3/blob/master/API.md
+             * 
+             * @param {type} element DOM element where the Timeline will be attached
+             * @param {type} wildfire The Wildfire model element
+             */
+            WildfireView.prototype.wildfireSize = function (element, wildfire) {
                 var Needle, arc, arcEndRad, arcStartRad, barWidth, chart, chartInset, degToRad, el,
                         endPadRad, height, i, margin, needle, numSections, padRad, percToDeg,
                         percToRad, percent, radius, ref, sectionIndx, sectionPerc, startPadRad,
@@ -202,8 +209,8 @@ define(['knockout',
 
                 percent = 0.65;
 
+                numSections = 5;
                 barWidth = 5;
-                numSections = 3;
                 sectionPerc = 1 / numSections / 2;
                 padRad = 0.05;
                 chartInset = 10;
@@ -350,7 +357,7 @@ define(['knockout',
 
 
 
-            return WildfireOutputView;
+            return WildfireView;
         }
 );
 

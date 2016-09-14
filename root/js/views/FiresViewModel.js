@@ -5,17 +5,28 @@
 
 /*global WorldWind*/
 
+/**
+ * Fires output module,
+ * 
+ * @param {type} ko
+ * @param {type} $
+ * @param {type} jqueryui
+ * @param {type} fancytree
+ * @param {type} constants
+ * @returns {FiresViewModel}
+ */
 define(['knockout', 'jquery', 'jqueryui', 'jquery-fancytree', 'model/Constants'],
     function (ko, $, jqueryui, fancytree, constants) {
         "use strict";
         /**
-         *
+         * The view model for the Fires tab.
+         * 
          * @param {Globe} globe
          * @param {WildlandFireManager} wildfireManager
          * @param {FireLookoutManager} fireLookoutManager
          * @constructor
          */
-        function WildfireViewModel(globe, wildfireManager, fireLookoutManager) {
+        function FiresViewModel(globe, wildfireManager, fireLookoutManager) {
             var self = this,
                 fire, i, len, lastState, state, tree, fireNode, stateNode, rootNode,
                 parent;
@@ -137,6 +148,6 @@ define(['knockout', 'jquery', 'jqueryui', 'jquery-fancytree', 'model/Constants']
             };
         }
 
-        return  WildfireViewModel;
+        return  FiresViewModel;
     }
 );
