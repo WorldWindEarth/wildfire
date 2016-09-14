@@ -13,7 +13,7 @@
  * @param {type} moment
  * @param {type} vis
  * 
- * @returns {FireLookoutViewModel}
+ * @returns {FireLookoutView}
  */
 define(['knockout',
     'jquery',
@@ -26,7 +26,7 @@ define(['knockout',
              * The view model for an individual FireLookout.
              * @constructor
              */
-            function FireLookoutViewModel() {
+            function FireLookoutView() {
                 var self = this;
 
                 // Define custom Knockout bindings for a FireLookout.
@@ -72,7 +72,7 @@ define(['knockout',
              * @param {type} element DOM element where the Timeline will be attached
              * @param {type} wildfire The Wildfire model element
              */
-            FireLookoutViewModel.prototype.drawWildfireDiamond = function (element, lookout) {
+            FireLookoutView.prototype.drawWildfireDiamond = function (element, lookout) {
 
             };
 
@@ -85,7 +85,7 @@ define(['knockout',
              * @param {type} element DOM element where the Timeline will be attached
              * @param {type} wildfire The Wildfire model element
              */
-            FireLookoutViewModel.prototype.drawHaulChart = function (element, wildfire) {
+            FireLookoutView.prototype.drawHaulChart = function (element, wildfire) {
                 
             };
 
@@ -96,11 +96,11 @@ define(['knockout',
              * @param {type} element DOM element where the Timeline will be attached
              * @param {type} wildfire The Wildfire model element
              */
-            FireLookoutViewModel.prototype.drawFuelModel = function (element, wildfire) {
+            FireLookoutView.prototype.drawFuelModel = function (element, wildfire) {
 
             };
 
-            return FireLookoutViewModel;
+            return FireLookoutView;
         }
 );
 

@@ -12,7 +12,7 @@
  * @param {type} d3
  * @param {type} vis
  * 
- * @returns {WildfireOutputView}
+ * @returns {WildfireView}
  */
 define(['knockout',
     'jquery',
@@ -25,7 +25,7 @@ define(['knockout',
              * The view model for an individual Wildfire.
              * @constructor
              */
-            function WildfireOutputView() {
+            function WildfireView() {
                 var self = this;
 
                 // Define the custom binding used in the #wildfire-view-template template
@@ -76,7 +76,7 @@ define(['knockout',
              * @param {type} element DOM element where the Timeline will be attached
              * @param {type} wildfire The Wildfire model element
              */
-            WildfireOutputView.prototype.dateRange = function (element, wildfire) {
+            WildfireView.prototype.dateRange = function (element, wildfire) {
                 var discovered = moment(wildfire.discoveryDate),
                         lastReported = moment(wildfire.reportDate),
                         duration = moment.duration(discovered.diff(lastReported, 'days'), 'days');
@@ -114,7 +114,7 @@ define(['knockout',
              * @param {type} element DOM element where the Timeline will be attached
              * @param {type} wildfire The Wildfire model element
              */
-            WildfireOutputView.prototype.percentContained = function (element, wildfire) {
+            WildfireView.prototype.percentContained = function (element, wildfire) {
                 var progress = wildfire.percentContained / 100.0;
                 var colors = {
                     'pink': '#E1499A',
@@ -201,7 +201,7 @@ define(['knockout',
              * @param {type} element DOM element where the Timeline will be attached
              * @param {type} wildfire The Wildfire model element
              */
-            WildfireOutputView.prototype.wildfireSize = function (element, wildfire) {
+            WildfireView.prototype.wildfireSize = function (element, wildfire) {
                 var Needle, arc, arcEndRad, arcStartRad, barWidth, chart, chartInset, degToRad, el,
                         endPadRad, height, i, margin, needle, numSections, padRad, percToDeg,
                         percToRad, percent, radius, ref, sectionIndx, sectionPerc, startPadRad,
@@ -357,7 +357,7 @@ define(['knockout',
 
 
 
-            return WildfireOutputView;
+            return WildfireView;
         }
 );
 
