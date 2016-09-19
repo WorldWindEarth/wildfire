@@ -9,17 +9,21 @@
  *
  * @param {type} ko
  * @param {type} $
+ * @param {type} FireLookoutView
+ * @param {type} WeatherScoutView
+ * @param {type} WildfireView
+ * 
  * @returns {OutputViewModel}
  */
 define(['knockout',
     'jquery',
-    'views/FireLookoutViewModel',
-    'views/WeatherScoutViewModel',
-    'views/WildfireViewModel'],
+    'views/FireLookoutView',
+    'views/WeatherScoutView',
+    'views/WildfireView'],
         function (ko, $, 
-                FireLookoutViewModel,
-                WeatherScoutViewModel,
-                WildfireViewModel) {
+                FireLookoutView,
+                WeatherScoutView,
+                WildfireView) {
 
             /**
              * The view model for the Output panel.
@@ -30,12 +34,12 @@ define(['knockout',
 
                 this.globe = globe;
 
-                // Knockout custom binding used in the #fire-lookout-view-template
-                this.fireLookoutViewModel = new FireLookoutViewModel();
-                // Knockout custom binding used in the #weather-scout-view-template
-                this.wxScoutViewModel = new WeatherScoutViewModel();
-                // Knockout custom binding used in the #wildfire-view-template
-                this.wildfireView = new WildfireViewModel();
+                // Load the Knockout custom binding used in the #fire-lookout-view-template
+                this.fireLookoutView = new FireLookoutView();
+                // Load the Knockout custom binding used in the #weather-scout-view-template
+                this.wxScoutView = new WeatherScoutView();
+                // Load the Knockout custom binding used in the #wildfire-view-template
+                this.wildfireView = new WildfireView();
 
                 // The viewTemplate defines the content displayed in the output pane.
                 this.viewTemplateName = ko.observable(null);

@@ -88,14 +88,20 @@ define([
             };
 
             // Persistent properties
+            // TODO: convert to ko.observables
             this.fuelModelNo = args.fuelModelNo || config.defaultFuelModelNo;
             this.fuelModelManualSelect = args.fuelModelManualSelect || false;
             this.moistureScenarioName = args.moistureScenarioName || config.defaultFuelMoistureScenario;
 
             // Dynamic properties
+            // TODO: convert to ko.observables
+            // TODO: Add surfaceFire observable!!
             this.sunlight = null;
             this.terrain = Terrain.ZERO;
             this.surfaceFuel = null;
+            
+            this.fireBehavior = ko.observable();
+            this.fireEnvironment = ko.observable();
 
             // Internals
             this.refreshInProgress = false;
@@ -228,7 +234,16 @@ define([
                         //Callback to process JSON result
                         //log.info('FireLookout', 'refresh-deferred', JSON.stringify(json));
                         self.surfaceFire = json;
-
+                        self.fireBehavior({
+                            directionMaxSpread: json.directionMaxSpread.value,
+                            flameLength: json.flameLength.value,
+                            flameLengthBacking: json.flameLengthBacking.value,
+                            flameLengthFlanking: json.flameLengthFlanking.value,
+                            rateOfSpreadMax: json.rateOfSpreadMax.value,
+                            rateOfSpreadBacking: json.rateOfSpreadBacking.value,
+                            rateOfSpreadFlanking: json.rateOfSpreadFlanking.value,
+                            heatRelease: json.fuelBed.heatRelease.value
+                        });
                         log.info('FireLookout', 'refreshFireBehavior', self.name() + ': EVENT_FIRE_BEHAVIOR_CHANGED');
                         self.fire(events.EVENT_FIRE_BEHAVIOR_CHANGED, self);
 
