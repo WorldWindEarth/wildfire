@@ -677,6 +677,7 @@
     -->
     <div style="display: none">
         <div id="fire-lookout-editor">
+            <!--TODO: movable; fuel model; fuel moisture; wind; air temp; humidity; sky-cover-->
             <label for="name">Name</label>
             <input type="text" name="name" id="name" class="text ui-widget-content ui-corner-all"
                    data-bind="value: lookout().name">
@@ -698,26 +699,28 @@
                 </h1>
             </div>
             <div class="panel-body" style="height: calc(100% - 70px); overflow-y: scroll;">
-                <div>
-                   <h4>Wildfire Diamond</h4>
-                   <!--Custom knockout binding-->
-                   <div data-bind="visualizeWildfireDiamond: $data" style="width: 200px; height: 200px; padding-right: 15px"></div>
-                </div>
-                <div>
-                   <h4>Haul Chart<h4>
-                   <!--Custom knockout binding-->
-                   <div data-bind="visualizeHaulChart: $data" style="padding-right: 15px"></div>
-                </div>
-                <div>
-                   <h4>Fuel Model</h4>
-                   <!--Custom knockout binding-->
-                   <div data-bind="visualizeFuelModel: $data" style="padding-right: 15px"></div>
+                <div class="container-flex">
+                    <div class="flex-item">
+                       <h4>Wildfire Diamond</h4>
+                       <!--Custom knockout binding-->
+                       <div data-bind="visualizeWildfireDiamond: $data.fireBehavior()" style="width: 400px; height: 200px; padding-right: 15px"></div>
+                    </div>
+                    <div class="flex-item">
+                       <h4>Haul Chart<h4>
+                       <!--Custom knockout binding-->
+                       <div data-bind="visualizeHaulChart: $data" style="padding-right: 15px"></div>
+                    </div>
+                    <div class="flex-item">
+                       <h4>Fuel Model</h4>
+                       <!--Custom knockout binding-->
+                       <div data-bind="visualizeFuelModel: $data" style="width: 400px; height: 200px; padding-right: 15px"></div>
+                    </div>
                 </div>
             </div>
         </div>
         <!-- /ko -->
     </script>  
-
+ 
 
     <!--
     Wildfire Item Template
