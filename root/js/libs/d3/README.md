@@ -14,7 +14,7 @@
 
 ## Installing
 
-If you use NPM, `npm install d3`. Otherwise, download the [latest release](https://github.com/d3/d3/releases/latest). The released bundle supports anonymous AMD, CommonJS, and vanilla environments. You can load directly from [d3js.org](https://d3js.org), [CDNJS](https://cdnjs.com/libraries/d3), or [npmcdn](https://npmcdn.com/d3/). For example:
+If you use npm, `npm install d3`. Otherwise, download the [latest release](https://github.com/d3/d3/releases/latest). The released bundle supports anonymous AMD, CommonJS, and vanilla environments. You can load directly from [d3js.org](https://d3js.org), [CDNJS](https://cdnjs.com/libraries/d3), or [unpkg](https://unpkg.com/d3/). For example:
 
 ```html
 <script src="https://d3js.org/d3.v4.js"></script>
@@ -42,4 +42,16 @@ Or import everything into a namespace (here, `d3`):
 
 ```js
 import * as d3 from "d3";
+```
+
+In Node:
+
+```js
+var d3 = require("d3");
+```
+
+You can also require individual modules and combine them into a `d3` object using [Object.assign](https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/Object/assign):
+
+```js
+var d3 = Object.assign({}, require("d3-format"), require("d3-geo"), require("d3-geo-projection"));
 ```
