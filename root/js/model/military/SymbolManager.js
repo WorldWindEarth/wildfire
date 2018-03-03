@@ -9,11 +9,13 @@ define([
     'model/military/TacticalSymbol',
     'knockout',
     'model/Constants',
+    'model/util/Log',
     'worldwind'],
     function (
         TacticalSymbol,
         ko,
-        constants) {
+        constants,
+        log) {
 
         "use strict";
         /**
@@ -26,6 +28,9 @@ define([
             var self = this;
             this.globe = globe;
             this.layer = layer || globe.findLayer(constants.LAYER_NAME_TACTICAL_SYMBOLS);
+            if (!this.layer) {
+                log.error("SymbolManager", "constructor", "missingLayer");
+            }            
             this.symbols = ko.observableArray();
             this.symbolCount = ko.observable(0);
 

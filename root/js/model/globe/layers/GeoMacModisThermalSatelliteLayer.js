@@ -56,10 +56,10 @@ define([
                 service: "http://wildfire.cr.usgs.gov/ArcGIS/services/geomac_dyn/MapServer/WMSServer?",
                 layerNames: "MODIS Fire Detection",
                 sector: new WorldWind.Sector(13.000340, 68.141919, -165.117579, -65.333160),
-                levelZeroDelta: new WorldWind.Location(36, 36),
+                levelZeroDelta: new WorldWind.Location(180, 180),
                 numLevels: 8,
                 format: "image/png",
-                size: 512,
+                size: 256,
                 coordinateSystem: "EPSG:4326", // optional
                 styleNames: "" // (optional): {String} A comma separated list of the styles to include in this layer.</li>
             };

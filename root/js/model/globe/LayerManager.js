@@ -150,6 +150,8 @@ define([
                 this.addBaseLayer(new EoxOpenStreetMapLayer(), {enabled: false, opacity: 0.8, detailControl: config.imagerydetailControl});
 
                 this.addDataLayer(new WorldWind.RenderableLayer(constants.LAYER_NAME_WEATHER), {enabled: true, pickEnabled: true});
+                this.addDataLayer(new WorldWind.RenderableLayer(constants.LAYER_NAME_FIRE_LOOKOUTS), {enabled: true, pickEnabled: true});
+                this.addDataLayer(new WorldWind.RenderableLayer(constants.LAYER_NAME_WILDLAND_FIRES), {enabled: true, pickEnabled: true});
 
 //            // Asynchronysly load the WMS layers found in the WWSK GeoServer WMS
 //            this.addAvailableWmsLayers();

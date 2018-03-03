@@ -7,15 +7,16 @@
 /*global define*/
 
 define([
-    'knockout',
-    'model/Constants',
     'model/weather/WeatherScout',
+    'model/Constants',
+    'model/util/Log',
+    'knockout',
     'worldwind'],
     function (
-        ko,
-        constants,
         WeatherScout,
-        ww) {
+        constants,
+        log,
+        ko) {
         "use strict";
         /**
          * Constructs a WeatherScoutManager that manages a collection of 
@@ -28,6 +29,9 @@ define([
             var self = this;
             this.globe = globe;
             this.layer = layer || globe.findLayer(constants.LAYER_NAME_WEATHER);
+            if (!this.layer) {
+                log.error("WeatherScoutManager", "constructor", "missingLayer");
+            }           
             this.scouts = ko.observableArray();
             this.scoutCount = ko.observable(0);
             this.selectedScout = null;

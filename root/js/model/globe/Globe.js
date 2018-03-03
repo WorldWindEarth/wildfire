@@ -595,8 +595,11 @@ define([
      * @returns {Layer}
      */
     Globe.prototype.findLayer = function (name) {
-        var layer,
-                i, len;
+        if (!name) {
+            log.error("Globe", "findLayer", "name parameter is null or undefined");
+            return null;
+        }
+        var layer, i, len;
         for (i = 0, len = this.wwd.layers.length; i < len; i++) {
             layer = this.wwd.layers[i];
             if (layer.displayName === name) {

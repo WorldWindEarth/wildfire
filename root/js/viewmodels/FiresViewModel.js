@@ -15,8 +15,8 @@
  * @param {type} constants
  * @returns {FiresViewModel}
  */
-define(['knockout', 'jquery', 'jqueryui', 'jquery-fancytree', 'model/Constants'],
-    function (ko, $, jqueryui, fancytree, constants) {
+define(['knockout', 'jquery', 'jqueryui', 'jquery-fancytree', 'model/Constants', 'model/util/Log'],
+    function (ko, $, jqueryui, fancytree, constants, log) {
         "use strict";
         /**
          * The view model for the Fires tab.
@@ -26,10 +26,25 @@ define(['knockout', 'jquery', 'jqueryui', 'jquery-fancytree', 'model/Constants']
          * @param {FireLookoutManager} fireLookoutManager
          * @constructor
          */
-        function FiresViewModel(globe, wildfireManager, fireLookoutManager) {
+        function FiresViewModel(globe, wildfireManager, fireLookoutManager, viewFragment, appendToId) {
             var self = this,
                 fire, i, len, lastState, state, tree, fireNode, stateNode, rootNode,
                 parent;
+
+            if (!viewFragment) {
+                throw log.error("FiresViewModel", "constructor", "invalid viewFragment param");
+            }
+            if (!appendToId) {
+                throw log.error("FiresViewModel", "constructor", "invalid appendToId param");
+            }
+            var domNodes = $.parseHTML(viewFragment);
+
+            // Load the view html into the specified DOM element
+            $("#" + appendToId).append(domNodes);
+            this.view = domNodes[0];
+
+            // Binds the view to this view model.
+            ko.applyBindings(this, this.view);
 
             this.wildfires = wildfireManager.fires; // observableArray
             this.fireLookouts = fireLookoutManager.lookouts; // observableArray
@@ -55,64 +70,64 @@ define(['knockout', 'jquery', 'jqueryui', 'jquery-fancytree', 'model/Constants']
 
             // Populate the JQuery.fancytree source data with wildfires.
             // The wildfires array should be sorted by state.
-            $("#wildfire-tree").fancytree({
-                source: [],
-                checkbox: false,
-                extensions: ["glyph", "wide"],
-                glyph: glyph_opts,
-                selectMode: 2,
-                toggleEffect: {
-                    effect: "drop",
-                    options: {direction: "left"},
-                    duration: 400},
-                wide: {
-                    iconWidth: "1em", // Adjust this if @fancy-icon-width != "16px"
-                    iconSpacing: "0.5em", // Adjust this if @fancy-icon-spacing != "3px"
-                    levelOfs: "1.5em"     // Adjust this if ul padding != "16px"
-                },
-                icon: function (event, data) {
-                    // if( data.node.isFolder() ) {
-                    //   return "glyphicon glyphicon-book";
-                    // }
-                },
-                activate: function (event, data) {
-                    var node = data.node;
-                    // acces node attributes
-                    $("#echoActive").text(node.title);
-                    if (!$.isEmptyObject(node.data)) {
-                        self.gotoWildfire(node.data);
-                    }
-                }
-            });
-            
+//            $("#wildfire-tree").fancytree({
+//                source: [],
+//                checkbox: false,
+//                extensions: ["glyph", "wide"],
+//                glyph: glyph_opts,
+//                selectMode: 2,
+//                toggleEffect: {
+//                    effect: "drop",
+//                    options: {direction: "left"},
+//                    duration: 400},
+//                wide: {
+//                    iconWidth: "1em", // Adjust this if @fancy-icon-width != "16px"
+//                    iconSpacing: "0.5em", // Adjust this if @fancy-icon-spacing != "3px"
+//                    levelOfs: "1.5em"     // Adjust this if ul padding != "16px"
+//                },
+//                icon: function (event, data) {
+//                    // if( data.node.isFolder() ) {
+//                    //   return "glyphicon glyphicon-book";
+//                    // }
+//                },
+//                activate: function (event, data) {
+//                    var node = data.node;
+//                    // acces node attributes
+//                    $("#echoActive").text(node.title);
+//                    if (!$.isEmptyObject(node.data)) {
+//                        self.gotoWildfire(node.data);
+//                    }
+//                }
+//            });
+//            
             // Subscribe to "arrayChange" events ...
             // documented here: http://blog.stevensanderson.com/2013/10/08/knockout-3-0-release-candidate-available/
-            this.wildfires.subscribe(function (changes) {
-                tree = $("#wildfire-tree").fancytree("getTree");
-                rootNode = $("#wildfire-tree").fancytree("getRootNode");
-                changes.forEach(function (change) {
-                    if (change.status === 'added' && change.moved === undefined) {
-                        fire = change.value;
-                        stateNode = tree.getNodeByKey(fire.state);
-                        if (stateNode === null) {
-                            stateNode = rootNode.addChildren({
-                                title: fire.state,
-                                key: fire.state,
-                                children: [],
-                                folder: true
-                            });
-                        }
-                        fireNode = stateNode.addChildren({
-                            title: fire.name,
-                            key: fire.id,
-                            data: fire
-                        });
-                    } else if (change.status === 'deleted' && change.moved === undefined) {
-
-                    }
-                });
-                rootNode.sortChildren(null, true);
-            }, null, "arrayChange"); // Subscribe to "arrayChange" events ...
+//            this.wildfires.subscribe(function (changes) {
+//                tree = $("#wildfire-tree").fancytree("getTree");
+//                rootNode = $("#wildfire-tree").fancytree("getRootNode");
+//                changes.forEach(function (change) {
+//                    if (change.status === 'added' && change.moved === undefined) {
+//                        fire = change.value;
+//                        stateNode = tree.getNodeByKey(fire.state);
+//                        if (stateNode === null) {
+//                            stateNode = rootNode.addChildren({
+//                                title: fire.state,
+//                                key: fire.state,
+//                                children: [],
+//                                folder: true
+//                            });
+//                        }
+//                        fireNode = stateNode.addChildren({
+//                            title: fire.name,
+//                            key: fire.id,
+//                            data: fire
+//                        });
+//                    } else if (change.status === 'deleted' && change.moved === undefined) {
+//
+//                    }
+//                });
+//                rootNode.sortChildren(null, true);
+//            }, null, "arrayChange"); // Subscribe to "arrayChange" events ...
 
             /** "Goto" function centers the globe on a selected wildfire */
             this.gotoWildfire = function (wildfire) {

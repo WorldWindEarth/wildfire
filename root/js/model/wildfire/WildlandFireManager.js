@@ -6,25 +6,30 @@
 /*global define*/
 
 define([
-    'knockout',
-    'model/Constants',
-    'model/services/GeoMacService',
-    'model/util/Publisher',
     'model/wildfire/WildlandFire',
-    'model/Events'],
+    'model/services/GeoMacService',
+    'model/util/Log',
+    'model/util/Publisher',
+    'model/Constants',
+    'model/Events',
+    'knockout'],
     function (
-        ko,
-        constants,
-        geoMacService,
-        publisher,
         WildlandFire,
-        events) {
+        geoMacService,
+        log,
+        publisher,
+        constants,
+        events,
+        ko) {
         "use strict";
         var WildlandFireManager = function (globe, layer) {
             // Mix-in Publisher capability (publish/subscribe pattern)
             publisher.makePublisher(this);
             this.globe = globe;
-            this.layer = layer || globe.findLayer(constants.LAYER_NAME_WILDLAND_FIRES);
+            this.layer = layer || globe.findLayer(constants.LAYER_NAME_WILDLAND_FIRES);            
+            if (!this.layer) {
+                log.error("WildlandFireManager", "constructor", "missingLayer");
+            }
             this.fires = ko.observableArray();
 
             var self = this,

@@ -6,29 +6,28 @@
 /*global define*/
 
 define([
-    'knockout',
     'model/wildfire/FireLookout',
     'model/util/Log',
     'model/Constants',
-    'model/Events'],
+    'knockout'],
     function (
-        ko,
         FireLookout,
         log,
         constants,
-        events) {
+        ko) {
         "use strict";
         var FireLookoutManager = function (globe, layer) {
             var self = this;
-            
+
             this.globe = globe;
             this.layer = layer || globe.findLayer(constants.LAYER_NAME_FIRE_LOOKOUTS);
-            if (!layer) {
+            if (!this.layer) {
                 log.error("FireLookoutManager", "constructor", "missingLayer");
             }
             this.lookouts = ko.observableArray();
+            this.lookoutCount = ko.observable(0);
             this.selectedLookout = null;
-            
+
             // Subscribe to "arrayChange" events in the lookouts array.
             // Here is where we add/remove lookouts from WW layer.
             this.lookouts.subscribe(function (changes) {
@@ -39,18 +38,19 @@ define([
                         // (but not if the array reordered -- i.e., moved items)
                         self.doEnsureUniqueName(change.value);
                         self.doAddLookoutToLayer(change.value);
-                    }
-                    else if (change.status === 'deleted' && change.moved === undefined) {
+                    } else if (change.status === 'deleted' && change.moved === undefined) {
                         // When a scout is removed we must remove the renderable,
                         // (but not if the array reordered -- i.e., moved items)
                         self.doRemoveLookoutFromLayer(change.value);
                     }
                 });
+                self.lookoutCount(self.lookouts().length);
+
             }, null, "arrayChange");
 
         };
-        
-        
+
+
         /**
          * Adds the given lookout to to the manager.
          * @param {FireLookout} lookout
@@ -82,7 +82,7 @@ define([
         FireLookoutManager.prototype.removeLookout = function (lookout) {
             this.lookouts.remove(lookout);
         };
-        
+
         /**
          * Invokes refresh on all the lookouts managed by this manager.
          */
@@ -113,8 +113,8 @@ define([
                 }
             }
         };
-        
-        
+
+
         /**
          * Saves the fire lookouts collection to local storage.
          */
@@ -122,7 +122,7 @@ define([
             var validLookouts = [],
                 lookoutsString,
                 i, len, lookout;
-        
+
             // Knockout's toJSON cannot process a WeatherScout/FireLookout object...
             // it appears to recurse and a call stack limit is reached.
             // So we create a simplfied the object here to pass to ko.toJSON()
@@ -140,7 +140,7 @@ define([
                         moistureScenarioName: lookout.moistureScenarioName
                     });
                 }
-            } 
+            }
             lookoutsString = ko.toJSON(validLookouts, [
                 'id',
                 'name',
@@ -153,7 +153,7 @@ define([
             ]);
             localStorage.setItem(constants.STORAGE_KEY_FIRE_LOOKOUTS, lookoutsString);
         };
-        
+
         /**
          * Restores the fire lookouts collection from local storage.
          */
@@ -180,9 +180,9 @@ define([
                     moistureScenarioName: item.moistureScenarioName
                 };
                 this.addLookout(new FireLookout(this, position, params));
-            }                                
+            }
         };
-        
+
         /**
          * Generates a unique name by appending a suffix '(n)'.
          * @param {String} name
@@ -229,7 +229,7 @@ define([
 
             return uniqueName;
         };
-        
+
         return FireLookoutManager;
     }
 );

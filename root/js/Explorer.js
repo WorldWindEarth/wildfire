@@ -15,7 +15,10 @@ define([
     'model/markers/MarkerManager',
     'model/military/SymbolManager',
     'model/weather/WeatherScoutManager',
+    'model/wildfire/FireLookoutManager',
+    'model/wildfire/WildlandFireManager',
     'viewmodels/BookmarkViewModel',
+    'viewmodels/FiresViewModel',
     'viewmodels/GlobeViewModel',
     'viewmodels/InfoViewModel',
     'viewmodels/LayersViewModel',
@@ -39,6 +42,8 @@ define([
     'text!views/settings.html',
     'text!views/symbols.html',
     'text!views/symbol-editor.html',
+    'text!views/fires.html',
+    'text!views/fire-lookouts.html',
     'text!views/weather-scouts.html',
     'text!views/weather-scout-editor.html',
     'url-search-params',
@@ -56,7 +61,10 @@ define([
         MarkerManager,
         SymbolManager,
         WeatherScoutManager,
+        FireLookoutManager,
+        WildlandFireManager,
         BookmarkViewModel,
+        FiresViewModel,
         GlobeViewModel,
         InfoViewModel,
         LayersViewModel,
@@ -80,6 +88,8 @@ define([
         settingsHtml,
         tacticalSymbolsHtml,
         tacticalSymbolEditorHtml,
+        firesHtml,
+        fireLookoutsHtml,
         weatherScoutsHtml,
         weatherScoutEditorHtml, 
         URLSearchParams,
@@ -121,6 +131,8 @@ define([
             this.markerManager = new MarkerManager(this.globe);
             this.symbolManager = new SymbolManager(this.globe);
             this.weatherManager = new WeatherScoutManager(this.globe);
+            this.fireLookoutManager = new FireLookoutManager(this.globe);
+            this.wildfireManager = new WildlandFireManager(this.globe);
 
             // Configure the objects used to animate the globe when performing "go to" operations
             this.goToAnimator = new WorldWind.GoToAnimator(this.wwd);
@@ -161,7 +173,8 @@ define([
             new GlobeViewModel(this, { 
                 markerManager: this.markerManager, 
                 symbolManager: this.symbolManager,                
-                weatherManager: this.weatherManager},
+                weatherManager: this.weatherManager,
+                fireLookoutManager: this.fireLookoutManager},
             globeHtml, "globe");
 
             new SearchViewModel(this.globe, "search");
@@ -171,6 +184,7 @@ define([
             // Tab Panels
             new LayersViewModel(this.globe, layersHtml, "left-sidebar");
             var markersViewModel = new MarkersViewModel(markersHtml, "left-sidebar");
+            new FiresViewModel(this.globe, this.wildfireManager, this.fireLookoutManager, firesHtml, "left-sidebar");
             new SettingsViewModel(this.globe, settingsHtml, "left-sidebar");
             new InfoViewModel(this.globe, infoHtml, "info-panel");
 
@@ -180,10 +194,11 @@ define([
             new TacticalSymbolEditor(tacticalSymbolEditorHtml);
             new WeatherScoutEditor(weatherScoutEditorHtml);            
             
-            // Marker content
+            // Marker tab content
+            markersViewModel.addMarkers(this.fireLookoutManager, fireLookoutsHtml, "markers-body");
+            markersViewModel.addMarkers(this.weatherManager, weatherScoutsHtml, "markers-body");
             markersViewModel.addMarkers(this.markerManager, basicMarkersHtml, "markers-body");
             markersViewModel.addMarkers(this.symbolManager, tacticalSymbolsHtml, "markers-body");
-            markersViewModel.addMarkers(this.weatherManager, weatherScoutsHtml, "markers-body");
 
 
         };
