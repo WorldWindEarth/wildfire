@@ -30,6 +30,7 @@ define([
     'viewmodels/SettingsViewModel',
     'viewmodels/TacticalSymbolEditor',
     'viewmodels/WeatherScoutEditor',
+    'viewmodels/WeatherScoutView',
     'text!views/basic-markers.html',
     'text!views/bookmark.html',
     'text!views/globe.html',
@@ -76,6 +77,7 @@ define([
         SettingsViewModel,
         TacticalSymbolEditor,
         WeatherScoutEditor,
+        WeatherScoutView,
         basicMarkersHtml,
         bookmarkHtml,
         globeHtml,
@@ -188,11 +190,12 @@ define([
             new SettingsViewModel(this.globe, settingsHtml, "left-sidebar");
             new InfoViewModel(this.globe, infoHtml, "info-panel");
 
-            // Dialogs
+            // Dialogs/displays
             new LayerSettings(this.globe, layerSettingsHtml);
             new MarkerEditor(markerEditorHtml);
             new TacticalSymbolEditor(tacticalSymbolEditorHtml);
             new WeatherScoutEditor(weatherScoutEditorHtml);            
+            new WeatherScoutView(this.globe);            
             
             // Marker tab content
             markersViewModel.addMarkers(this.fireLookoutManager, fireLookoutsHtml, "markers-body");
