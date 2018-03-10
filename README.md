@@ -7,6 +7,3 @@ An HTML5/JavaScript geo-browser with weather forecasts and wildland fire potenti
 
 
 ### Important Links
-- Live Demo: http://wildfire.worldwind.earth
-- NASA Web World Wind SDK (emxsys fork): https://github.com/emxsys/WebWorldWind
-- NASA World Wind Explorer (emxsys fork): https://github.com/emxsys/WorldWindExplorer

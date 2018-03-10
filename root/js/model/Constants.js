@@ -20,12 +20,10 @@ define([], function () {
         /**
          * The URL for the fuel models REST service.
          */
-//        FUELMODELS_REST_SERVICE: "http://emxsys.azurewebsites.net/wmt-rest/rs/fuelmodels",
         FUELMODELS_REST_SERVICE: "http://emxsys.net/wmt-rest/rs/fuelmodels",
         /**
          * The URL for the fuel models REST service.
          */
-//        FUELMOISTURE_REST_SERVICE: "http://emxsys.azurewebsites.net/wmt-rest/rs/fuelmoisture",
         FUELMOISTURE_REST_SERVICE: "http://emxsys.net/wmt-rest/rs/fuelmoisture",
         /**
          * The URL for the GeoMAC MapServer REST service.
@@ -63,6 +61,7 @@ define([], function () {
         LAYER_NAME_MARKERS: "Markers",
         LAYER_NAME_RETICLE: "Crosshairs",
         LAYER_NAME_SKY: "Sky",
+        LAYER_NAME_TACTICAL_SYMBOLS: "Tactical Symbols",
         LAYER_NAME_TIME_ZONES: "Time Zones",
         LAYER_NAME_VIEW_CONTROLS: "Controls",
         LAYER_NAME_WEATHER: "Weather Scouts",

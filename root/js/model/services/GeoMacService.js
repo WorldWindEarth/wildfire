@@ -3,7 +3,7 @@
  * The MIT License.
  */
 
-/*global define, $ */
+/*global define, $, WorldWind */
 
 /**
  * The GeoMAC ArcGIS REST services.
@@ -478,6 +478,13 @@ define([
                         callback(json.features);
                     }
                 });
+
+                // Use JSONP to request the metadata. Can't use XmlHTTPRequest because the virtual earth server doesn't
+                // allow cross-origin requests for metadata retrieval.
+//                WorldWind.WWUtil.jsonp(url + '?' + query, "jsonp", function (jsonData) {
+//                    var json = JSON.parse(jsonData);
+//                    callback(json.features);
+//                });
             },
             /**
              * Identifies features the GeoMAC ArcGIS MapService within the the given envelope. 

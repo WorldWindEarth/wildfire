@@ -7,7 +7,7 @@
 /*global define*/
 
 /**
- * Config singleton .
+ * Config singleton.
  *
  * @author Bruce Schubert
  */
@@ -55,6 +55,5 @@ define(['jquery',
             wxForecastDurationHours: 48
       };
 
-        return Config;
-    }
-);
+    return Config;
+});

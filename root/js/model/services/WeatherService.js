@@ -6,12 +6,12 @@
 /*global define, $ */
 
 define([
-        'model/Constants',
-        'model/util/Log',
-        'model/util/WmtUtil'],
+    'model/Constants',
+    'model/util/Log',
+    'model/util/WmtUtil'],
     function (constants,
-              log,
-              util) {
+        log,
+        util) {
         "use strict";
         var WeatherService = {
             /**
@@ -58,11 +58,11 @@ define([
                 // TODO: assert input values
                 var url = constants.WEATHER_REST_SERVICE,
                     query = "mime-type=application/json"
-                        + "&airTemperature=" + airTempF
-                        + "&relativeHumidity=" + relHum
-                        + "&windSpeed=" + windSpdKts
-                        + "&windDirection=" + windDir
-                        + "&cloudCover=" + clouds;
+                    + "&airTemperature=" + airTempF
+                    + "&relativeHumidity=" + relHum
+                    + "&windSpeed=" + windSpdKts
+                    + "&windDirection=" + windDir
+                    + "&cloudCover=" + clouds;
                 console.log(url + '?' + query);
                 $.get(url, query, callback);
             },
@@ -77,9 +77,9 @@ define([
                 // TODO: assert input values
                 var url = constants.WEATHER_REST_SERVICE + '/pointforecast',
                     query = "mime-type=application/json"
-                        + "&latitude=" + latitude
-                        + "&longitude=" + longitude
-                        + "&duration=" + duration;
+                    + "&latitude=" + latitude
+                    + "&longitude=" + longitude
+                    + "&duration=" + duration;
                 console.log(url + '?' + query);
                 $.get(url, query, callback);
             }
