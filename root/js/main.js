@@ -92,13 +92,14 @@ Try refreshing the page or try again later.\n\n" + err);
  * @param {JQuery} $
  */
 require([
+    'WorldWindFixes',
     'model/Config',
     'model/Constants',
     'pace',
     'jquery',
     'domReady!', // The value for domReady! is the current document
     'worldwind'],
-    function (config, constants, pace, $) {
+    function (fixes, config, constants, pace, $) {
         "use strict";
 
         // Start a  progress counter
@@ -131,6 +132,7 @@ require([
         // ----------------
         // Setup WorldWind
         // ----------------
+        fixes.applyLibraryFixes();
         WorldWind.Logger.setLoggingLevel(WorldWind.Logger.LEVEL_WARNING);
         if (window.DEBUG) {
             // Use local resources
@@ -142,6 +144,8 @@ require([
         
         // Initialize the WorldWindow virtual globe with the specified HTML5 canvas
         var wwd = new WorldWind.WorldWindow("globe-canvas");
+        fixes.applyWorldWindowFixes(wwd);
+        
         // Provide an initial location to view
         wwd.navigator.lookAtLocation.latitude = config.startupLatitude;
         wwd.navigator.lookAtLocation.longitude = config.startupLongitude;
