@@ -33,7 +33,7 @@
 /**
  * The GeoMAC Historic Fire Perimeters map layer.
  * 
- * See: http://wildfire.cr.usgs.gov/ArcGIS/services/geomac_dyn/MapServer/WMSServer?request=GetCapabilities&service=WMS
+ * See: https://wildfire.cr.usgs.gov/ArcGIS/services/geomac_dyn/MapServer/WMSServer?request=GetCapabilities&service=WMS
  * 
  * @returns {GeoMacHistoricPerimetersLayer}
  */
@@ -53,13 +53,15 @@ define([
             var cfg = {
                 title: "Historic Perimeters",
                 version: "1.3.0",
-                service: "http://wildfire.cr.usgs.gov/ArcGIS/services/geomac_dyn/MapServer/WMSServer?",
-                layerNames: "Historic Fire Perimeters",
+                // GeoMAC WMS servers return bad headers (duplicate CORS)
+                // service: "https://wildfire.cr.usgs.gov/ArcGIS/services/geomac_dyn/MapServer/WMSServer?",
+                service: "http://emxsys.net/geomac/wms/geomac_dyn?",
+                layerNames: "5", //  "Historic Fire Perimeters" - 2017,
                 sector: new WorldWind.Sector(13.000340, 68.141919, -165.117579, -65.333160),
-                levelZeroDelta: new WorldWind.Location(36, 36),
+                levelZeroDelta: new WorldWind.Location(180, 180),
                 numLevels: 19,
                 format: "image/png",
-                size: 512,
+                size: 256,
                 coordinateSystem: "EPSG:4326", // optional
                 styleNames: "" // (optional): {String} A comma separated list of the styles to include in this layer.</li>
             };
