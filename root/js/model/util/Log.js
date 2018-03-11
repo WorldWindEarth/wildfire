@@ -87,7 +87,8 @@ define([],
              */
             messageTable: {// KEEP THIS TABLE IN ALPHABETICAL ORDER
                 constructor: "Constructing the object.",
-                missingTerrain: "The specified terrain is null or undefined."
+                missingTerrain: "The specified terrain is null or undefined.",
+                missingFragment: "The HTML view fragment is null or undefined."
             }
         };
         return Log;
