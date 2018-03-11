@@ -28,7 +28,7 @@
  * SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
  */
 
-/*global define */
+/*global define, WorldWind */
 
 /**
  * The GeoMAC MODIS Thermal Satellite map layer.
@@ -39,9 +39,9 @@
  */
 
 define([
+    'model/globe/layers/EnhancedWmsLayer',
     'worldwind'],
-    function (
-        ww) {
+    function (EnhancedWmsLayer) {
         "use strict";
 
         /**
@@ -56,24 +56,23 @@ define([
                 // GeoMAC WMS servers return bad headers (duplicate CORS)
                 // service: "https://wildfire.cr.usgs.gov/ArcGIS/services/geomac_dyn/MapServer/WMSServer?",
                 service: "http://emxsys.net/geomac/wms/geomac_dyn?",
-                layerNames: "26", // "MODIS Fire Detection" - 2017
+                layerNames: "MODIS Fire Detection",
                 sector: new WorldWind.Sector(13.000340, 68.141919, -165.117579, -65.333160),
                 levelZeroDelta: new WorldWind.Location(180, 180),
-                numLevels: 8,
+                numLevels: 10,
                 format: "image/png",
                 size: 256,
                 coordinateSystem: "EPSG:4326", // optional
                 styleNames: "" // (optional): {String} A comma separated list of the styles to include in this layer.</li>
             };
 
-            WorldWind.WmsLayer.call(this, cfg);
+            EnhancedWmsLayer.call(this, cfg);
 
             // Make this layer translucent
             this.opacity = 0.5;
 
         };
-
-        GeoMacModisThermalSatelliteLayer.prototype = Object.create(WorldWind.WmsLayer.prototype);
+        GeoMacModisThermalSatelliteLayer.prototype = Object.create(EnhancedWmsLayer.prototype);
 
         return GeoMacModisThermalSatelliteLayer;
     }

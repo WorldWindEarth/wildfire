@@ -38,9 +38,9 @@
  */
 
 define([
+    'model/globe/layers/EnhancedWmsLayer',
     'worldwind'],
-    function (
-        ww) {
+    function (EnhancedWmsLayer) {
         "use strict";
 
         /**
@@ -55,7 +55,7 @@ define([
                 // GeoMAC WMS servers return bad headers (duplicate CORS)
                 // service: "https://wildfire.cr.usgs.gov/ArcGIS/services/geomac_dyn/MapServer/WMSServer?",
                 service: "http://emxsys.net/geomac/wms/geomac_dyn?",
-                layerNames: "24", // "HMS Fire Detection" - 2017
+                layerNames: "HMS Fire Detection",
                 sector: new WorldWind.Sector(13.000340, 68.141919, -165.117579, -65.333160),
                 levelZeroDelta: new WorldWind.Location(180, 180),
                 numLevels: 8,
@@ -65,14 +65,14 @@ define([
                 styleNames: "" // (optional): {String} A comma separated list of the styles to include in this layer.</li>
             };
 
-            WorldWind.WmsLayer.call(this, cfg);
+            EnhancedWmsLayer.call(this, cfg);
 
             // Make this layer translucent
             this.opacity = 0.5;
 
         };
 
-        GeoMacHmsThermalSatelliteLayer.prototype = Object.create(WorldWind.WmsLayer.prototype);
+        GeoMacHmsThermalSatelliteLayer.prototype = Object.create(EnhancedWmsLayer.prototype);
 
         return GeoMacHmsThermalSatelliteLayer;
     }

@@ -28,7 +28,7 @@
  * SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
  */
 
-/*global define */
+/*global define, WorldWind */
 
 /**
  * The GeoMAC Current Fire Perimeters map layer.
@@ -37,11 +37,10 @@
  * 
  * @returns {GeoMacCurrentPerimetersLayer}
  */
-
 define([
+    'model/globe/layers/EnhancedWmsLayer',
     'worldwind'],
-    function (
-        ww) {
+    function (EnhancedWmsLayer) {
         "use strict";
 
         /**
@@ -56,7 +55,7 @@ define([
                 // GeoMAC WMS servers return bad headers (duplicate CORS)
                 // service: "https://wildfire.cr.usgs.gov/ArcGIS/services/geomac_dyn/MapServer/WMSServer?",
                 service: "http://emxsys.net/geomac/wms/geomac_dyn?",
-                layerNames: "27",   // "Current Fire Perimeters - 2017
+                layerNames: "Current Fire Perimeters",
                 sector: new WorldWind.Sector(13.000340, 68.141919, -165.117579, -65.333160),
                 levelZeroDelta: new WorldWind.Location(180, 180),
                 numLevels: 19,
@@ -66,14 +65,14 @@ define([
                 styleNames: "" // (optional): {String} A comma separated list of the styles to include in this layer.</li>
             };
 
-            WorldWind.WmsLayer.call(this, cfg);
+            EnhancedWmsLayer.call(this, cfg);
 
             // Make this layer translucent
             this.opacity = 0.5;
 
         };
 
-        GeoMacCurrentPerimetersLayer.prototype = Object.create(WorldWind.WmsLayer.prototype);
+        GeoMacCurrentPerimetersLayer.prototype = Object.create(EnhancedWmsLayer.prototype);
 
         return GeoMacCurrentPerimetersLayer;
     }
