@@ -103,10 +103,11 @@ define([
             this.refreshScouts = function () {
                 var i, max;
 
-                for (i = 0, max = self.scouts.length; i < max; i++) {
-                    self.scouts[i].refresh();
+                for (i = 0, max = self.scouts().length; i < max; i++) {
+                    self.scouts()[i].refresh();
                 }
             };
+            
             // Internal method to ensure the name is unique by appending a suffix if reqd.
             this.doEnsureUniqueName = function (scout) {
                 scout.name(self.generateUniqueName(scout));
