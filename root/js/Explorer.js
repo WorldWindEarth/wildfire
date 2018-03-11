@@ -17,8 +17,11 @@ define([
     'model/weather/WeatherScoutManager',
     'model/wildfire/FireLookoutManager',
     'model/wildfire/WildlandFireManager',
+    'model/wildfire/FuelModelCatalog',
+    'model/wildfire/FuelMoistureCatalog',
     'viewmodels/BookmarkViewModel',
     'viewmodels/FiresViewModel',
+    'viewmodels/FireLookoutEditor',
     'viewmodels/GlobeViewModel',
     'viewmodels/InfoViewModel',
     'viewmodels/LayersViewModel',
@@ -45,6 +48,7 @@ define([
     'text!views/symbol-editor.html',
     'text!views/fires.html',
     'text!views/fire-lookouts.html',
+    'text!views/fire-lookout-editor.html',
     'text!views/weather-scouts.html',
     'text!views/weather-scout-editor.html',
     'url-search-params',
@@ -64,8 +68,11 @@ define([
         WeatherScoutManager,
         FireLookoutManager,
         WildlandFireManager,
+        fuelModelCatalog,
+        fuelMoistureCatalog,
         BookmarkViewModel,
         FiresViewModel,
+        FireLookoutEditor,
         GlobeViewModel,
         InfoViewModel,
         LayersViewModel,
@@ -92,8 +99,9 @@ define([
         tacticalSymbolEditorHtml,
         firesHtml,
         fireLookoutsHtml,
+        fireLookoutEditorHtml,
         weatherScoutsHtml,
-        weatherScoutEditorHtml, 
+        weatherScoutEditorHtml,
         URLSearchParams,
         ko,
         $) {
@@ -136,6 +144,9 @@ define([
             this.fireLookoutManager = new FireLookoutManager(this.globe);
             this.wildfireManager = new WildlandFireManager(this.globe);
 
+            fuelModelCatalog.initialize();
+            fuelMoistureCatalog.initialize();
+
             // Configure the objects used to animate the globe when performing "go to" operations
             this.goToAnimator = new WorldWind.GoToAnimator(this.wwd);
             this.isAnimating = false;
@@ -172,12 +183,12 @@ define([
             // --------------------------------------------------------
             Explorer.createKnockoutBindingsForSlider();
 
-            new GlobeViewModel(this, { 
-                markerManager: this.markerManager, 
-                symbolManager: this.symbolManager,                
+            new GlobeViewModel(this, {
+                markerManager: this.markerManager,
+                symbolManager: this.symbolManager,
                 weatherManager: this.weatherManager,
                 fireLookoutManager: this.fireLookoutManager},
-            globeHtml, "globe");
+                globeHtml, "globe");
 
             new SearchViewModel(this.globe, "search");
             new BookmarkViewModel(this.globe, bookmarkHtml, "right-navbar");
@@ -194,15 +205,15 @@ define([
             new LayerSettings(this.globe, layerSettingsHtml);
             new MarkerEditor(markerEditorHtml);
             new TacticalSymbolEditor(tacticalSymbolEditorHtml);
-            new WeatherScoutEditor(weatherScoutEditorHtml);            
-            new WeatherScoutView(this.globe);            
-            
+            new WeatherScoutEditor(weatherScoutEditorHtml);
+            new FireLookoutEditor(fireLookoutEditorHtml);
+            new WeatherScoutView(this.globe);
+
             // Marker tab content
             markersViewModel.addMarkers(this.fireLookoutManager, fireLookoutsHtml, "markers-body");
             markersViewModel.addMarkers(this.weatherManager, weatherScoutsHtml, "markers-body");
             markersViewModel.addMarkers(this.markerManager, basicMarkersHtml, "markers-body");
             markersViewModel.addMarkers(this.symbolManager, tacticalSymbolsHtml, "markers-body");
-
 
         };
 
@@ -302,6 +313,7 @@ define([
             this.markerManager.restoreMarkers();
             this.symbolManager.restoreSymbols();
             this.weatherManager.restoreScouts();
+            this.fireLookoutManager.restoreLookouts();
             this.restoreSessionView();
             // Update all time sensitive objects
             this.globe.updateDateTime(new Date());
@@ -364,6 +376,7 @@ define([
             this.markerManager.saveMarkers();
             this.symbolManager.saveSymbols();
             this.weatherManager.saveScouts();
+            this.fireLookoutManager.saveLookouts();
             this.globe.layerManager.saveLayers();
         };
 

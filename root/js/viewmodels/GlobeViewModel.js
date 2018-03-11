@@ -19,6 +19,7 @@ define([
     'model/markers/BasicMarker',
     'model/military/TacticalSymbol',
     'model/weather/WeatherScout',
+    'model/wildfire/FireLookout',
     'model/util/WmtUtil',
     'knockout',
     'jquery',
@@ -28,6 +29,7 @@ define([
         BasicMarker,
         TacticalSymbol,
         WeatherScout,
+        FireLookout,
         util,
         ko,
         $) {
@@ -57,6 +59,7 @@ define([
             this.markerManager = params.markerManager;
             this.symbolManager = params.symbolManager;
             this.weatherManager = params.weatherManager;
+            this.fireLookoutManager = params.fireLookoutManager;
 
             // Save a reference to the auto-update time observable for the view view
             this.autoUpdateTime = explorer.autoUpdateTimeEnabled;
@@ -180,7 +183,15 @@ define([
             this.dropCallback = this.dropScoutCallback;
             this.dropObject = null;
         };
-
+        
+        /**
+         * Arms the click-drop handler to add a weather scout to the globe. See: handleClick below.
+         */
+        GlobeViewModel.prototype.armDropLookout = function () {
+            this.dropIsArmed(true);
+            this.dropCallback = this.dropLookoutCallback;
+            this.dropObject = null;
+        };
 
         // This "Drop" action callback creates and adds a marker to the globe
         // when the globe is clicked while dropIsArmed is true.
@@ -202,6 +213,12 @@ define([
         // when the globe is clicked while dropIsArmed is true.
         GlobeViewModel.prototype.dropScoutCallback = function (position) {
             this.weatherManager.addScout(new WeatherScout(this.weatherManager, position));
+        };
+        
+        // This "Drop" action callback creates and adds a fire lookout to the globe
+        // when the globe is clicked while dropIsArmed is true.
+        GlobeViewModel.prototype.dropLookoutCallback = function (position) {
+            this.fireLookoutManager.addLookout(new FireLookout(this.fireLookoutManager, position));
         };
 
         /**
@@ -245,6 +262,10 @@ define([
 
         GlobeViewModel.prototype.refreshScouts = function () {
             this.weatherManager.refreshScouts();
+        };
+
+        GlobeViewModel.prototype.refreshLookouts = function () {
+            this.fireLookoutManager.refreshLookouts();
         };
         
         GlobeViewModel.prototype.onTimeReset = function () {
