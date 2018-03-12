@@ -34,6 +34,7 @@ define([
     'viewmodels/TacticalSymbolEditor',
     'viewmodels/WeatherScoutEditor',
     'viewmodels/WeatherScoutView',
+    'viewmodels/WildfireView',
     'text!views/basic-markers.html',
     'text!views/bookmark.html',
     'text!views/globe.html',
@@ -85,6 +86,7 @@ define([
         TacticalSymbolEditor,
         WeatherScoutEditor,
         WeatherScoutView,
+        WildfireView,
         basicMarkersHtml,
         bookmarkHtml,
         globeHtml,
@@ -208,6 +210,7 @@ define([
             new WeatherScoutEditor(weatherScoutEditorHtml);
             new FireLookoutEditor(fireLookoutEditorHtml);
             new WeatherScoutView(this.globe);
+            new WildfireView();
 
             // Marker tab content
             markersViewModel.addMarkers(this.fireLookoutManager, fireLookoutsHtml, "markers-body");
