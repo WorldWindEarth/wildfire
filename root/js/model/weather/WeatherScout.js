@@ -36,6 +36,7 @@ define([
     'model/util/Selectable',
     'model/weather/symbols/WeatherMapSymbol',
     'model/services/WeatherService',
+    'model/util/Messenger',
     'model/util/WmtUtil'],
     function (
         ko,
@@ -52,6 +53,7 @@ define([
         selectable,
         WeatherMapSymbol,
         WeatherService,
+        messenger,
         util) {
         "use strict";
 
@@ -117,7 +119,7 @@ define([
             
             // Make context sensiive by the PickController: shows the context menu.
             contextSensitive.makeContextSensitive(this, function () {
-                $.growl({title: "TODO", message: "Show menu with delete, open, and lock/unlock"});
+                messenger.notify("Show current weather", "TODO");
             });
 
             // Observables:
