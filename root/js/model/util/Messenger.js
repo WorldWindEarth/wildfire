@@ -35,18 +35,15 @@
  * @module {util/Messenger}
  * @author Bruce Schubert
  */
-define([],
-    function () {
+define(['jquery', 'jquery-growl'],
+    function ($) {
         "use strict";
         /**
          * @constructor
          * @exports Messenger
          */
         var Messenger = {
-            initialize: function () {
-//                $('#growl').puigrowl();
-//                $('#notify').puinotify();
-            },
+
             /**
              * Displays popup message for a few seconds.
              * @param {String} style "info", "warn" or "error".
@@ -55,17 +52,12 @@ define([],
              * @param {Number} duration Time to show message in milliseconds.
              */
             growl: function (style, title, message, duration) {
-//                // Initialize
-//                $('#growl').puigrowl();
-//                // Apply options
-//                $('#growl').puigrowl({life: duration});
-//                // Show messages
-//                $('#growl').puigrowl('show',
-//                    [{
-//                            severity: style,
-//                            summary: title,
-//                            detail: message}]
-//                    );
+                var priority = style === "error" ? "danger" : style || "primary";
+                $.growl({
+                    displayTimeout: duration || 5000,
+                    title: title,
+                    message: message,
+                    priority: priority});
             },
             /**
              * Displays popup message for a few seconds.
@@ -74,7 +66,7 @@ define([],
              * @param {Number} duration Optional. Time to show message in milliseconds.
              */
             infoGrowl: function (message, title, duration) {
-//                this.growl("info", title || 'FYI', message, duration || 5000);
+                this.growl("info", title || "FYI", message, duration);
             },
             /**
              * Displays popup message for a few seconds.
@@ -83,7 +75,7 @@ define([],
              * @param {Number} duration Optional. Time to show message in milliseconds.
              */
             warningGrowl: function (message, title, duration) {
-//                this.growl("warning", title || 'Warning', message, duration || 5000);
+                this.growl("warning", title || "Warning", message, duration);
             },
             /**
              * Displays popup message for a few seconds.
@@ -92,20 +84,14 @@ define([],
              * @param {Number} duration Optional. Time to show message in milliseconds.
              */
             errorGrowl: function (message, title, duration) {
-//                this.growl("error", title || 'Error', message, duration || 5000);
+                this.growl("danger", title || "Error", message, duration);
             },
             /**
              * 
-             * @param {type} html
+             * @param {String} message
              */
-            notify: function (html) {
-//                $('#notify').puinotify();
-//
-//                $('#notify').puinotify({
-//                    easing: 'easeInOutCirc',
-//                    position: 'bottom'
-//                });
-//                $('#notify').puinotify('show', html);
+            notify: function (message, title) {
+                this.growl("primary", title, message, 0);
             }
         };
         return Messenger;
