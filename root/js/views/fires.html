@@ -9,5 +9,53 @@
         </h4>
     </div>
     <div id="fires-body" class="section-body collapse in">
+        <!--JQuery FancyTree contents-->
+        <div id="wildland-fire-tree"></div>
     </div>
 </div>
+
+<script type="text/html" id="wildland-fire-view-template">
+    <!--
+    Wildland Fire View Template
+    This script renders the selected wildland fire object the info panel view model.
+    -->
+    <!-- ko if: $data -->
+    <div id="wildland-fire-info" style="height: 100%;">
+        <div class="col-lg-3 col-md-4 col-sm-6 panel panel-default">
+            <div class="panel-heading">
+            <h4 class="panel-title">
+                <span data-bind="text: $data.name"></span>
+            </h4>
+            </div>
+            <div class="panel-body" style="padding: 0;" > 
+            </div>
+        </div>
+        <div class="col-lg-3 col-md-4 col-sm-6 panel panel-default">
+            <div class="panel-heading">
+                <h4 class="panel-title">Percent Contained</h4>
+            </div>
+            <div class="panel-body" style="padding: 0;" > 
+                <!--Custom knockout binding-->
+                <div id="percent-contained-graph" data-bind="visualizePercentContained: $data"></div>
+            </div>
+        </div>
+        <div class="col-lg-3 col-md-4 col-sm-6 panel panel-default">
+            <div class="panel-heading">
+                <h4 class="panel-title">Dates</h4>
+            </div>
+            <div class="panel-body"style="padding: 0;" >
+                <!--Custom knockout binding-->
+                <div id="wildfire-dates-display" data-bind="visualizeWildfireDates: $data"></div>
+            </div>
+        </div>
+        <div class="col-lg-3 col-md-4  col-sm-6 panel panel-default">
+            <div class="panel-heading">
+                <h4 class="panel-title">Size</h4>
+            </div>
+            <div class="panel-body" style="padding: 0;" >
+                <div id="wildfire-size-graph" data-bind="visualizeWildfireSize: $data"></div>
+            </div>
+        </div>
+    </div>
+    <!-- /ko -->
+</script>  

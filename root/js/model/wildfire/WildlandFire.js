@@ -6,21 +6,21 @@
 /*global define, WorldWind*/
 
 define([
-    'model/util/ContextSensitive',
+    'model/wildfire/symbols/WildlandFireSymbol',
     'model/services/GeoMacService',
+    'model/util/ContextSensitive',
     'model/util/Openable',
     'model/util/Selectable',
     'model/util/Log',
-    'model/wildfire/symbols/WildlandFireSymbol',
     'model/util/WmtUtil',
     'model/Constants'],
     function (
-        contextSensitive,
+        WildlandFireSymbol,
         geoMac,
+        contextSensitive,
         openable,
         selectable,
         log,
-        WildlandFireSymbol,
         util,
         constants) {
         "use strict";

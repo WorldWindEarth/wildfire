@@ -199,7 +199,7 @@ define([
             // Tab Panels
             new LayersViewModel(this.globe, layersHtml, "left-sidebar");
             var markersViewModel = new MarkersViewModel(markersHtml, "left-sidebar");
-            new FiresViewModel(this.globe, this.wildfireManager, this.fireLookoutManager, firesHtml, "left-sidebar");
+            var firesViewModel = new FiresViewModel(this.globe, this.wildfireManager, this.fireLookoutManager, firesHtml, "left-sidebar");
             new SettingsViewModel(this.globe, settingsHtml, "left-sidebar");
             new InfoViewModel(this.globe, infoHtml, "info-panel");
 
