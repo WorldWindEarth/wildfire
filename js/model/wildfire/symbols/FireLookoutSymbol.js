@@ -129,7 +129,7 @@ define([
             this.background.enabled = this.highlighted;
 
             // Rotate and dir of spread arrot to match the view
-            this.dirOfSpread.imageRotation = dc.navigatorState.heading;
+            this.dirOfSpread.imageRotation = dc.navigator.heading;
 
             this.background.render(dc);
             this.diamond.render(dc);

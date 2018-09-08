@@ -53,8 +53,8 @@ requirejs.config({
         'text': 'libs/require/text',
         // VisJS charting library
         'vis': window.DEBUG ? 'libs/vis/v4.16.1/vis' : 'https://cdnjs.cloudflare.com/ajax/libs/vis/4.21.0/vis.min',
-        // NASA WorldWind
-        'worldwind': window.DEBUG ? 'libs/webworldwind/v0.9.0/worldwind' : 'https://files.worldwind.arc.nasa.gov/artifactory/web/0.9.0/worldwind.min'
+        // Emxsys WorldWindJS
+        'worldwind': window.DEBUG ? 'https://unpkg.com/worldwindjs@1.6.90/build/dist/worldwind' : 'https://unpkg.com/worldwindjs@1.6.90/build/dist/worldwind.min'
     },
     // Increase the time to wait before giving up on loading a script to avoid timeout erros on slow 3G connections (default 7s)
     waitSeconds: 15,
@@ -134,10 +134,10 @@ require([
         // ----------------
         fixes.applyLibraryFixes();
         WorldWind.Logger.setLoggingLevel(WorldWind.Logger.LEVEL_WARNING);
-        if (window.DEBUG) {
-            // Use local resources
-            WorldWind.configuration.baseUrl = WorldWind.WWUtil.currentUrlSansFilePart() + "/" + constants.WORLD_WIND_PATH;
-        }
+
+        // Specifiy the location of the WorldWind resoures, i.e., the "images" folder 
+        WorldWind.configuration.baseUrl = "https://unpkg.com/worldwindjs@1.6.90/build/dist/";
+
         // Enter your Bing Bing Maps key to use when requesting Bing Maps resources.
         // See: https://www.bingmapsportal.com/ to register for your own key and then enter it below
         WorldWind.BingMapsKey = "Ap6BL_3VPzCeoojebk2R9y_mYoMYKyPEPOzz9ZTmSzXBcEzdxFsfgJtAaeH9jOlJ";
