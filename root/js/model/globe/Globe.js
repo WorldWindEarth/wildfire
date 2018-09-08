@@ -404,8 +404,7 @@ define([
                 return false;
             }
             var wwd = navigator.worldWindow,
-                    navigatorState = navigator.intermediateState(),
-                    eyePoint = navigatorState.eyePoint,
+                    eyePoint = wwd.drawContext.eyePoint,
                     eyePos = new WorldWind.Position(),
                     terrainElev;
 
@@ -430,15 +429,16 @@ define([
         navigator.intermediateState = function () {
             // navigator.applyLimits(); -- Don't do this!!
             var globe = navigator.worldWindow.globe,
-                    lookAtPosition = new WorldWind.Position(
-                            navigator.lookAtLocation.latitude,
-                            navigator.lookAtLocation.longitude,
-                            0),
-                    modelview = WorldWind.Matrix.fromIdentity();
+                dc = navigator.worldWindow.drawContext,
+                lookAtPosition = new WorldWind.Position(
+                        navigator.lookAtLocation.latitude,
+                        navigator.lookAtLocation.longitude,
+                        0),
+                modelview = WorldWind.Matrix.fromIdentity();
 
             modelview.multiplyByLookAtModelview(lookAtPosition, navigator.range, navigator.heading, navigator.tilt, navigator.roll, globe);
-
-            return navigator.currentStateForModelview(modelview);
+            
+            return dc.currentStateForModelview(modelview);
         };
 
     };
@@ -679,8 +679,7 @@ define([
         try {
             var wwd = this.wwd,
                     centerPoint = new WorldWind.Vec2(wwd.canvas.width / 2, wwd.canvas.height / 2),
-                    navigatorState = wwd.navigator.currentState(),
-                    eyePoint = navigatorState.eyePoint,
+                    eyePoint = wwd.drawContext.eyePoint,
                     eyePos = new WorldWind.Position(),
                     target, viewpoint;
             // Avoid costly computations if nothing changed
