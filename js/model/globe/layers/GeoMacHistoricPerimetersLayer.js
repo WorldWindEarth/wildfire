@@ -54,8 +54,8 @@ define([
                 title: "Historic Perimeters",
                 version: "1.3.0",
                 // GeoMAC WMS servers return bad headers (duplicate CORS)
-                // service: "https://wildfire.cr.usgs.gov/ArcGIS/services/geomac_dyn/MapServer/WMSServer?",
-                service: "http://emxsys.net/geomac/wms/geomac_dyn?",
+                service: "https://wildfire.cr.usgs.gov/ArcGIS/services/geomac_dyn/MapServer/WMSServer?",
+                //service: "http://emxsys.net/geomac/wms/geomac_dyn?",
                 layerNames: "Historic Fire Perimeters", // 2018,
                 sector: new WorldWind.Sector(13.000340, 68.141919, -165.117579, -65.333160),
                 levelZeroDelta: new WorldWind.Location(180, 180),
