@@ -20,16 +20,16 @@ define([], function () {
         /**
          * The URL for the fuel models REST service.
          */
-        FUELMODELS_REST_SERVICE: "http://emxsys.net/wmt-rest/rs/fuelmodels",
+        FUELMODELS_REST_SERVICE: "https://emxsys.net/wmt-rest/rs/fuelmodels",
         /**
          * The URL for the fuel models REST service.
          */
-        FUELMOISTURE_REST_SERVICE: "http://emxsys.net/wmt-rest/rs/fuelmoisture",
+        FUELMOISTURE_REST_SERVICE: "https://emxsys.net/wmt-rest/rs/fuelmoisture",
         /**
          * The URL for the GeoMAC MapServer REST service.
          */
 //        GEOMAC_REST_SERVICE: "https://wildfire.cr.usgs.gov/arcgis/rest/services/geomac_fires/MapServer",
-        GEOMAC_REST_SERVICE: "http://emxsys.net/geomac/rest/geomac_fires",
+        GEOMAC_REST_SERVICE: "https://emxsys.net/geomac/rest/geomac_fires",
         GEOMETRY_POINT: 'point',
         GEOMETRY_POLYGON: 'polygon',
         GEOMETRY_POLYLINE: 'polyline',
@@ -43,7 +43,7 @@ define([], function () {
          * LANDFIRE 2012 (LF 2012 - LF_1.3.0) 
          */
 //        LANDFIRE_REST_SERVICE: "https://landfire.cr.usgs.gov/arcgis/rest/services/Landfire/US_130/MapServer",        
-        LANDFIRE_REST_SERVICE: "http://emxsys.net/landfire/rest/US_130",        
+        LANDFIRE_REST_SERVICE: "https://emxsys.net/landfire/rest/US_130",        
         /**
          * Layer categories
          */
@@ -106,26 +106,26 @@ define([], function () {
         /**
          * The URL for the sunlight REST service.
          */
-        SUNLIGHT_REST_SERVICE: "http://emxsys.net/wmt-rest/rs/sunlight",
+        SUNLIGHT_REST_SERVICE: "https://emxsys.net/wmt-rest/rs/sunlight",
         /**
          * The URL for the surface fuel REST service.
          */
-        SURFACEFUEL_REST_SERVICE: "http://emxsys.net/wmt-rest/rs/surfacefuel",
+        SURFACEFUEL_REST_SERVICE: "https://emxsys.net/wmt-rest/rs/surfacefuel",
         /**
          * The URL for the surface fire REST service.
          */
-        SURFACEFIRE_REST_SERVICE: "http://emxsys.net/wmt-rest/rs/surfacefire",
+        SURFACEFIRE_REST_SERVICE: "https://emxsys.net/wmt-rest/rs/surfacefire",
         /**
          * The URL for the terrain REST service.
          */
-        TERRAIN_REST_SERVICE: "http://emxsys.net/wmt-rest/rs/terrain",
+        TERRAIN_REST_SERVICE: "https://emxsys.net/wmt-rest/rs/terrain",
         /**
          * The URL for the weather REST service.
          */        
          /**
          * The URL for the weather REST service.
          */
-        WEATHER_REST_SERVICE: "http://emxsys.net/wmt-rest/rs/weather",
+        WEATHER_REST_SERVICE: "https://emxsys.net/wmt-rest/rs/weather",
         WEATHER_SCOUT_LABEL_LATLON: "weatherScoutLabelLatLon",
         WEATHER_SCOUT_LABEL_NAME: "weatherScoutLabelName",
         WEATHER_SCOUT_LABEL_NONE: "weatherScoutLabelNone",
