@@ -28,8 +28,8 @@ define([], function () {
         /**
          * The URL for the GeoMAC MapServer REST service.
          */
-//        GEOMAC_REST_SERVICE: "https://wildfire.cr.usgs.gov/arcgis/rest/services/geomac_fires/MapServer",
-        GEOMAC_REST_SERVICE: "https://emxsys.net/geomac/rest/geomac_fires",
+        GEOMAC_REST_SERVICE: "https://wildfire.cr.usgs.gov/arcgis/rest/services/geomac_fires/MapServer",
+//        GEOMAC_REST_SERVICE: "https://emxsys.net/geomac/rest/geomac_fires",
         GEOMETRY_POINT: 'point',
         GEOMETRY_POLYGON: 'polygon',
         GEOMETRY_POLYLINE: 'polyline',
@@ -42,8 +42,8 @@ define([], function () {
          * The URL for the LANDFIRE MapServer REST service.
          * LANDFIRE 2012 (LF 2012 - LF_1.3.0) 
          */
-//        LANDFIRE_REST_SERVICE: "https://landfire.cr.usgs.gov/arcgis/rest/services/Landfire/US_130/MapServer",        
-        LANDFIRE_REST_SERVICE: "https://emxsys.net/landfire/rest/US_130",        
+        LANDFIRE_REST_SERVICE: "https://landfire.cr.usgs.gov/arcgis/rest/services/Landfire/US_130/MapServer",        
+//        LANDFIRE_REST_SERVICE: "https://emxsys.net/landfire/rest/US_130",        
         /**
          * Layer categories
          */
