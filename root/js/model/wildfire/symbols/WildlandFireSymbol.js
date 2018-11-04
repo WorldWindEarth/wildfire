@@ -55,7 +55,7 @@ define([
                     WorldWind.OFFSET_FRACTION, 0.0);
                 pointAttributes.labelAttributes.offset = new WorldWind.Offset(
                     WorldWind.OFFSET_FRACTION, 0.5,
-                    WorldWind.OFFSET_FRACTION, 1.0);
+                    WorldWind.OFFSET_FRACTION, -1.2);
                 pointAttributes.labelAttributes.color = WorldWind.Color.WHITE;
                 pointAttributes.labelAttributes.depthTest = true;
                 pointAttributes.drawLeaderLine = true;
