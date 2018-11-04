@@ -3,6 +3,7 @@ An HTML5/JavaScript geo-browser with weather forecasts and wildland fire potenti
 
 ### Contents
 - [Overview](#overview)
+- [Vision and Scope](#vision-and-scope)
 - [Software Archtecture](#software-architecture)
 - [Software Development Plan](#software-development-plan)
 
@@ -96,6 +97,155 @@ Fire Lookouts are dynamic. Advancing the application time with the time slider a
 * Figure 6. Weather Scouts in proximity to Fire Lookouts
 
 Weather Scouts are similar to Fire Lookouts in that they download the weather forecast for their locations.  The Weather Scouts display the weather forecasts using standard weather station symbology. They react to changes in location and time and update their symbology accordingly. The *scouts* are designed to alert the user when a significant change is detected in the forecast. 
+
+* * *
+
+# Vision and Scope
+## Business Requirements
+### Background
+The Campbell Prediction System (CPS) is a practical way to use on-scene observations to determine future fire behavior with support for strategy and tactics to contain the projected fire.  CPS provides the logic and language for better understanding the potential of a fire and allows more strategic tactics to be formulated for where and when to intercept and stop the fire’s forward progress. 
+
+The Wildfire Management Tool (WMT) desktop version provides a view of the CPS primary forces acting on a wildland fire. The software computes the potential fire behavior and displays it in multiple ways, including a Haul Chart showing computed flame lengths and rates of spread, and a depiction of a five minute spread pattern overlaid on the terrain.  The software also provides convenient controls for displaying and interacting with the environmental factors. These controls provide an excellent mechanism for learning about what impacts fire behavior, and for performing "what-if" scenarios to plan for actual fire behavior. The audience for WMT includes instructors and students of fire behavior, firefighters, and land managers.   
+
+The WMT software is constrained to running on a desktop or laptop computer. The software will not run on Android and iOS platforms. People interested in wildland fire behavior—firefighters and the general public—need a system that simply works on their device of choice—smart phone, tablet or laptop/desktop computer—regardless of form factor or operating system.  A web browser based application would satisfy this need.
+
+With the advent of NASA's Web WorldWind platform, the potential exists to create a version of WMT that runs in a web browser. The prospect of running WMT in a web browser opens up the opportunity to run on a variety of devices, including phones, tablets and computers. A web version of WMT has the potential to service a greater number of users, running on a larger number of platforms. The number of user classes also increases to include the general public members who live in the Wildland Urban Interface (WUI).
+
+
+### Business Objectives and Success Criteria
+The following use case diagram depicts, at a high-level of abstraction, how the system serves the needs of various user classes.
+ 
+![Use Case - Business Model.png](https://bitbucket.org/repo/j7XRRd/images/2258592969-Use%20Case%20-%20Business%20Model.png)
+
+*Use Case - Business Model*
+
+#### Business Objectives
+ID | Objective
+-- | ---------
+BO-1 | Provide an effective training tool for the Campbell Prediction System method. This tool should be usable by both the student and the teacher.
+BO-2 | Provide a system, to be used on active fires, that reduces loss of life and improves the odds of suppression efforts through the application of tactics derived from the Campbell Prediction System. 
+BO-3 | Promote the use of the Campbell Prediction System on the fireground. 
+
+#### Success Criteria
+ID | Criteria
+-- | ---------
+SC-1 | Prevention of firefighter burnovers and fatalities.
+SC-2 | Adoption of CPS methodologies by local, state and federal agencies. 
+SC-3 | Adoption of CPS in Europe and Australia. 
+SC-4 | Requests for software training, documentation and support. 
+
+### Customer Needs
+ID | Need
+-- | ---------
+CN-1 | Fire behavior prediction tools that work without accurate fuel models.
+CN-2 | Fire behavior estimations should augment current state-of-the-art fire modeling. 
+CN-3 | Field use includes both online and offline Internet connectivity.
+CN-4 | Multiple computer platforms: •Android, •iOS, •Windows, •Mac, •Linux.
+CN-5 | Multiple hardware devices: • smart phones, •tablets, •laptops, •desktops.
+ 
+### Business Risks
+ID | Risk
+-- | ---------
+BR-1 | Missing the PhiWeek 2018 deadline.
+BR-2 | Performance constraints imposed by web hosting services.
+
+## Vision of the Solution
+### Vision Statement
+*For wildland firefighters and incident command personnel engaged in the suppression of wildland fires who need tactical decision support tools to ensure the safety of firefighters and the effective use of firefighting resources, the** Wildfire Management Tool** is a decision support system and visualization tool that displays the potential fire behavior on the fireground using the CPS methodologies. Unlike the WMT desktop software, this product runs in the web browser on smart phones, tablets, laptops and desktop computers.
+* 
+
+### Major Features
+ID | Feature
+-- | ---------
+MF-1 | View multiple, concurrent wildfire behavior icons
+MF-2 | Look ahead and alert user of temporal trigger points
+MF-3 | Estimate fire behavior along a user defined path.
+ 
+## Assumptions and Dependencies
+### Assumptions
+ID | Assumption
+-- | ---------
+AS-1 |.
+AS-2 |.
+
+### Dependencies
+ID | Dependency
+-- | ---------
+DE-1 | Web WorldWind SDK
+DE-2 | HTML5
+DE-3 | WebGL
+DE-4 | Apache Tomcat 7 Web Application Server
+ 
+* * *
+
+## Scope and Limitations
+### Project Scope
+The following context diagram depicts the boundary and connections of the system being developed and everything else in its universe. 
+![CPS_Context_Diagram_v1.jpg](https://bitbucket.org/repo/j7XRRd/images/1279148843-CPS_Context_Diagram_v1.jpg)
+  
+*Figure 2. CPS Context Diagram*
+
+The goal is to develop a system that will allow the user to visualize the fireground and recognize a fire’s potential via a 3D globe running in a web browser, including:
+
+* Wildfire Diamond: an experimental display of fire behavior similar to the NFPA 704 Fire Diamond
+* Wildfire Profile: an experimental display of fire behavior along a user defined path
+* CPS Primary Forces: Wind, Slope and Preheat
+* Fuel Model: Selection and display
+* Environmental Influences: Display and override
+* Weather Forecasts: Display and use
+* Location: Locate and go to major incidents
+
+For environmental inputs, the system will use weather forecasts or diurnal inputs provided by the user.  Fuel models can be selected by the user or provided by LANDFIRE or an agency. 
+ 
+### Scope of Initial Release
+##### Foundation
+* MF-1 Wildfire Diamonds
+* MF-2 Weather Alerts
+* MF-3 Fire Behavior Alerts
+
+### Scope of Subsequent Releases
+##### Fire Observations/Photographs
+* MF-4
+* MF-5
+
+##### Fire Pattern Matching (data mining)
+* MF-6
+* MF-7
+ 
+ 
+###Limitations and Exclusions
+* Restricted to running in a web browser, i.e., not an Android, iPhone or Windows "app".
+ 
+* * *
+
+## Business Context
+### Stakeholder Profiles
+Stakeholder | Major Benefits | Attitudes | Win Conditions | Constraints 
+----------- | ---------------| --------- | -------------- | -----------
+***Bruce Schubert*** *Project Sponsor* | Continuing development of software architecture and programming skills; explore new technologies. |Affinity for and history with fire service; primary mission.	| High number of downloads; Internet metrics | Time 
+***Doug Campbell*** *CPS Domain Expert* | Increased visibility and acceptance of CPS training and methods. | Strong supporter | Adoption of CPS training by US Federal and State agencies. | Retired 
+***Marc Castellnou*** *CPS Practitioner* | Leveraging and promoting new technologies in the fire service. | Early technology adopter; principle user. | Improved fire fighter safety; better tactics and strategies. | Job
+ 
+### Project Priorities
+
+Dimension | Driver (state objective) | Constraint (state limits) | Degree of Freedom (state allowable range)
+--------- | ------------------------ | ------------------------- | -----------------------------------------
+***Schedule*** | Initial release: PhiWeek 2018	| |
+***Quality*** | Product is designed to promote CPS methods and showcase NASA Web World Wind capabilities. | | 	 
+***Cost*** | |Open source project developed out of personal budget; budget limited to domain support and development tools; funds for supporting development of Internet database support is limited. | 
+***Staff*** | | (1) architect/developer | 	 
+***Features*** | | |Complete freedom to explore technologies and methods to best implement the feature set. 
+ 
+### Operating Environment
+* Geographically diverse, worldwide user base
+* Multiple languages, English may not be the primary language
+* Fuel model data inconsistent between countries, or not available
+* Fireground/field use anticipated
+    * No internet
+    * Low internet speed
+* Classified, secret or non-public information 
+    * Archeological sites
+    * Fatalities
 
 * * *
 
