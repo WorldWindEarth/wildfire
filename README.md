@@ -141,27 +141,30 @@ Marc Castellnou | Chief, Catalonia Fire Department | Wildland Fire Behavior Doma
 Patrick Hogan   | Project Manager, NASA (retired)  | Web WorldWind Champion
 
 ## Management Process
-
 ### Project Estimates ###
 
-#### Phase Plan ####
-##### [Inception Phase](https://github.com/WorldWindEarth/wildfire/projects/1) #####
-* Explorer-based proof-of-concept
-* Digital Ocean IaaS 
+#### [Inception Phase](https://github.com/WorldWindEarth/wildfire/projects/1)
 
-##### [Elaboration Phase](https://github.com/WorldWindEarth/wildfire/projects/3) #####
+Iteration | Description | Completion
+--------- | ----------- | -----------
+I1 | *WorldWindJS/Explorer proof-of-concept and Digital Ocean IaaS* | Sep. 10, 2018
+
+#### [Elaboration Phase](https://github.com/WorldWindEarth/wildfire/projects/3) 
+
 Iteration | Description | Deadline
 --------- | ----------- | ---------
 [E1](https://github.com/WorldWindEarth/wildfire/milestone/1?closed=1) | *Evolutionary Prototype and supporting environment* | Nov, 10, 2018
 
-##### [Construction Phase](https://github.com/WorldWindEarth/wildfire/projects/4) #####
+#### [Construction Phase](https://github.com/WorldWindEarth/wildfire/projects/4) 
+
 Iteration | Description | Deadline
 --------- | ----------- | ---------
 [C1](https://github.com/WorldWindEarth/wildfire/milestone/2) | *Sprint 1 - Fire Lookout outputs* | Nov, 16, 2018
 [C2](https://github.com/WorldWindEarth/wildfire/milestone/3) | *Sprint 2 - Fire Lookout edits* | TBD
 [C3](https://github.com/WorldWindEarth/wildfire/milestone/4) | *Sprint 2 - Predictive services* | TBD
 
-##### [Transistion Phase](https://github.com/WorldWindEarth/wildfire/projects/5) #####
+#### [Transistion Phase](https://github.com/WorldWindEarth/wildfire/projects/5) 
+
 Iteration | Description | Deadline
 --------- | ----------- | ---------
 T1 | WMT Release - Version 2.0.0 | TBD
