@@ -39,17 +39,31 @@ define([
                 i, numRings, ring,
                 j, numPoints, perimeter,
                 shape, shapeAttributes, shapeHighlightAttributes,
-                point, pointAttributes, pointHightlightAttributes;
+                point, pointAttributes, pointHightlightAttributes,
+                scaleMultiplier = 1;
 
      
 
             // Create the symbol components
             if (fire.geometryType === constants.GEOMETRY_POINT) {
+                
+                // Scale the icon size based on the size of the fire
+                if (fire.acres < 10000) 
+                   scaleMultiplier = 0.75;
+                else if (fire.acres < 25000) 
+                   scaleMultiplier = 0.9;
+                else if (fire.acres < 50000) 
+                   scaleMultiplier = 1.0;
+                else if (fire.acres < 100000) 
+                   scaleMultiplier = 1.1;
+                else
+                   scaleMultiplier = 1.25
+                 
                 // Create and set the attributes for fire point location
                 pointAttributes = new WorldWind.PlacemarkAttributes(null);
                 pointAttributes.imageSource = constants.IMAGE_PATH + 'ics/Fire_Location24.png';
                 pointAttributes.depthTest = true;
-                pointAttributes.imageScale = 1.5;
+                pointAttributes.imageScale = 1.5 * scaleMultiplier;
                 pointAttributes.imageOffset = new WorldWind.Offset(
                     WorldWind.OFFSET_FRACTION, 0.5,
                     WorldWind.OFFSET_FRACTION, 0.0);
