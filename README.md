@@ -250,7 +250,99 @@ Dimension | Driver (state objective) | Constraint (state limits) | Degree of Fre
 * * *
 
 # Software Architecture
-TODO
+## Introduction ##
+### Purpose ###
+This software architecture document provides a comprehensive architectural overview of the Wildfire Management Tool (WMT) system, using the Rational Unified Process (RUP) 4+1 architectural views to depict different aspects of the system. It is intended to capture and convey the significant architectural decisions which have been made on the system.
+
+This project uses a version of the RUP that has been adjusted to accommodate small, agile teams using only those components that guide the development process in a pragmatic and efficient manner.
+
+### Scope ###
+This Software Architecture Document applies to the WMT software project being developed by Bruce Schubert and Theodore Walton for the 2015 NASA World Wind Europa Challenge.  
+
+### Definitions, Acronyms and Abbreviations ###
+See [Glossary](#glossary).
+
+## References ##
+[Vision and Scope](#vision-and-scope) 
+
+* * *
+
+## Architectural Representation ##
+This document presents the architecture as a series of views (RUP/Kruchten 4+1); the use case view, logical view, process view, deployment view, implementation view, and an optional data view. These views are presented as Unified Modeling Language (UML) diagrams.
+
+## RUP 4+1 Representation ##
+![RUP 4+1 View.png](https://bitbucket.org/repo/X96p7y/images/1680709203-RUP%204+1%20View.png)
+
+## Architectural Goals and Constraints##
+There are some key requirements and system constraints that have a significant bearing on the architecture. They are:
+
+* GitHub Pages will be used for the web server host.
+* Digital Globe will be used for the REST server host.
+* Apache Tomcat will be used for the application server.
+* The REST server application will leverage and incorporate NetBeans modules from the WMT desktop software.
+* Jersey/JAXB will be used to extend the WMT desktop modules for use in a REST server.
+* The web client application will leverage the [WorldWindJS](https://github.com/emxsys/worldwindjs) to manifest a WebGL based globe in compliant HTML5 web browsers.
+
+* * *
+
+## Use Case View ##
+Description: The Use Case View is important input to the selection of the set of scenarios and/or use cases that are the focus of an iteration. It describes the set of scenarios and/or use cases that represent some significant, central functionality. It also describes the set of scenarios and/or use cases that have a substantial architectural coverage (that exercise many architectural elements) or that stress or illustrate a specific, delicate point of the architecture.
+
+### High Level Use Cases - Use Case Diagram ###
+![WMTweb-UseCaseHighLevel.png](https://bitbucket.org/repo/X96p7y/images/1917776955-WMTweb-UseCaseHighLevel.png)
+
+*Main Use-Case Diagram*
+
+* * *
+
+## Logical View ##
+This section describes the architecturally significant parts of the design model, such as its decomposition into subsystems and packages. And for each significant package, its decomposition into classes and class utilities. Included are architecturally significant classes and their responsibilities, as well as a few very important relationships, operations, and attributes.
+
+### High Level Subsystems - Class Diagram ###
+This class diagram depicts the WMT high level subsystems and their responsibilities and relationships.  Note the WMTweb application implements the Model-View-Controller (MVC) pattern internally.
+
+![WMTweb-SubSystemsHighLevel.png](https://bitbucket.org/repo/X96p7y/images/4280233663-WMTweb-SubSystemsHighLevel.png)
+
+* * *
+
+## Process View ##
+This section describes the system's decomposition into lightweight processes (single threads of control) and heavyweight processes (groupings of lightweight processes). Sequence diagrams describe the main modes of communication between processes, such as message passing, interrupts, and rendezvous.
+
+### Handle Coordinate Changes - Sequence Diagram ###
+This sequence diagram shows the interaction between the MVC participants when the user moves a model's symbol on the globe. 
+
+
+![WMTweb-ProcessMove.png](https://bitbucket.org/repo/X96p7y/images/599719871-WMTweb-ProcessMove.png)
+
+
+* * *
+
+## Implementation View ##
+This section describes the overall structure of the REST server implementation model, the decomposition of the software into NetBeans modules.
+
+### Modules Overview - Package Diagram ###
+
+![WMTweb-Implementation.png](https://bitbucket.org/repo/X96p7y/images/126932513-WMTweb-Implementation.png)
+
+* * *
+
+## Deployment View ##
+This section describes one or more physical network (hardware) configurations on which the software is deployed and runs. It is a view of the Deployment Model. It indicates the physical nodes (computers, CPUs) that execute the software, and their interconnections (bus, LAN, point-to-point, and so on).  It includes a mapping of the processes of the Process View onto the physical nodes.
+
+### Server - Deployment Diagram ###
+This deployment diagram shows the components of the WMTweb system.
+
+![WMTweb-Deployment.png](https://bitbucket.org/repo/X96p7y/images/3345550780-WMTweb-Deployment.png)
+
+* * *
+
+## Size and Performance #
+*A description of the major dimensioning characteristics of the software that impact the architecture, as well as the target performance constraints.*
+
+* * *
+
+## Quality ##
+*A description of how the software architecture contributes to all capabilities (other than functionality) of the system-- extensibility, reliability, portability, and so on. If these characteristics have special significance, for example safety, security or privacy implications, they should be clearly delineated.*
 
 * * *
 
