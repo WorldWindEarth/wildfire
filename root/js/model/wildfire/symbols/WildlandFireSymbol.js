@@ -57,7 +57,7 @@ define([
                 else if (fire.acres < 100000) 
                    scaleMultiplier = 1.1;
                 else
-                   scaleMultiplier = 1.25
+                   scaleMultiplier = 1.25;
                  
                 // Create and set the attributes for fire point location
                 pointAttributes = new WorldWind.PlacemarkAttributes(null);
