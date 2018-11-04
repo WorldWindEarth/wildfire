@@ -63,19 +63,19 @@ Patrick Hogan   | Project Manager, NASA (retired)  | Web WorldWind Champion
 * Explorer-based proof-of-concept
 * Digital Ocean IaaS 
 
-##### [Elaboration Phase](https://github.com/WorldWindEarth/wildfire/projects/2) #####
+##### [Elaboration Phase](https://github.com/WorldWindEarth/wildfire/projects/3) #####
 Iteration | Description | Deadline
 --------- | ----------- | ---------
 [E1](https://github.com/WorldWindEarth/wildfire/milestone/1?closed=1) | *Evolutionary Prototype and supporting environment* | Nov, 10, 2018
 
-##### [Construction Phase](https://github.com/WorldWindEarth/wildfire/projects/3) #####
+##### [Construction Phase](https://github.com/WorldWindEarth/wildfire/projects/4) #####
 Iteration | Description | Deadline
 --------- | ----------- | ---------
 [C1](https://github.com/WorldWindEarth/wildfire/milestone/2) | *Sprint 1 - Fire Lookout outputs* | Nov, 16, 2018
 [C2](https://github.com/WorldWindEarth/wildfire/milestone/3) | *Sprint 2 - Wildfire outputs* | TBD
 
 
-##### [Transistion Phase](https://github.com/WorldWindEarth/wildfire/projects/4) #####
+##### [Transistion Phase](https://github.com/WorldWindEarth/wildfire/projects/5) #####
 Iteration | Description | Deadline
 --------- | ----------- | ---------
 T1 | WMT Release - Version 2.0.0 | TBD
@@ -83,12 +83,10 @@ T1 | WMT Release - Version 2.0.0 | TBD
 
 ### Project Monitoring
 #### Budget Control
-The project is constrained by the Windows Azure monthly developer credits. The project manager must monitor the Azure account to ensure the usage limits are not exceeded.
+The project is constrained by the author's personal budget. Cloud-based IaaS services are paid for with personal finances. The project receives no financial support from external sources.
  
 #### Quality Control
 Defects will be recorded in project's [Issue Tracker](https://bitbucket.org/emxsys/wildfire-management-tool-web/issues), as will feature requests, proposals, and tasks. Tasks will be tagged with the milestone corresponding the the associated iteration/sprint.
-
-All [commits](https://bitbucket.org/emxsys/wildfire-management-tool-web/commits/all) should undergo peer review. The reviewing party should approve/disapprove the changes via the individual Commits review page. 
 
 ## Annexes
 This project will follow the Rational Unified Process (RUP) for Small Projects process.
