@@ -175,7 +175,7 @@ T1 | WMT Release - Version 2.0.0 | TBD
 The project is constrained by the author's personal budget. Cloud-based IaaS services are paid for with personal finances. The project receives no financial support from external sources.
  
 #### Quality Control
-Defects will be recorded in project's [Issue Tracker](https://bitbucket.org/emxsys/wildfire-management-tool-web/issues), as will feature requests, proposals, and tasks. Tasks will be tagged with the milestone corresponding the the associated iteration/sprint.
+Defects will be recorded in project's [Issue Tracker](https://github.com/WorldWindEarth/wildfire/issues), as will feature requests, proposals, and tasks. Tasks will be tagged with the milestone corresponding the the associated iteration/sprint.
 
 ## Annexes
 This project will follow the Rational Unified Process (RUP) for Small Projects process.
