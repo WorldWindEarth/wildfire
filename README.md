@@ -72,8 +72,8 @@ Iteration | Description | Deadline
 Iteration | Description | Deadline
 --------- | ----------- | ---------
 [C1](https://github.com/WorldWindEarth/wildfire/milestone/2) | *Sprint 1 - Fire Lookout outputs* | Nov, 16, 2018
-[C2](https://github.com/WorldWindEarth/wildfire/milestone/3) | *Sprint 2 - Wildfire outputs* | TBD
-
+[C2](https://github.com/WorldWindEarth/wildfire/milestone/3) | *Sprint 2 - Fire Lookout edits* | TBD
+[C3](https://github.com/WorldWindEarth/wildfire/milestone/4) | *Sprint 2 - Predictive services* | TBD
 
 ##### [Transistion Phase](https://github.com/WorldWindEarth/wildfire/projects/5) #####
 Iteration | Description | Deadline
