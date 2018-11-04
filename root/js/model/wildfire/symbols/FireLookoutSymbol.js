@@ -47,7 +47,7 @@ define([
                 dir = surfaceFire ? lookout.surfaceFire.directionMaxSpread.value : null,
                 ros = surfaceFire ? lookout.surfaceFire.rateOfSpreadMax.value : null,
                 modelNo = surfaceFire ? lookout.surfaceFire.fuelBed.fuelModel.modelCode : '-',
-                eyeDistanceScalingThreshold = 2500000;
+                eyeDistanceScalingThreshold = 1000000;
 
             // Create the fire lookout symbol components
             this.background = new Background(lookout.latitude(), lookout.longitude(), eyeDistanceScalingThreshold);

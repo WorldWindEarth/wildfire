@@ -52,7 +52,7 @@ define(['model/weather/symbols/AirTemperature',
             var self = this,
                 wx, i, max,
                 timeOptions = {"hour": "2-digit", "minute": "2-digit", "timeZoneName": "short"},
-                eyeDistanceScalingThreshold = 2500000;
+                eyeDistanceScalingThreshold = 1000000;
 
             // Maintain a reference to the weather object this symbol represents
             this.wxScout = wxScout;
