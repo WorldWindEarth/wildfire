@@ -29,7 +29,7 @@ define([
             this.eyeDistanceScalingThreshold = eyeDistanceScalingThreshold;
             
             this.attributes = new WorldWind.PlacemarkAttributes(null);
-            this.attributes.depthTest = true;
+            this.attributes.depthTest = false;
             this.attributes.imageScale = 0.2;
             this.attributes.imageOffset = new WorldWind.Offset(
                 WorldWind.OFFSET_FRACTION, 0.5, // Width centered
