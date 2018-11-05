@@ -6,13 +6,14 @@
 /*global define, WorldWind*/
 
 define([
+    'model/globe/EnhancedGeographicText',    
     'model/Constants',
     'worldwind'],
     function (
+        EnhancedGeographicText,
         constants,
         ww) {
         "use strict";
-
         /**
          * Creates a GeographicText component used to display the air temperature in a Weather Map Symbol.
          * @param {Number} latitude
@@ -21,10 +22,10 @@ define([
          * @returns {FlameLengthHead}
          */
         var FlameLengthHead = function (latitude, longitude, flameLen) {
-            WorldWind.GeographicText.call(this, new WorldWind.Position(latitude, longitude, constants.MAP_SYMBOL_ALTITUDE_WILDFIRE), flameLen);
+           EnhancedGeographicText.call(this, new WorldWind.Position(latitude, longitude, constants.MAP_SYMBOL_ALTITUDE_WILDFIRE), flameLen, true);
 
             this.altitudeMode = WorldWind.RELATIVE_TO_GROUND;
-            this.alwaysOnTop = true;
+            this.alwaysOnTop = false;
             this.attributes = new WorldWind.TextAttributes(null);
             this.attributes.scale = 1.0;
             this.attributes.offset = new WorldWind.Offset(
@@ -34,7 +35,7 @@ define([
             this.attributes.depthTest = false;
         };
         // Inherit Placemark parent methods
-        FlameLengthHead.prototype = Object.create(WorldWind.GeographicText.prototype);
+        FlameLengthHead.prototype = Object.create(EnhancedGeographicText.prototype);
 
         /**
          * Creates a clone of this object.
