@@ -52,7 +52,7 @@ define(['model/weather/symbols/AirTemperature',
             var self = this,
                 wx, i, max,
                 timeOptions = {"hour": "2-digit", "minute": "2-digit", "timeZoneName": "short"},
-                eyeDistanceScalingThreshold = 2500000;
+                eyeDistanceScalingThreshold = 1000000;
 
             // Maintain a reference to the weather object this symbol represents
             this.wxScout = wxScout;
@@ -151,7 +151,7 @@ define(['model/weather/symbols/AirTemperature',
         WeatherMapSymbol.prototype.render = function (dc) {
 
             // Rotate the wind barb to match the view
-            this.windBarb.imageRotation = dc.navigator.heading;
+            this.windBarb.imageRotation = -dc.navigator.heading;
             // Tilt the wind barb to match the view
             //this.windBarb.imageTilt = dc.navigator.tilt; -- Disabled: visbility diminished when tilted
 

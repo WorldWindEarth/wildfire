@@ -26,6 +26,8 @@ define([
     'model/globe/LayerProxy',
     'model/util/Log',
     'worldwind',
+    'model/globe/layers/EnhancedBMNGLayer',
+    'model/globe/layers/EnhancedLandsatLayer',
     'model/globe/layers/EoxOpenStreetMapLayer',
     'model/globe/layers/EoxSentinal2CloudlessLayer',
     'model/globe/layers/EoxSentinal2WithLabelsLayer',
@@ -47,6 +49,8 @@ define([
         LayerProxy,
         log,
         ww,
+        EnhancedBMNGLayer,
+        EnhancedLandsatLayer,
         EoxOpenStreetMapLayer,
         EoxSentinal2CloudlessLayer,
         EoxSentinal2WithLabelsLayer,
@@ -149,8 +153,8 @@ define([
          */
         LayerManager.prototype.loadDefaultLayers = function () {
             // Define the Globe's default layers
-            this.addBaseLayer(new WorldWind.BMNGLayer(), {enabled: true, hideInMenu: false, detailControl: config.imagerydetailControl});
-            this.addBaseLayer(new WorldWind.BMNGLandsatLayer(), {enabled: false, detailControl: config.imagerydetailControl});
+            this.addBaseLayer(new EnhancedBMNGLayer(), {enabled: true, hideInMenu: false, detailControl: config.imagerydetailControl});
+            this.addBaseLayer(new EnhancedLandsatLayer(), {enabled: false, detailControl: config.imagerydetailControl});
             this.addBaseLayer(new WorldWind.BingAerialWithLabelsLayer(null), {enabled: false, detailControl: config.imagerydetailControl});
             this.addBaseLayer(new EoxSentinal2CloudlessLayer(), {enabled: false, detailControl: config.imagerydetailControl});
             this.addBaseLayer(new EoxSentinal2WithLabelsLayer(), {enabled: false, detailControl: config.imagerydetailControl});

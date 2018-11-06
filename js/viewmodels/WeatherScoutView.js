@@ -233,7 +233,7 @@ define(['knockout',
                 content: names[0],
                 options: {
                     drawPoints: {
-                        style: 'circle' // square, circle
+                        style: 'square' // square, circle
                     },
                     shaded: {
                         orientation: 'bottom' // top, bottom
@@ -244,7 +244,7 @@ define(['knockout',
 
             for (i = 0, len = forecasts.length; i < len; i++) {
                 wx = forecasts[i];
-                items.push({x: wx.time, y: wx.windSpeedKts, group: 0});
+                items.push({x: wx.time, y: wx.windSpeedKts, label: {content: wx.windDirectionDeg}, group: 0});
             }
 
             var dataset = new vis.DataSet(items);

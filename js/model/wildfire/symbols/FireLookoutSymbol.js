@@ -46,12 +46,13 @@ define([
                 heal = surfaceFire ? lookout.surfaceFire.flameLengthBacking.value : null,
                 dir = surfaceFire ? lookout.surfaceFire.directionMaxSpread.value : null,
                 ros = surfaceFire ? lookout.surfaceFire.rateOfSpreadMax.value : null,
-                modelNo = surfaceFire ? lookout.surfaceFire.fuelBed.fuelModel.modelCode : '-';
+                modelNo = surfaceFire ? lookout.surfaceFire.fuelBed.fuelModel.modelCode : '-',
+                eyeDistanceScalingThreshold = 1000000;
 
             // Create the fire lookout symbol components
-            this.background = new Background(lookout.latitude(), lookout.longitude());
-            this.diamond = new WildfireDiamond(lookout.latitude(), lookout.longitude(), Math.round(head), Math.round(flanks), Math.round(heal));
-            this.dirOfSpread = new DirOfSpread(lookout.latitude(), lookout.longitude(), Math.round(dir));
+            this.background = new Background(lookout.latitude(), lookout.longitude(), eyeDistanceScalingThreshold);
+            this.diamond = new WildfireDiamond(lookout.latitude(), lookout.longitude(), Math.round(head), Math.round(flanks), Math.round(heal), eyeDistanceScalingThreshold);
+            this.dirOfSpread = new DirOfSpread(lookout.latitude(), lookout.longitude(), Math.round(dir), eyeDistanceScalingThreshold);
             this.flameLengthHead = new FlameLengthHead(lookout.latitude(), lookout.longitude(), head || '-');
             this.fuelModelNo = new FuelModelNo(lookout.latitude(), lookout.longitude(), modelNo);
 
@@ -129,7 +130,7 @@ define([
             this.background.enabled = this.highlighted;
 
             // Rotate and dir of spread arrot to match the view
-            this.dirOfSpread.imageRotation = dc.navigator.heading;
+            this.dirOfSpread.imageRotation = -dc.navigator.heading;
 
             this.background.render(dc);
             this.diamond.render(dc);

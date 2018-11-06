@@ -6,13 +6,9 @@
 /*global define, WorldWind*/
 
 define([
-    'model/globe/EnhancedPlacemark',
-    'model/util/WmtUtil',
     'model/Constants',
     'worldwind'],
     function (
-        EnhancedPlacemark,
-        util,
         constants,
         ww) {
         "use strict";
@@ -25,14 +21,15 @@ define([
          * @param {type} eyeDistanceScaling
          * @returns {DirOfSpread}
          */
-        var DirOfSpread = function (latitude, longitude, dirOfSpread, eyeDistanceScaling) {
+        var DirOfSpread = function (latitude, longitude, dirOfSpread, eyeDistanceScalingThreshold) {
 
-            EnhancedPlacemark.call(this, new WorldWind.Position(latitude, longitude, constants.MAP_SYMBOL_ALTITUDE_WILDFIRE), eyeDistanceScaling);
+            WorldWind.Placemark.call(this, new WorldWind.Position(latitude, longitude, constants.MAP_SYMBOL_ALTITUDE_WILDFIRE), true);
 
             this.altitudeMode = WorldWind.RELATIVE_TO_GROUND;
-
+            this.eyeDistanceScalingThreshold = eyeDistanceScalingThreshold;
+            
             this.attributes = new WorldWind.PlacemarkAttributes(null);
-            this.attributes.depthTest = true;
+            this.attributes.depthTest = false;
             this.attributes.imageScale = 0.2;
             this.attributes.imageOffset = new WorldWind.Offset(
                 WorldWind.OFFSET_FRACTION, 0.5, // Width centered
@@ -45,7 +42,7 @@ define([
             this.updateDirOfSpreadImage(dirOfSpread);
         };
         // Inherit the Placemark methods (Note: calls the Placemark constructor a 2nd time).
-        DirOfSpread.prototype = Object.create(EnhancedPlacemark.prototype);
+        DirOfSpread.prototype = Object.create(WorldWind.Placemark.prototype);
 
         /**
          * 

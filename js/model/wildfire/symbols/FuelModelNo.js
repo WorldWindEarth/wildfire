@@ -6,9 +6,11 @@
 /*global define, WorldWind*/
 
 define([
+    'model/globe/EnhancedGeographicText',    
     'model/Constants',
     'worldwind'],
     function (
+        EnhancedGeographicText,
         constants,
         ww) {
         "use strict";
@@ -21,10 +23,10 @@ define([
          * @returns {FuelModelNo}
          */
         var FuelModelNo = function (latitude, longitude, modelNo) {
-            WorldWind.GeographicText.call(this, new WorldWind.Position(latitude, longitude, constants.MAP_SYMBOL_ALTITUDE_WILDFIRE), modelNo);
+            EnhancedGeographicText.call(this, new WorldWind.Position(latitude, longitude, constants.MAP_SYMBOL_ALTITUDE_WILDFIRE), modelNo, true);
 
             this.altitudeMode = WorldWind.RELATIVE_TO_GROUND;
-            this.alwaysOnTop = true;
+            this.alwaysOnTop = false;
             this.attributes = new WorldWind.TextAttributes(null);
             this.attributes.scale = 1.0;
             this.attributes.offset = new WorldWind.Offset(
@@ -34,7 +36,7 @@ define([
             this.attributes.depthTest = false;
         };
         // Inherit Placemark parent methods
-        FuelModelNo.prototype = Object.create(WorldWind.GeographicText.prototype);
+        FuelModelNo.prototype = Object.create(EnhancedGeographicText.prototype);
 
         /**
          * Creates a clone of this object.

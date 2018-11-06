@@ -130,7 +130,7 @@ define(['knockout',
                 var color = colors.red;
 
                 // Chart dimensions
-                var radius = 40;
+                var radius = 50;
                 var border = 5;
                 var padding = 5;
                 var twoPi = Math.PI * 2;
