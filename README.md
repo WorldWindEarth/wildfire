@@ -391,7 +391,7 @@ Iteration | Description | Completion
 --------- | ----------- | -----------
 I1 | *WorldWindJS/Explorer proof-of-concept and Digital Ocean IaaS* | Sep. 10, 2018
 
-#### [Elaboration Phase](https://github.com/WorldWindEarth/wildfire/projects/3) 
+#### [Elaboration Phase](https://github.com/WorldWindEarth/wildfire/projects/3#column-3373816) 
 
 Iteration | Description | Deadline
 --------- | ----------- | ---------
