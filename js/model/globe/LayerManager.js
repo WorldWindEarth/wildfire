@@ -165,9 +165,9 @@ define([
             
             this.addOverlayLayer(new GeoMacHistoricPerimetersLayer(), {enabled: false, detailControl: config.imagerydetailControl});
             this.addOverlayLayer(new GeoMacPreviousPerimetersLayer(), {enabled: false, detailControl: config.imagerydetailControl});
-            this.addOverlayLayer(new GeoMacCurrentPerimetersLayer(), {enabled: false, detailControl: config.imagerydetailControl});
+            this.addOverlayLayer(new GeoMacCurrentPerimetersLayer(), {enabled: true, detailControl: config.imagerydetailControl});
             this.addOverlayLayer(new GeoMacHmsThermalSatelliteLayer(), {enabled: false, detailControl: config.imagerydetailControl});
-            this.addOverlayLayer(new GeoMacModisThermalSatelliteLayer(), {enabled: false, detailControl: config.imagerydetailControl});
+            this.addOverlayLayer(new GeoMacModisThermalSatelliteLayer(), {enabled: true, detailControl: config.imagerydetailControl});
 
             this.addDataLayer(new WorldWind.RenderableLayer(constants.LAYER_NAME_WEATHER), {enabled: true, pickEnabled: true});
             this.addDataLayer(new WorldWind.RenderableLayer(constants.LAYER_NAME_FIRE_LOOKOUTS), {enabled: true, pickEnabled: true});
