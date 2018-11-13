@@ -36,7 +36,7 @@ requirejs.config({
         // JQuery UI elements
         'jqueryui': window.DEBUG ? 'libs/jquery-ui/jquery-ui-1.11.4' : 'https://code.jquery.com/ui/1.12.1/jquery-ui.min',
         // JQuery FancyTree component
-        'jquery-fancytree': 'libs/jquery.fancytree/jquery.fancytree-all.min',
+        'jquery-fancytree': window.DEBUG ? 'libs/jquery.fancytree/jquery.fancytree-all.min' : 'https://cdnjs.cloudflare.com/ajax/libs/jquery.fancytree/2.19.0/jquery.fancytree-all.min',
         // JQuery UI based 'growl' messaging
         'jquery-growl': 'libs/jquery-plugins/growl/jquery.growl',
         // JQuery UI touch event support
