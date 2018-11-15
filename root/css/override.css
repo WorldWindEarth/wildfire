@@ -359,14 +359,14 @@ Custom style for VisJS graphs
     stroke: #b3ab00;
 }
 
-.rel-humidity-style1 {
+.wind-speed-style1 {
     fill: #00ced1;
     fill-opacity:0;
     stroke-width:2px;
     stroke: #1E90FF;
 }
 
-.wind-speed-style1 {
+.rel-humidity-style1 {
     fill: #00f201;
     fill-opacity:0;
     stroke-width:2px;
