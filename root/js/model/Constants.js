@@ -56,11 +56,13 @@ define([], function () {
         /**
          * The display name for the layer that displays markers.
          */
+        LAYER_NAME_ATMOSPHERE: "Atmosphere",
         LAYER_NAME_COMPASS: "Compass",
         LAYER_NAME_FIRE_LOOKOUTS: "Fire Lookouts",
         LAYER_NAME_MARKERS: "Markers",
         LAYER_NAME_RETICLE: "Crosshairs",
         LAYER_NAME_SKY: "Sky",
+        LAYER_NAME_STARS: "Stars",
         LAYER_NAME_TACTICAL_SYMBOLS: "Tactical Symbols",
         LAYER_NAME_TIME_ZONES: "Time Zones",
         LAYER_NAME_VIEW_CONTROLS: "Controls",
