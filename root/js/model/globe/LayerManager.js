@@ -155,7 +155,7 @@ define([
             // Define the Globe's default layers
             this.addBaseLayer(new EnhancedBMNGLayer(), {enabled: true, hideInMenu: false, detailControl: config.imagerydetailControl});
             this.addBaseLayer(new EnhancedLandsatLayer(), {enabled: false, detailControl: config.imagerydetailControl});
-            this.addBaseLayer(new WorldWind.BingAerialWithLabelsLayer(null), {enabled: false, detailControl: config.imagerydetailControl});
+            this.addBaseLayer(new WorldWind.BingAerialWithLabelsLayer(null), {enabled: true, detailControl: config.imagerydetailControl});
             this.addBaseLayer(new EoxSentinal2CloudlessLayer(), {enabled: false, detailControl: config.imagerydetailControl});
             this.addBaseLayer(new EoxSentinal2WithLabelsLayer(), {enabled: false, detailControl: config.imagerydetailControl});
             this.addBaseLayer(new UsgsImageryTopoBaseMapLayer(), {enabled: false, detailControl: config.imagerydetailControl});
