@@ -43,6 +43,72 @@
     -->
     <!-- ko if: $data -->
     <div id="fire-lookout-info" class="panel panel-default" style="height: 100%;">
+        <div class="col-lg-6 col-md-6 col-sm-6 panel panel-default">
+            <div class="panel-heading">
+                <h4 class="panel-title">Wildfire Diamond</h4>
+                <table>
+                    <thead>
+                        <tr>
+                            <th>Color</th>
+                            <th>Intensity</th>
+                            <th>Flames</th>
+                            <th>Description</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        <tr>
+                            <td>Blue</td>
+                            <td>LOW</td>
+                            <td>0-1’</td>
+                            <td>Fire will burn and will spread however it presents very little resistance to control and direct attack with firefighters is possible.</td>
+                        </tr>
+                        <tr>
+                            <td>Green</td>
+                            <td>MODERATE</td>
+                            <td>1’-3’</td>
+                            <td>Fire spreads rapidly presenting moderate resistance to control but can be countered with direct attack by firefighters.</td>
+                        </tr>
+                        <tr>
+                            <td>Tan</td>
+                            <td>ACTIVE</td>
+                            <td>3’-7’</td>
+                            <td>Fire spreads very rapidly presenting substantial resistance to control. Direct attack with firefighters must be supplemented with equipment and/or air support.</td>
+                        </tr>
+                        <tr>
+                            <td>Magenta</td>
+                            <td>VERY ACTIVE</td>
+                            <td>7’-15’</td>
+                            <td>Fire spreads very rapidly presenting extreme resistance to control. Indirect attack may be effective. Safety of firefighters in the area becomes a concern.</td>
+                        </tr>
+                        <tr>
+                            <td>Red</td>
+                            <td>EXTREME</td>
+                            <td>&gt;15’</td>
+                            <td>Fire spreads very rapidly presenting extreme resistance to control. Any form of attack will probably not be effective. Safety of firefighters in the area is of critical concern.</td>
+                        </tr>
+                    </tbody>
+                </table>
+            </div>
+            <div class="panel-body" style="padding: 0;" >
+                <div id="wildfire-diamond" data-bind="visualizeWildfireDiamond: $data"></div>
+            </div>
+        </div>
+        <div class="col-lg-3 col-md-4  col-sm-6 panel panel-default">
+            <div class="panel-heading">
+                <h4 class="panel-title">Haul Chart</h4>
+            </div>
+            <div class="panel-body" style="padding: 0;" >
+                <div id="haul-chart" data-bind="visualizeHaulChart: $data"></div>
+            </div>
+        </div>
+        <div class="col-lg-3 col-md-4  col-sm-6 panel panel-default">
+            <div class="panel-heading">
+                <h4 class="panel-title">Wind Speed (Kts)</h4>
+            </div>
+            <div class="panel-body" style="padding: 0;" >
+                <div id="wind-speed-graph" data-bind="visualizeWinds: $data"></div>
+            </div>
+        </div>
         <div class="col-lg-3 col-md-4 col-sm-6 panel panel-default">
             <div class="panel-heading">
                 <h4 class="panel-title">Air Temperature (F)</h4>
@@ -59,14 +125,6 @@
             <div class="panel-body"style="padding: 0;" >
                 <!--Custom knockout binding-->
                 <div id="rel-humidity-graph" data-bind="visualizeHumidity: $data"></div>
-            </div>
-        </div>
-        <div class="col-lg-3 col-md-4  col-sm-6 panel panel-default">
-            <div class="panel-heading">
-                <h4 class="panel-title">Wind Speed (Kts)</h4>
-            </div>
-            <div class="panel-body" style="padding: 0;" >
-                <div id="wind-speed-graph" data-bind="visualizeWinds: $data"></div>
             </div>
         </div>
         <div class="col-lg-3 col-md-4  col-sm-6 panel panel-default">
