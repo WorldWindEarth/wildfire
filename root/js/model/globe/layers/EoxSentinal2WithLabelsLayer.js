@@ -53,7 +53,7 @@ define([
         EoxSentinal2WithLabelsLayer.prototype.doRender = function (dc) {
             WorldWind.WmsLayer.prototype.doRender.call(this, dc);
             if (this.inCurrentFrame) {
-                dc.screenCreditController.addStringCredit("OpenStreetMap and Sentinel-2 cloudless by EOX IT Services GmbH", WorldWind.Color.LIGHT_GRAY);
+                dc.screenCreditController.addCredit("OpenStreetMap and Sentinel-2 cloudless by EOX IT Services GmbH", WorldWind.Color.LIGHT_GRAY);
             }
         };
 
