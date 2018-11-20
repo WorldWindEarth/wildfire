@@ -37,7 +37,7 @@ define([
         // Position in lower right corner
         var self = this,
                 RIGHT_MARGIN = 10,
-                BOTTOM_MARGIN = 25,
+                BOTTOM_MARGIN = 35,
                 BG_HEIGHT = 104,
                 DIAL_HEIGHT = 95,
                 DIAL_RADIUS = DIAL_HEIGHT / 2,
