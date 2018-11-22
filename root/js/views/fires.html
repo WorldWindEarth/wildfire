@@ -21,62 +21,50 @@
     -->
     <!-- ko if: $data -->
     <div id="wildland-fire-info" style="height: 100%;">
-        <div class="col-lg-3 col-md-4 col-sm-6 panel panel-default">
+        <div class="col-lg-4 col-md-4 col-sm-6 panel panel-default">
             <div class="panel-heading">
-            <h4 class="panel-title">Incident: <span data-bind="text: $data.name"></span></h4>
-                <table>
-                    <tbody>
-                        <tr>
-                            <td>Number: </td>
-                            <td data-bind="text: $data.number"></td>
-                        </tr>
-                        <tr>
-                            <td>Size: </td>
-                            <td><span data-bind="text: $data.acres"></span> acres - <span data-bind="text: $data.percentContained"></span>% contained</td>
-                        </tr>
-                        <tr>
-                            <td>Cause: </td>
-                            <td data-bind="text: $data.fireCause"></td>
-                        </tr>
-                        <tr>
-                            <td>Status: </td>
-                            <td data-bind="text: $data.status"></td>
-                        </tr>
-                        <tr>
-                            <td>More Info: </td>
-                            <td><a data-bind="attr: { href: $data.hotlink }" target="_blank"><span data-bind="text: $data.hotlink"></span></a></td>
-                        </tr>
-                    </tbody>
-                </table>
-                
+								<h4 class="panel-title">Incident: <span data-bind="text: $data.name"></span></h4>                        
             </div>
             <div class="panel-body" style="padding: 0;" > 
+								<dl class="dl-horizontal ">	
+										<dt>Number:</dt>
+										<dd data-bind="text: $data.number"></dd>	
+										<dt>Cause:</dt>
+										<dd data-bind="text: $data.fireCause"></dd>
+										<dt>Status:</dt>
+										<dd data-bind="text: $data.status"></dd>
+										<dt>More Info:</dt>
+										<dd class="ellipsis"><a data-bind="attr: { href: $data.hotlink }" target="_blank"><span data-bind="text: $data.hotlink"></span></a></dd>
+								</dl>		
             </div>
         </div>
-        <div class="col-lg-3 col-md-4 col-sm-6 panel panel-default">
+        <div class="col-lg-4 col-md-4 col-sm-6 panel panel-default">
             <div class="panel-heading">
-                <h4 class="panel-title">Percent Contained</h4>
+                <h4 class="panel-title">Size</h4>
             </div>
             <div class="panel-body" style="padding: 0;" > 
-                <!--Custom knockout binding-->
-                <div id="percent-contained-graph" data-bind="visualizePercentContained: $data"></div>
+							<table>
+								<tr>
+									<td>
+										<!--Custom knockout binding-->
+										<div id="wildfire-size-graph" data-bind="visualizeWildfireSize: $data"></div>
+										<!--<span data-bind="text: Number($data.acres).toLocaleString()"></span> acres-->
+									</td>
+									<td>
+										<!--Custom knockout binding-->
+										<div id="percent-contained-graph" data-bind="visualizePercentContained: $data"></div>
+									</td>
+								</tr>
+							</table>
             </div>
         </div>
-        <div class="col-lg-3 col-md-4 col-sm-6 panel panel-default">
+        <div class="col-lg-4 col-md-4 col-sm-6 panel panel-default">
             <div class="panel-heading">
                 <h4 class="panel-title">Dates</h4>
             </div>
             <div class="panel-body"style="padding: 0;" >
-                <!--Custom knockout binding-->
-                <div id="wildfire-dates-display" data-bind="visualizeWildfireDates: $data"></div>
-            </div>
-        </div>
-        <div class="col-lg-3 col-md-4  col-sm-6 panel panel-default">
-            <div class="panel-heading">
-                <h4 class="panel-title">Size</h4>
-            </div>
-            <div class="panel-body" style="padding: 0;" >
-                <div id="wildfire-size-graph" data-bind="visualizeWildfireSize: $data"></div>
+										<!--Custom knockout binding-->
+										<div id="wildfire-dates-display" data-bind="visualizeWildfireDates: $data"></div>
             </div>
         </div>
     </div>
