@@ -77,6 +77,9 @@ requirejs.onError = function (err) {
 The server may be busy or you have a slow connection.\n\
 Try refreshing the page or try again later.\n\n" + err);
     } else {
+        alert("An error occurred. \n\n" + err + "\n\n\
+Try refreshing the page or report the error at \n\
+https://github.com/WorldWindEarth/wildfire/issues");      
         throw err;
     }
 };

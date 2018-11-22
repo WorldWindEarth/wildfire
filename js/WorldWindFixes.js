@@ -21,6 +21,18 @@ define(['worldwind'], function () {
      * Apply fixes to the WorldWind library's class prototypes.
      */
     WorldWindFixes.applyLibraryFixes = function () {
+      
+        WorldWind.WWMath.epsg3857ToEpsg4326 = function (easting, northing) {
+            var r = 6.378137e6,
+                latRadians = (Math.PI / 2) - 2 * Math.atan(Math.exp(-northing / r)),
+                lonRadians = easting / r;
+
+            return [
+                WorldWind.WWMath.clamp(latRadians * WorldWind.Angle.RADIANS_TO_DEGREES, -90, 90),
+                WorldWind.WWMath.clamp(lonRadians * WorldWind.Angle.RADIANS_TO_DEGREES, -180, 180)
+            ];
+        };
+      
         // Augment the 0.9.0 version WorldWind with bug fixes and customizations
         if (WorldWind.VERSION === "0.9.0") {
 

@@ -193,7 +193,7 @@ define([
         if (showBackground || showBackground === undefined) {
             // Set the background color to variable shade of blue
             this.layerManager.addEffectLayer(new EnhancedStarFieldLayer(this), {
-                enabled: true,
+                enabled: false,
                 hideInMenu: false
             });
             this.layerManager.addEffectLayer(new SkyBackgroundLayer(this), {
@@ -202,7 +202,7 @@ define([
             });
             // Add the optional Day/Night mode and Atmosphere effect
             this.layerManager.addEffectLayer(new EnhancedAtmosphereLayer(this), {
-                enabled: true,
+                enabled: false,
                 hideInMenu: false
             });
             // Add the optional Tesselation layer (for debugging or high-tech display)

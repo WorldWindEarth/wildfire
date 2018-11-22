@@ -116,18 +116,22 @@ define(['knockout',
              */
             WildfireView.prototype.percentContained = function (element, wildfire) {
                 var progress = wildfire.percentContained / 100.0;
+                var remaining = 1 - progress;
                 var colors = {
                     'pink': '#E1499A',
                     'yellow': '#f0ff08',
                     'green': '#47e495',
-                    'red': '#ff0000'
+                    'red': '#ff0000',
+                    'grey': '#cc',
+                    'black': '#000000'
                 };
 
                 // The DOM element to contain the chart
                 // See: https://github.com/d3/d3/blob/master/API.md#selecting-elements
                 var parent = d3.select(element);
 
-                var color = colors.red;
+                var uncontainedColor = colors.red;
+                var containedColor = colors.grey;
 
                 // Chart dimensions
                 var radius = 50;
@@ -165,197 +169,119 @@ define(['knockout',
 
                 meter.append('path')
                         .attr('class', 'background')
-                        .attr('fill', '#ccc')
+                        .attr('fill', colors.grey)
                         .attr('fill-opacity', 0.5)
                         .attr('d', arc.endAngle(twoPi));
 
-                var foreground = meter.append('path')
+                var containedForeground = meter.append('path')
                         .attr('class', 'foreground')
-                        .attr('fill', color)
+                        .attr('fill', containedColor)
                         .attr('fill-opacity', 1)
-                        .attr('stroke', color)
+                        .attr('stroke', containedColor)
+                        .attr('stroke-width', 5)
+                        .attr('stroke-opacity', 1)
+                        .attr('filter', 'url(#blur)');
+                      
+                var uncontainedForeground = meter.append('path')
+                        .attr('class', 'foreground')
+                        .attr('fill', uncontainedColor)
+                        .attr('fill-opacity', 1)
+                        .attr('stroke', uncontainedColor)
                         .attr('stroke-width', 5)
                         .attr('stroke-opacity', 1)
                         .attr('filter', 'url(#blur)');
 
                 var front = meter.append('path')
                         .attr('class', 'foreground')
-                        .attr('fill', color)
+                        .attr('fill', uncontainedColor)
                         .attr('fill-opacity', 1);
 
-                var numberText = meter.append('text')
+                var containedText = meter.append('text')
                         .attr('fill', '#fff')
                         .attr('text-anchor', 'middle')
                         .attr('dy', '.35em');
 
-                var remaining = 1 - progress;
-                foreground.attr('d', arc.endAngle(twoPi * remaining));
+                containedForeground.attr('d', arc.endAngle(twoPi * progress));
+                front.attr('d', arc.endAngle(twoPi * progress));
+                
+                uncontainedForeground.attr('d', arc.endAngle(twoPi * remaining));
                 front.attr('d', arc.endAngle(twoPi * remaining));
-                numberText.text(formatPercent(progress));
+                
+                containedText.text(formatPercent(progress) + " contained");
             };
 
             /**
              * Display the wildfire size as a category in a segmented chart via d3.
              * See: https://github.com/d3/d3/blob/master/API.md
              * 
-             * @param {type} element DOM element where the Timeline will be attached
+             * @param {type} element DOM element where the chart will be attached
              * @param {type} wildfire The Wildfire model element
              */
             WildfireView.prototype.wildfireSize = function (element, wildfire) {
-                var Needle, arc, arcEndRad, arcStartRad, barWidth, chart, chartInset, degToRad, el,
-                        endPadRad, height, i, margin, needle, numSections, padRad, percToDeg,
-                        percToRad, percent, radius, ref, sectionIndx, sectionPerc, startPadRad,
-                        svg, totalPercent, width;
 
-                percent = 0.65;
+              // Dataset elements: [bar height, threshold for red fill, label]
+              var dataset = [
+                [10, 0, "<10K"], 
+                [20, 10e3, "<20K"], 
+                [40, 20e3, "<50K"],
+                [65, 50e3, "<100K"], 
+                [90, 100e3, ">100K"]
+              ];
 
-                numSections = 5;
-                barWidth = 5;
-                sectionPerc = 1 / numSections / 2;
-                padRad = 0.05;
-                chartInset = 10;
-                totalPercent = 0.75;
-                el = d3.select(element);
+              var svgWidth = 120; 
+              var svgHeight = 100;
+              var barPadding = 2;
+              var barWidth = (svgWidth / dataset.length);
+              var colors = {
+                  'pink': '#E1499A',
+                  'yellow': '#f0ff08',
+                  'green': '#47e495',
+                  'red': '#ff0000',
+                  'grey': '#cc',
+                  'black': '#000000'
+              };
+              
+              var parent = d3.select(element);
+              var svg = parent.append('svg')
+                  .attr("width", svgWidth + 20)
+                  .attr("height", svgHeight);
 
-                margin = {
-                    top: 20,
-                    right: 20,
-                    bottom: 30,
-                    left: 20
-                };
-                width = element.offsetWidth - margin.left - margin.right;
-                height = width;
-                radius = Math.min(width, height) / 2;
+              var bar = svg.selectAll("g")
+                  .data(dataset)
+                  .enter().append("g")
+                  .attr("transform", function(d, i) { 
+                    var translate = [barWidth * i, 0]; 
+                      return "translate("+ translate +")";
+                    });
 
-                percToDeg = function (perc) {
-                    return perc * 360;
-                };
-                percToRad = function (perc) {
-                    return degToRad(percToDeg(perc));
-                };
-                degToRad = function (deg) {
-                    return deg * Math.PI / 180;
-                };
+              bar.append("rect")
+                  .attr("y", function(d) {
+                       return svgHeight - d[0];
+                  })
+                  .attr("height", function(d) { 
+                      return d[0]; 
+                  })
+                  .attr("width", barWidth - barPadding)
+                  .attr("fill", function(d) { 
+                      return wildfire.acres > d[1] ? colors.red : colors.black; 
+                  });
 
-                svg = el.append('svg')
-                        .attr('width', width + margin.left + margin.right)
-                        .attr('height', height + margin.top + margin.bottom);
-
-                chart = svg.append('g')
-                        .attr('transform',
-                                'translate(' + (width + margin.left) / 2 + ', ' + (height + margin.top) / 2 + ')');
-
-                for (sectionIndx = i = 1, ref = numSections; 1 <= ref ? i <= ref : i >= ref; sectionIndx = 1 <= ref ? ++i : --i) {
-                    arcStartRad = percToRad(totalPercent);
-                    arcEndRad = arcStartRad + percToRad(sectionPerc);
-                    totalPercent += sectionPerc;
-                    startPadRad = sectionIndx === 0 ? 0 : padRad / 2;
-                    endPadRad = sectionIndx === numSections ? 0 : padRad / 2;
-                    arc = d3.arc()
-                            .outerRadius(radius - chartInset)
-                            .innerRadius(radius - chartInset - barWidth)
-                            .startAngle(arcStartRad + startPadRad)
-                            .endAngle(arcEndRad - endPadRad);
-                    chart.append('path')
-                            .attr('class', 'arc chart-color' + sectionIndx)
-                            .attr('d', arc);
-                }
-                Needle = function () {
-                    function Needle(len, radius1) {
-                        this.len = len;
-                        this.radius = radius1;
-                    }
-                    Needle.prototype.drawOn = function (el, perc) {
-                        el.append('circle').attr('class', 'needle-center').attr('cx', 0).attr('cy', 0).attr('r', this.radius);
-                        return el.append('path').attr('class', 'needle').attr('d', this.mkCmd(perc));
-                    };
-                    Needle.prototype.animateOn = function (el, perc) {
-                        var self;
-                        self = this;
-                        return el.transition()
-                                .delay(500)
-                                .ease('elastic')
-                                .duration(3000)
-                                .selectAll('.needle')
-                                .tween('progress', function () {
-                            return function (percentOfPercent) {
-                                var progress;
-                                progress = percentOfPercent * perc;
-                                return d3.select(this).attr('d', self.mkCmd(progress));
-                            };
-                        });
-                    };
-                    Needle.prototype.mkCmd = function (perc) {
-                        var centerX, centerY, leftX, leftY, rightX, rightY, thetaRad, topX, topY;
-                        thetaRad = percToRad(perc / 2);
-                        centerX = 0;
-                        centerY = 0;
-                        topX = centerX - this.len * Math.cos(thetaRad);
-                        topY = centerY - this.len * Math.sin(thetaRad);
-                        leftX = centerX - this.radius * Math.cos(thetaRad - Math.PI / 2);
-                        leftY = centerY - this.radius * Math.sin(thetaRad - Math.PI / 2);
-                        rightX = centerX - this.radius * Math.cos(thetaRad + Math.PI / 2);
-                        rightY = centerY - this.radius * Math.sin(thetaRad + Math.PI / 2);
-                        return 'M ' + leftX + ' ' + leftY + ' L ' + topX + ' ' + topY + ' L ' + rightX + ' ' + rightY;
-                    };
-                    return Needle;
-                }();
-                //needle = new Needle(90, 15);
-                //needle.drawOn(chart, percent);
-                //needle.animateOn(chart, percent);
+              var title = svg.append("text")
+                .attr("x", svgWidth / 2)
+                .attr("y", svgHeight / 2)
+                .attr('fill', '#fff')
+                .attr('text-anchor', 'middle')
+                .text(Number(wildfire.acres).toLocaleString() + " acres");
+              
+              var subtitle = svg.append("text")
+                .attr("x", svgWidth / 2)
+                .attr("y", svgHeight / 2 + 20)
+                .attr('fill', '#fff')
+                .attr('text-anchor', 'middle')
+                .attr('font-style', 'italic')
+                .text("(" + Number(Math.round(wildfire.acres * 0.404686)).toLocaleString() + " hectares)");
+                
             };
-
-//            WildfireOutputView.prototype.percentContainedxx = function (element, wildfire) {
-//                var percentContained = wildfire.percentContained;
-//                var width = 960,
-//                        height = 500,
-//                        twoPi = 2 * Math.PI,
-//                        progress = percentContained,
-//                        total = 1308573, // must be hard-coded if server doesn't report Content-Length
-//                        formatPercent = d3.format(".0%");
-//
-//                var arc = d3.svg.arc()
-//                        .startAngle(0)
-//                        .innerRadius(180)
-//                        .outerRadius(240);
-//
-//                var svg = d3.select(element).append("svg")
-//                        .attr("width", width)
-//                        .attr("height", height)
-//                        .append("g")
-//                        .attr("transform", "translate(" + width / 2 + "," + height / 2 + ")");
-//
-//                var meter = svg.append("g")
-//                        .attr("class", "progress-meter");
-//
-//                meter.append("path")
-//                        .attr("class", "background")
-//                        .attr("d", arc.endAngle(twoPi));
-//
-//                var foreground = meter.append("path")
-//                        .attr("class", "foreground");
-//
-//                var text = meter.append("text")
-//                        .attr("text-anchor", "middle")
-//                        .attr("dy", ".35em");
-//
-//                d3.json("https://api.github.com/repos/mbostock/d3/git/blobs/2e0e3b6305fa10c1a89d1dfd6478b1fe7bc19c1e?" + Math.random())
-//                        .on("progress", function () {
-//                            var i = d3.interpolate(progress, d3.event.loaded / total);
-//                            d3.transition().tween("progress", function () {
-//                                return function (t) {
-//                                    progress = i(t);
-//                                    foreground.attr("d", arc.endAngle(twoPi * progress));
-//                                    text.text(formatPercent(progress));
-//                                };
-//                            });
-//                        })
-//                        .get(function (error, data) {
-//                            meter.transition().delay(250).attr("transform", "scale(0)");
-//                        });
-//            };
-
-
 
             return WildfireView;
         }

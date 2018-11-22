@@ -43,6 +43,14 @@
     -->
     <!-- ko if: $data -->
     <div id="weather-scout-info" style="height: 100%;">
+        <div class="col-lg-3 col-md-4  col-sm-6 panel panel-default">
+            <div class="panel-heading">
+                <h4 class="panel-title">Wind Speed (Kts)</h4>
+            </div>
+            <div class="panel-body" style="padding: 0;" >
+                <div id="wind-speed-graph" data-bind="visualizeWinds: $data"></div>
+            </div>
+        </div>
         <div class="col-lg-3 col-md-4 col-sm-6 panel panel-default">
             <div class="panel-heading">
                 <h4 class="panel-title">Air Temperature (F)</h4>
@@ -59,14 +67,6 @@
             <div class="panel-body"style="padding: 0;" >
                 <!--Custom knockout binding-->
                 <div id="rel-humidity-graph" data-bind="visualizeHumidity: $data"></div>
-            </div>
-        </div>
-        <div class="col-lg-3 col-md-4  col-sm-6 panel panel-default">
-            <div class="panel-heading">
-                <h4 class="panel-title">Wind Speed (Kts)</h4>
-            </div>
-            <div class="panel-body" style="padding: 0;" >
-                <div id="wind-speed-graph" data-bind="visualizeWinds: $data"></div>
             </div>
         </div>
         <div class="col-lg-3 col-md-4  col-sm-6 panel panel-default">

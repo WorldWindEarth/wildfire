@@ -36,8 +36,9 @@ define([
     'model/globe/layers/GeoMacHistoricPerimetersLayer',
     'model/globe/layers/GeoMacModisThermalSatelliteLayer',
     'model/globe/layers/GeoMacHmsThermalSatelliteLayer',
-    'model/globe/layers/UsgsContoursLayer',
+    'model/globe/layers/OpenTopoMapLayer',
     'model/globe/layers/UsgsImageryTopoBaseMapLayer',
+    'model/globe/layers/UsgsNaipMapLayer',
     'model/globe/layers/UsgsTopoBaseMapLayer',
     'url-search-params'],
     function (
@@ -59,8 +60,9 @@ define([
         GeoMacHistoricPerimetersLayer,
         GeoMacModisThermalSatelliteLayer,
         GeoMacHmsThermalSatelliteLayer,
-        UsgsContoursLayer,
+        OpenTopoMapLayer,
         UsgsImageryTopoBaseMapLayer,
+        UsgsNaipMapLayer,
         UsgsTopoBaseMapLayer,
         URLSearchParams) {
         "use strict";
@@ -155,11 +157,13 @@ define([
             // Define the Globe's default layers
             this.addBaseLayer(new EnhancedBMNGLayer(), {enabled: true, hideInMenu: false, detailControl: config.imagerydetailControl});
             this.addBaseLayer(new EnhancedLandsatLayer(), {enabled: false, detailControl: config.imagerydetailControl});
-            this.addBaseLayer(new WorldWind.BingAerialWithLabelsLayer(null), {enabled: false, detailControl: config.imagerydetailControl});
+            this.addBaseLayer(new WorldWind.BingAerialWithLabelsLayer(null), {enabled: true, detailControl: config.imagerydetailControl});
             this.addBaseLayer(new EoxSentinal2CloudlessLayer(), {enabled: false, detailControl: config.imagerydetailControl});
             this.addBaseLayer(new EoxSentinal2WithLabelsLayer(), {enabled: false, detailControl: config.imagerydetailControl});
             this.addBaseLayer(new UsgsImageryTopoBaseMapLayer(), {enabled: false, detailControl: config.imagerydetailControl});
-            this.addBaseLayer(new UsgsTopoBaseMapLayer(), {enabled: false, detailControl: config.imagerydetailControl});
+            this.addBaseLayer(new UsgsNaipMapLayer(), {enabled: false, detailControl: config.imagerydetailControl});
+            this.addBaseLayer(new UsgsTopoBaseMapLayer(), {enabled: false, detailControl: 1.25});
+            this.addBaseLayer(new OpenTopoMapLayer(), {enabled: false});
             this.addBaseLayer(new WorldWind.BingRoadsLayer(null), {enabled: false, opacity: 0.7, detailControl: config.imagerydetailControl});
             this.addBaseLayer(new EoxOpenStreetMapLayer(), {enabled: false, opacity: 0.8, detailControl: config.imagerydetailControl});
             
