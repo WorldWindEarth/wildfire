@@ -222,9 +222,9 @@ define(['knockout',
               // Dataset elements: [bar height, threshold for red fill, label]
               var dataset = [
                 [10, 0, "<10K"], 
-                [30, 10e3, "<20K"], 
-                [50, 20e3, "<50K"],
-                [70, 50e3, "<100K"], 
+                [20, 10e3, "<20K"], 
+                [40, 20e3, "<50K"],
+                [65, 50e3, "<100K"], 
                 [90, 100e3, ">100K"]
               ];
 
