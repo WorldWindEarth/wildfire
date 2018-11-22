@@ -138,6 +138,14 @@ body {
 .section-heading {
 }
 
+
+/*Truncating text on a single line with an ellipsis*/
+.ellipsis {
+    white-space: nowrap;
+    overflow: hidden;
+    text-overflow: ellipsis;
+    -o-text-overflow: ellipsis;
+}
 /*split window container class*/
 .split {
     -webkit-box-sizing: border-box;
