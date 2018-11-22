@@ -63,6 +63,9 @@ requirejs.config({
         "bootstrap": {
             deps: ["jquery"],
             exports: "$.fn.popover"
+        },
+        "jquery-fancytree": {
+            deps: ["jqueryui"]
         }
     }
 });
