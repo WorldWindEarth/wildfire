@@ -36,6 +36,8 @@ define([
     'model/globe/layers/GeoMacHistoricPerimetersLayer',
     'model/globe/layers/GeoMacModisThermalSatelliteLayer',
     'model/globe/layers/GeoMacHmsThermalSatelliteLayer',
+    'model/globe/layers/LandfireFbfm13Layer',
+//    'model/globe/layers/LandfireFbfm40Layer',
     'model/globe/layers/OpenTopoMapLayer',
     'model/globe/layers/UsgsImageryTopoBaseMapLayer',
     'model/globe/layers/UsgsNaipMapLayer',
@@ -60,6 +62,8 @@ define([
         GeoMacHistoricPerimetersLayer,
         GeoMacModisThermalSatelliteLayer,
         GeoMacHmsThermalSatelliteLayer,
+        LandfireFbfm13Layer,
+//        LandfireFbfm40Layer,
         OpenTopoMapLayer,
         UsgsImageryTopoBaseMapLayer,
         UsgsNaipMapLayer,
@@ -167,6 +171,8 @@ define([
             this.addBaseLayer(new WorldWind.BingRoadsLayer(null), {enabled: false, opacity: 0.7, detailControl: config.imagerydetailControl});
             this.addBaseLayer(new EoxOpenStreetMapLayer(), {enabled: false, opacity: 0.8, detailControl: config.imagerydetailControl});
             
+            this.addOverlayLayer(new LandfireFbfm13Layer(), {enabled: false, detailControl: config.imagerydetailControl});
+//            this.addOverlayLayer(new LandfireFbfm40Layer(), {enabled: false, detailControl: config.imagerydetailControl});
             this.addOverlayLayer(new GeoMacHistoricPerimetersLayer(), {enabled: false, detailControl: config.imagerydetailControl});
             this.addOverlayLayer(new GeoMacPreviousPerimetersLayer(), {enabled: false, detailControl: config.imagerydetailControl});
             this.addOverlayLayer(new GeoMacCurrentPerimetersLayer(), {enabled: true, detailControl: config.imagerydetailControl});

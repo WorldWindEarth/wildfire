@@ -42,7 +42,7 @@ define([], function () {
          * The URL for the LANDFIRE MapServer REST service.
          * LANDFIRE 2012 (LF 2012 - LF_1.3.0) 
          */
-        LANDFIRE_REST_SERVICE: "https://landfire.cr.usgs.gov/arcgis/rest/services/Landfire/US_130/MapServer",        
+        LANDFIRE_REST_SERVICE: "https://landfire.cr.usgs.gov/arcgis/rest/services/Landfire/US_140/MapServer",        
 //        LANDFIRE_REST_SERVICE: "https://emxsys.net/landfire/rest/US_130",        
         /**
          * Layer categories
