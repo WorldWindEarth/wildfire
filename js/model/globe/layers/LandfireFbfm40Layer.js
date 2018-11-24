@@ -11,7 +11,7 @@
  * The LandfireLayer renders LANDFIRE fuel models.
  * @exports LandfireLayer
  * 
- * @returns {LandfireFbfm13Layer}
+ * @returns {LandfireFbfm40Layer}
  * 
  * See: http://landfire.gov/data_access.php
  * 
@@ -26,7 +26,7 @@ define([
         ww) {
         "use strict";
         /**
-         * Constructs a LANDFIRE FBFM13 layer.
+         * Constructs a LANDFIRE FBFM40 layer.
          * @alias LandfireLayer
          * @constructor
          * @augments WmsLayer
@@ -52,14 +52,14 @@ define([
          *  <ImageFormat>image/png</ImageFormat>
          *  <UseTransparentTextures>true</UseTransparentTextures>
          */
-        var LandfireFbfm13Layer = function () {
+        var LandfireFbfm40Layer = function () {
             var //capabilities = WorldWind.WmsCapabilities(wmt.IMAGE_PATH + '../globe/LANDFIRE.FBFM40.xml'),
                 //config = WorldWind.WmsLayer.formLayerConfiguration(capabilities),
                 cfg = {
-                    title: "Fuel Models (13)",
+                    title: "Fuel Models (40)",
                     version: "1.3.0",
                     service: "https://landfire.cr.usgs.gov/arcgis/services/Landfire/US_140/MapServer/WMSServer?",
-                    layerNames: "US_140FBFM13",
+                    layerNames: "US_140FBFM40",
                     sector: new WorldWind.Sector(22.6952681387, 51.6768794844, -128.0067177405, -65.2077897436),
                     levelZeroDelta: new WorldWind.Location(36, 36),
                     numLevels: 12,
@@ -76,8 +76,8 @@ define([
 
         };
 
-        LandfireFbfm13Layer.prototype = Object.create(WorldWind.WmsLayer.prototype);
+        LandfireFbfm40Layer.prototype = Object.create(WorldWind.WmsLayer.prototype);
 
-        return LandfireFbfm13Layer;
+        return LandfireFbfm40Layer;
     }
 );

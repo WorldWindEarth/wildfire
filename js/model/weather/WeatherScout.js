@@ -85,6 +85,7 @@ define([
             movable.makeMovable(this);
 
             // Make selectable via picking (see PickController): adds the "select" method
+            // - makeSelectable adds the selectMe function to this object using the following callback
             selectable.makeSelectable(this, function (params) {   // define the callback that selects this marker
                 this.isMovable(params.selected);
                 this.renderable.highlighted = params.selected;
@@ -93,6 +94,7 @@ define([
 
             
             // Make openable via menus: Establishes the isOpenable member.
+            // - makeOpenable adds the openMe function to this object
             openable.makeOpenable(this, function () { // define the function that opens the editor
                    var $element = $("#weather-scout-editor"),        
                         wxScoutEditor = ko.dataFor($element.get(0)); // get the view model bound to the element
@@ -106,6 +108,7 @@ define([
              });
             
             // Make deletable via menu: Establishes the isRemovable member.
+            // - makeRemovable adds the removeMe function to this object
             removable.makeRemovable(this, function () {
                     // TODO: Could ask for confirmation; return false if veto'd
                     // 
@@ -118,6 +121,7 @@ define([
             });
             
             // Make context sensiive by the PickController: shows the context menu.
+            // - makeContextSensitive adds the showMyContextMenu function to this object
             contextSensitive.makeContextSensitive(this, function () {
                 messenger.notify("Show current weather", "TODO");
             });

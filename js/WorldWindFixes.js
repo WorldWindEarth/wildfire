@@ -32,7 +32,7 @@ define(['worldwind'], function () {
                 WorldWind.WWMath.clamp(lonRadians * WorldWind.Angle.RADIANS_TO_DEGREES, -180, 180)
             ];
         };
-      
+             
         // Augment the 0.9.0 version WorldWind with bug fixes and customizations
         if (WorldWind.VERSION === "0.9.0") {
 
