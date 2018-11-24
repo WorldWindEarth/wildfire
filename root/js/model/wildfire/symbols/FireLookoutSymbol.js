@@ -7,6 +7,7 @@
 
 define([
     'model/wildfire/symbols/Background',
+    'model/wildfire/symbols/Callout',
     'model/wildfire/symbols/DirOfSpread',
     'model/wildfire/symbols/FlameLengthHead',
     'model/util/Formatter',
@@ -19,6 +20,7 @@ define([
     'worldwind'],
     function (
         Background,
+        Callout,
         DirOfSpread,
         FlameLengthHead,
         formatter,
@@ -51,6 +53,7 @@ define([
 
             // Create the fire lookout symbol components
             this.background = new Background(lookout.latitude(), lookout.longitude(), eyeDistanceScalingThreshold);
+            this.callout = new Callout(lookout.latitude(), lookout.longitude(), lookout);
             this.diamond = new WildfireDiamond(lookout.latitude(), lookout.longitude(), Math.round(head), Math.round(flanks), Math.round(heal), eyeDistanceScalingThreshold);
             this.dirOfSpread = new DirOfSpread(lookout.latitude(), lookout.longitude(), Math.round(dir), eyeDistanceScalingThreshold);
             this.flameLengthHead = new FlameLengthHead(lookout.latitude(), lookout.longitude(), head || '-');
@@ -64,6 +67,7 @@ define([
             // Add a reference to our lookout object to the principle renderables.
             // The "movable" wxModel will generate EVENT_OBJECT_MOVED events. See SelectController.
             this.background.pickDelegate = lookout;
+            this.callout.pickDelegate = lookout;
             this.diamond.pickDelegate = lookout;
             this.dirOfSpread.pickDelegate = lookout;
             this.flameLengthHead.pickDelegate = lookout;
@@ -73,6 +77,8 @@ define([
             this.handleObjectMovedEvent = function (lookout) {
                 self.background.position.latitude = lookout.latitude();
                 self.background.position.longitude = lookout.longitude();
+                self.callout.position.latitude = lookout.latitude();
+                self.callout.position.longitude = lookout.longitude();
                 self.diamond.position.latitude = lookout.latitude();
                 self.diamond.position.longitude = lookout.longitude();
                 self.dirOfSpread.position.latitude = lookout.latitude();
@@ -91,6 +97,7 @@ define([
                 ros = lookout.surfaceFire.rateOfSpreadMax.value;
                 modelNo = lookout.surfaceFire.fuelBed.fuelModel.modelCode;
 
+                this.callout.updateAnnotation(lookout);
                 this.diamond.updateWildfireDiamondImage(head, flanks, heal);
                 this.dirOfSpread.updateDirOfSpreadImage(head > 0 ? Math.round(dir) : null);
                 if (head > 1) {
@@ -99,6 +106,8 @@ define([
                     this.flameLengthHead.text = (Math.round(head * 10) / 10) + "'";
                 }
                 this.fuelModelNo.text = modelNo;
+                
+                this.lookout.globe.redraw();
             };
             // EVENT_PLACE_CHANGED handler
             this.handlePlaceChangedEvent = function (lookout) {
@@ -129,10 +138,14 @@ define([
             // Enable the background/border when selected/highlighted
             this.background.enabled = this.highlighted;
 
+            // The callout rendering is conditional
+            this.callout.enabled = this.lookout.showCallout;
+
             // Rotate and dir of spread arrot to match the view
             this.dirOfSpread.imageRotation = -dc.navigator.heading;
 
             this.background.render(dc);
+            this.callout.render(dc);
             this.diamond.render(dc);
             this.dirOfSpread.render(dc);
             this.flameLengthHead.render(dc);

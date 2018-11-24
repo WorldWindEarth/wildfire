@@ -57,6 +57,8 @@ define([
              * Override the WeatherScout name set by the parent
              */
             this.name(args.name || 'Fire Lookout');
+            
+            this.showCallout = false;
 
             /**
              * Override the parent WeatherScout's Openable implementation with a FireLookoutDialog
@@ -79,6 +81,14 @@ define([
                 // TODO: Could ask for confirmation; return false if veto'd
                 manager.removeLookout(self); // Removes the lookout from the manager's observableArray
                 return true;    // return true to fire a EVENT_OBJECT_REMOVED            
+            };
+            /**
+             * Override the parent WeatherScout's ContextSensitive implementation
+             */
+            this.showMyContextMenu = function () {
+                // TODO: Toggle the Annotation for this object
+                this.showCallout = !this.showCallout;
+                return true;    // return true to fire         
             };
 
             // Persistent properties
