@@ -78,6 +78,9 @@ define([
             /** A reference to the globe; used by the WeatherMapSymbol. */
             this.globe = manager.globe;
             
+            /** Controls the display of the callout annoation. */
+            this.showCallout = false;
+            
             // TODO: assert that the params object contains the required members, e.g. lat, lon.
             
             // Make movable by the PickController: Establishes the isMovable member.
@@ -121,9 +124,10 @@ define([
             });
             
             // Make context sensiive by the PickController: shows the context menu.
-            // - makeContextSensitive adds the showMyContextMenu function to this object
+            // - makeContextSensitive adds the showMyContextMenu function using the callback
             contextSensitive.makeContextSensitive(this, function () {
-                messenger.notify("Show current weather", "TODO");
+                this.showCallout = !this.showCallout;
+                this.globe.redraw();
             });
 
             // Observables:

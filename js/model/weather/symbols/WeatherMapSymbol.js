@@ -23,6 +23,7 @@
  */
 define(['model/weather/symbols/AirTemperature',
         'model/weather/symbols/Background',
+        'model/weather/symbols/Callout',
         'model/weather/symbols/ForecastTime',
         'model/weather/symbols/RelativeHumidity',
         'model/weather/symbols/SkyCover',
@@ -34,6 +35,7 @@ define(['model/weather/symbols/AirTemperature',
     function (
               AirTemperature,
               Background,
+              Callout,
               ForecastTime,
               RelativeHumidity,
               SkyCover,
@@ -59,6 +61,7 @@ define(['model/weather/symbols/AirTemperature',
 
             // Create the composite weather map symbol components
             this.background = new Background(wxScout.latitude(), wxScout.longitude(), eyeDistanceScalingThreshold);
+            this.callout = new Callout(wxScout.latitude(), wxScout.longitude(), wxScout);
             this.skyCover = new SkyCover(wxScout.latitude(), wxScout.longitude(), null, eyeDistanceScalingThreshold);
             this.windBarb = new WindBarb(wxScout.latitude(), wxScout.longitude(), null, null, eyeDistanceScalingThreshold);
             this.airTemperature = new AirTemperature(wxScout.latitude(), wxScout.longitude(), 'F');
@@ -82,6 +85,8 @@ define(['model/weather/symbols/AirTemperature',
             this.handleObjectMovedEvent = function (wxScout) {
                 self.background.position.latitude = wxScout.latitude();
                 self.background.position.longitude = wxScout.longitude();
+                self.callout.position.latitude = wxScout.latitude();
+                self.callout.position.longitude = wxScout.longitude();                
                 self.skyCover.position.latitude = wxScout.latitude();
                 self.skyCover.position.longitude = wxScout.longitude();
                 self.windBarb.position.latitude = wxScout.latitude();
@@ -98,6 +103,7 @@ define(['model/weather/symbols/AirTemperature',
             this.handleWeatherChangedEvent = function (wxScout) {
                 wx = wxScout.getForecastAtTime(wxScout.globe.dateTime());
                 // Update the values
+                self.callout.updateAnnotation(wx, timeOptions);                
                 self.skyCover.updateSkyCoverImage(wx.skyCoverPct);
                 self.windBarb.updateWindBarbImage(wx.windSpeedKts, wx.windDirectionDeg);
                 self.airTemperature.text = wx.airTemperatureF + 'F';
@@ -121,6 +127,7 @@ define(['model/weather/symbols/AirTemperature',
             this.handleTimeChangedEvent = function (time) {
                 wx = self.wxScout.getForecastAtTime(time);
                 // Update the values
+                self.callout.updateAnnotation(wx, timeOptions);
                 self.skyCover.updateSkyCoverImage(wx.skyCoverPct);
                 self.windBarb.updateWindBarbImage(wx.windSpeedKts, wx.windDirectionDeg);
                 self.airTemperature.text = wx.airTemperatureF + 'F';
@@ -157,8 +164,11 @@ define(['model/weather/symbols/AirTemperature',
 
             //this.background.enabled = this.highlighted;
             this.background.highlighted = this.highlighted;
-
+            // The callout rendering is conditional
+            this.callout.enabled = this.wxScout.showCallout;
+            
             this.background.render(dc);
+            this.callout.render(dc);
             this.skyCover.render(dc);
             this.airTemperature.render(dc);
             this.relHumidity.render(dc);

@@ -1,5 +1,5 @@
 /* 
- * Copyright (c) 2016 Bruce Schubert.
+ * Copyright (c) 2016-2018 Bruce Schubert.
  * The MIT License
  * http://www.opensource.org/licenses/mit-license
  */
@@ -37,6 +37,35 @@ define(['knockout'],
             // The list of highlighted items
             this.highlightedItems = [];
 
+            // Add support for press-and-hold gesture on mobile devices.
+            var timerID;
+            var counter = 0;
+            var pressHoldEvent = new CustomEvent("presshold");
+            var pressHoldDuration = 50;
+            function pressHoldTimer() {
+              if (counter <  pressHoldDuration) {
+                timerID = requestAnimationFrame(pressHoldTimer);
+                counter++;
+                //console.log("Counting!");
+              } else {
+                self.wwd.canvas.dispatchEvent(pressHoldEvent);
+              }
+            }
+            // This function is registred on touchstart
+            function pressingDown(e) {
+              // Start the timer
+              requestAnimationFrame(pressHoldTimer);
+              e.preventDefault();
+              //console.log("Pressing!");
+            } 
+            // This function is registered on touchend and touchmove
+            function notPressingDown(e) {
+              // Stop the timer
+              cancelAnimationFrame(timerID);
+              counter = 0;
+              //console.log("Not pressing!");
+            }
+            
             // Register listeners on the event target.
             function eventListener(event) {
                 self.handlePick(event);
@@ -57,9 +86,13 @@ define(['knockout'],
             this.wwd.addEventListener("mouseup", eventListener);    // Listen for mouse up to release an item
             this.wwd.addEventListener("mouseout", eventListener);
             // Listen for touch
+            this.wwd.addEventListener("touchstart", pressingDown);    // Start the pressHoldTimer
             this.wwd.addEventListener("touchstart", eventListener);
+            this.wwd.addEventListener("touchmove", notPressingDown);  // Cancel the pressHoldTimer
             this.wwd.addEventListener("touchmove", eventListener);
+            this.wwd.addEventListener("touchend", notPressingDown);   // Cancel the pressHoldTime
             this.wwd.addEventListener("touchend", eventListener);
+            this.wwd.addEventListener("presshold", eventListener);    // Custom event for a context menu or callout 
             // Listen for mouse clicks
             this.wwd.addEventListener("click", eventListener);          // Listen for single clicks to select an item
             this.wwd.addEventListener("dblclick", eventListener);       // Listen for double clicks to open an item
@@ -162,6 +195,7 @@ define(['knockout'],
                     this.handleDoubleClick();
                     break;
                 case "contextmenu":
+                case "presshold":
                     this.handleContextMenu();
                     break;
             }
