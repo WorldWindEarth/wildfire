@@ -58,8 +58,6 @@ define([
              */
             this.name(args.name || 'Fire Lookout');
             
-            this.showCallout = false;
-
             /**
              * Override the parent WeatherScout's Openable implementation with a FireLookoutDialog
              */
@@ -89,7 +87,6 @@ define([
                 // TODO: Toggle the Annotation for this object
                 this.showCallout = !this.showCallout;
                 this.globe.redraw();
-                return true;    // return true to fire         
             };
 
             // Persistent properties

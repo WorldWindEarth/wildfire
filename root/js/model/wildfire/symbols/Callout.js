@@ -15,7 +15,7 @@ define(['model/Constants', 'model/globe/EnhancedAnnotation', 'worldwind'],
                 // Set default annotation attributes.
                 var annotationAttributes = new WorldWind.AnnotationAttributes(null);
                 annotationAttributes.cornerRadius = 14;
-                annotationAttributes.backgroundColor = WorldWind.Color.BLUE;
+                annotationAttributes.backgroundColor = new WorldWind.Color(0.5, 0, 0, 1); // dark red
                 annotationAttributes.drawLeader = true;
                 annotationAttributes.leaderGapWidth = 10;
                 annotationAttributes.leaderGapHeight = 50;
