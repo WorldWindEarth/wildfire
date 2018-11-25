@@ -78,6 +78,9 @@ define([
             /** A reference to the globe; used by the WeatherMapSymbol. */
             this.globe = manager.globe;
             
+            /** Controls the display of the callout annoation. */
+            this.showCallout = false;
+            
             // TODO: assert that the params object contains the required members, e.g. lat, lon.
             
             // Make movable by the PickController: Establishes the isMovable member.
@@ -85,6 +88,7 @@ define([
             movable.makeMovable(this);
 
             // Make selectable via picking (see PickController): adds the "select" method
+            // - makeSelectable adds the selectMe function to this object using the following callback
             selectable.makeSelectable(this, function (params) {   // define the callback that selects this marker
                 this.isMovable(params.selected);
                 this.renderable.highlighted = params.selected;
@@ -93,6 +97,7 @@ define([
 
             
             // Make openable via menus: Establishes the isOpenable member.
+            // - makeOpenable adds the openMe function to this object
             openable.makeOpenable(this, function () { // define the function that opens the editor
                    var $element = $("#weather-scout-editor"),        
                         wxScoutEditor = ko.dataFor($element.get(0)); // get the view model bound to the element
@@ -106,6 +111,7 @@ define([
              });
             
             // Make deletable via menu: Establishes the isRemovable member.
+            // - makeRemovable adds the removeMe function to this object
             removable.makeRemovable(this, function () {
                     // TODO: Could ask for confirmation; return false if veto'd
                     // 
@@ -118,8 +124,10 @@ define([
             });
             
             // Make context sensiive by the PickController: shows the context menu.
+            // - makeContextSensitive adds the showMyContextMenu function using the callback
             contextSensitive.makeContextSensitive(this, function () {
-                messenger.notify("Show current weather", "TODO");
+                this.showCallout = !this.showCallout;
+                this.globe.redraw();
             });
 
             // Observables:
