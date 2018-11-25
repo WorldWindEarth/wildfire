@@ -109,6 +109,7 @@ define(['model/weather/symbols/AirTemperature',
                 self.airTemperature.text = wx.airTemperatureF + 'F';
                 self.relHumidity.text = wx.relaltiveHumidityPct + '%';
                 self.forecastTime.text = '@ ' + wx.time.toLocaleTimeString('en', timeOptions);
+                wxScout.globe.redraw();
             };
 
             // EVENT_PLACE_CHANGED handler that updates the label
@@ -121,6 +122,7 @@ define(['model/weather/symbols/AirTemperature',
                     // Display "Lat Lon"
                     self.skyCover.label = wxScout.latitude.toFixed(3) + ' ' + wxScout.longitude.toFixed(3);
                 }
+                wxScout.globe.redraw();
             };
 
             //EVENT_TIME_CHANGED handler that updates the label and symbology
@@ -137,6 +139,7 @@ define(['model/weather/symbols/AirTemperature',
                 } else {
                     self.forecastTime.text = '@ ' + wx.time.toLocaleTimeString('en', timeOptions);
                 }
+                self.wxScout.globe.redraw();
             };
 
             // Establish the Publisher/Subscriber relationship between this symbol and the wx scout
