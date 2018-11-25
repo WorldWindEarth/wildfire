@@ -88,6 +88,7 @@ define([
             this.showMyContextMenu = function () {
                 // TODO: Toggle the Annotation for this object
                 this.showCallout = !this.showCallout;
+                this.globe.redraw();
                 return true;    // return true to fire         
             };
 
