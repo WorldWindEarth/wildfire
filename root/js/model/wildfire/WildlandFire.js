@@ -37,7 +37,11 @@ define([
             var attributes = feature.attributes || {},
                 self = this;
 
-            this.manager = manager;
+            /** A reference to the globe; used by the WeatherMapSymbol. */
+            this.globe = manager.globe;
+            
+            /** Controls the display of the callout annoation. */
+            this.showCallout = false;
             
             // Make openable via menus: Fires the EVENT_OBJECT_OPENED event on success.
             openable.makeOpenable(this, function () {
@@ -45,14 +49,16 @@ define([
                 return false;
             });
 
-            // Make context sensiive by the SelectController: shows the context menu.
+            // Make context sensiive by the PickController - shows a callout.
+            // - makeContextSensitive adds the showMyContextMenu function using the supplied callback
             contextSensitive.makeContextSensitive(this, function () {
-                //messenger.infoGrowl("Show menu with delete, open, and lock/unlock", "TODO");
+                self.showCallout = !self.showCallout;
+                self.globe.redraw();
             });
 
             // Make selectable via picking (see SelectController): adds the "select" method
             selectable.makeSelectable(this, function (params) {   // define the callback that selects this marker
-                this.renderable.highlighted = params.selected;
+                self.renderable.highlighted = params.selected;
                 return true;    // return true to fire a EVENT_OBJECT_SELECTED event
             });
             
