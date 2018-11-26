@@ -10,7 +10,7 @@ define(['model/Constants', 'model/globe/EnhancedAnnotation', 'worldwind'],
         function (constants, EnhancedAnnotation, ww) {
             "use strict";
 
-            var CalloutAnnotation = function (latitude, longitude, lookout) {
+            var FireBehaviorCallout = function (latitude, longitude, lookout) {
 
                 // Set default annotation attributes.
                 var annotationAttributes = new WorldWind.AnnotationAttributes(null);
@@ -33,9 +33,9 @@ define(['model/Constants', 'model/globe/EnhancedAnnotation', 'worldwind'],
 
             };
             // Inherit Annotation parent methods
-            CalloutAnnotation.prototype = Object.create(EnhancedAnnotation.prototype);
+            FireBehaviorCallout.prototype = Object.create(EnhancedAnnotation.prototype);
 
-            CalloutAnnotation.prototype.updateAnnotation = function(lookout) {
+            FireBehaviorCallout.prototype.updateAnnotation = function(lookout) {
                 if (lookout && lookout.surfaceFire) {
                   var head = Number(lookout.surfaceFire.flameLength.value);
                   var flanks = Number(lookout.surfaceFire.flameLengthFlanking.value);
@@ -56,11 +56,11 @@ define(['model/Constants', 'model/globe/EnhancedAnnotation', 'worldwind'],
                     "\nRate of Max Spread: " + ros + " fpm" +
                     "\nDirection of Max Spread: " + dir + " deg";
                 } else {
-                    this.text = "Standby..."
+                    this.text = "Standby...";
                 }
-              }
+              };
 
-            return CalloutAnnotation;
+            return FireBehaviorCallout;
         }
 );
 

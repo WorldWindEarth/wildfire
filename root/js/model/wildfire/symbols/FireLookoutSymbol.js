@@ -7,8 +7,8 @@
 
 define([
     'model/wildfire/symbols/Background',
-    'model/wildfire/symbols/Callout',
     'model/wildfire/symbols/DirOfSpread',
+    'model/wildfire/symbols/FireBehaviorCallout',
     'model/wildfire/symbols/FlameLengthHead',
     'model/util/Formatter',
     'model/wildfire/symbols/FuelModelNo',
@@ -20,8 +20,8 @@ define([
     'worldwind'],
     function (
         Background,
-        Callout,
         DirOfSpread,
+        FireBehaviorCallout,
         FlameLengthHead,
         formatter,
         FuelModelNo,
@@ -53,7 +53,7 @@ define([
 
             // Create the fire lookout symbol components
             this.background = new Background(lookout.latitude(), lookout.longitude(), eyeDistanceScalingThreshold);
-            this.callout = new Callout(lookout.latitude(), lookout.longitude(), lookout);
+            this.callout = new FireBehaviorCallout(lookout.latitude(), lookout.longitude(), lookout);
             this.diamond = new WildfireDiamond(lookout.latitude(), lookout.longitude(), Math.round(head), Math.round(flanks), Math.round(heal), eyeDistanceScalingThreshold);
             this.dirOfSpread = new DirOfSpread(lookout.latitude(), lookout.longitude(), Math.round(dir), eyeDistanceScalingThreshold);
             this.flameLengthHead = new FlameLengthHead(lookout.latitude(), lookout.longitude(), head || '-');
