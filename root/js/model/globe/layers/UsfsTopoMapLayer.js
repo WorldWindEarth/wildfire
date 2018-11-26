@@ -52,13 +52,6 @@ define([
     };
     UsfsTopoMapLayer.prototype = Object.create(WorldWind.Layer.prototype);
  
-    /**
-     * Refreshes the data associated with this layer. The behavior of this function varies with the layer
-     * type. For image layers, it causes the images to be re-retrieved from their origin.
-     */
-    UsfsTopoMapLayer.prototype.refresh = function () {
-       return this.wmtsLayer.refresh(dc);
-    };
 
     /**
      * Subclass method called to display this layer. Subclasses should implement this method rather than the
