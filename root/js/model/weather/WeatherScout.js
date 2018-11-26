@@ -90,8 +90,8 @@ define([
             // Make selectable via picking (see PickController): adds the "select" method
             // - makeSelectable adds the selectMe function to this object using the following callback
             selectable.makeSelectable(this, function (params) {   // define the callback that selects this marker
-                this.isMovable(params.selected);
-                this.renderable.highlighted = params.selected;
+                self.isMovable(params.selected);
+                self.renderable.highlighted = params.selected;
                 return true;    // return true to fire a EVENT_OBJECT_SELECTED event
             });
 
@@ -126,8 +126,8 @@ define([
             // Make context sensiive by the PickController: shows the context menu.
             // - makeContextSensitive adds the showMyContextMenu function using the callback
             contextSensitive.makeContextSensitive(this, function () {
-                this.showCallout = !this.showCallout;
-                this.globe.redraw();
+                self.showCallout = !this.showCallout;
+                self.globe.redraw();
             });
 
             // Observables:
