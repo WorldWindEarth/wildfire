@@ -46,7 +46,7 @@ define([
                 function (features) {
                     for (i = 0, max = features.length; i < max; i++) {
                         feature = features[i];
-                        fire = new WildlandFire(this, feature, constants.WILDLAND_FIRE_POINT);
+                        fire = new WildlandFire(self, feature, constants.WILDLAND_FIRE_POINT);
                         self.fires.push(fire);
                         if (fire.renderable) {
                             self.layer.addRenderable(fire.renderable);

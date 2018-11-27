@@ -39,6 +39,7 @@ define([
     'model/globe/layers/LandfireFbfm13Layer',
 //    'model/globe/layers/LandfireFbfm40Layer',
     'model/globe/layers/OpenTopoMapLayer',
+    'model/globe/layers/UsfsTopoMapLayer',
     'model/globe/layers/UsgsImageryTopoBaseMapLayer',
     'model/globe/layers/UsgsNaipMapLayer',
     'model/globe/layers/UsgsTopoBaseMapLayer',
@@ -65,6 +66,7 @@ define([
         LandfireFbfm13Layer,
 //        LandfireFbfm40Layer,
         OpenTopoMapLayer,
+        UsfsTopoMapLayer,
         UsgsImageryTopoBaseMapLayer,
         UsgsNaipMapLayer,
         UsgsTopoBaseMapLayer,
@@ -171,6 +173,7 @@ define([
             this.addBaseLayer(new WorldWind.BingRoadsLayer(null), {enabled: false, opacity: 0.7, detailControl: config.imagerydetailControl});
             this.addBaseLayer(new EoxOpenStreetMapLayer(), {enabled: false, opacity: 0.8, detailControl: config.imagerydetailControl});
             
+            this.addOverlayLayer(new UsfsTopoMapLayer(), {enabled: false, detailControl: 1.25});
             this.addOverlayLayer(new LandfireFbfm13Layer(), {enabled: false, detailControl: config.imagerydetailControl});
 //            this.addOverlayLayer(new LandfireFbfm40Layer(), {enabled: false, detailControl: config.imagerydetailControl});
             this.addOverlayLayer(new GeoMacHistoricPerimetersLayer(), {enabled: false, detailControl: config.imagerydetailControl});

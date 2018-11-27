@@ -15,9 +15,11 @@
  */
 define([
     'model/Constants',
+    'model/wildfire/symbols/WildlandFireCallout',
     'worldwind'],
     function (
         constants,
+        WildlandFireCallout,
         ww) {
         "use strict";
 
@@ -34,6 +36,8 @@ define([
             // Maintain a reference to the weather object this symbol represents
             this.fire = fire;
             this.shapes = [];
+            this.callout = new WildlandFireCallout(fire);
+            this.callout.pickDelegate = fire;
 
             var marker,
                 i, numRings, ring,
@@ -42,7 +46,6 @@ define([
                 point, pointAttributes, pointHightlightAttributes,
                 scaleMultiplier = 1;
 
-     
 
             // Create the symbol components
             if (fire.geometryType === constants.GEOMETRY_POINT) {
@@ -125,6 +128,10 @@ define([
                 return;
             }
             
+            // The callout rendering is conditional
+            this.callout.enabled = this.fire.showCallout;
+            
+            this.callout.render(dc);
             for (var i = 0, max = this.shapes.length; i < max; i++) {
                 this.shapes[i].highlighted = this.highlighted;
                 this.shapes[i].render(dc);

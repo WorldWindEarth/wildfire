@@ -64,6 +64,10 @@ requirejs.config({
             deps: ["jquery"],
             exports: "$.fn.popover"
         },
+        "jqueryui": {
+            // load bootstrap first to avoid dialog box [X] button conflict
+            deps: ["bootstrap"]
+        },
         "jquery-fancytree": {
             deps: ["jqueryui"]
         }
