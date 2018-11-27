@@ -71,8 +71,8 @@ define(['model/Constants', 'model/globe/EnhancedAnnotation', 'model/util/Formatt
                 if (Number.isNaN(flameLen)) {
                     return "NA"
                 } else {
-                    var len = Number(flameLen).toFixed(flameLen > 1 ? 0 : 1);
-                    return len + "' - " + (len <= 1 ? "LOW" : len <= 3 ? "MODERATE" : len <= 7 ? "ACTIVE" : len <= 15 ? "VERY ACTIVE" : "EXTREME");
+                    var len = Number(flameLen).toFixed(flameLen > 3 ? 0 : 1);
+                    return len + "' - " + (len < 1 ? "LOW" : len <= 3 ? "MODERATE" : len <= 7 ? "ACTIVE" : len <= 15 ? "VERY ACTIVE" : "EXTREME");
                 }
             };
             
