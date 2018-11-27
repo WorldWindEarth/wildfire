@@ -49,9 +49,6 @@ define(['model/Constants', 'model/globe/EnhancedAnnotation', 'model/util/Formatt
                   var windSpd = Number(lookout.activeWeather.windSpeedKts);   
                   var aspect = formatter.formatAngle360(lookout.terrain.aspect, 0);
                   var slope = formatter.formatPercentSlope(lookout.terrain.slope, 0);   
-                  head = Number.isNaN(head) ? '-' : Number(head).toFixed(head > 1 ? 0 : 1);
-                  flanks = Number.isNaN(flanks) ? '-' : Number(flanks).toFixed(flanks > 1 ? 0 : 1);
-                  heel = Number.isNaN(heel) ? '-' : Number(heel).toFixed(heel > 1 ? 0 : 1);
                   ros = Number.isNaN(ros) ? '-' : ros.toFixed(0);
                   dir = Number.isNaN(dir) ? '-' : dir.toFixed(0);
                   
@@ -60,16 +57,25 @@ define(['model/Constants', 'model/globe/EnhancedAnnotation', 'model/util/Formatt
                     "\nWinds from " + windDir + "° at " + windSpd + " knots" +
                     "\nSlope aspect is " + aspect + " at " + slope +
                     "\nFuel Model: " + modelNo + " - " + modelName +
-                    "\nHead Fire: " + head + "'" +
-                    "\nFlanking Fire: " + flanks + "'" +
-                    "\nBacking Fire: " + heel + "'" +
+                    "\nHead Fire: " + FireBehaviorCallout.formatFlameLength(head) +
+                    "\nFlanking Fire: " + FireBehaviorCallout.formatFlameLength(flanks) +
+                    "\nBacking Fire: " + FireBehaviorCallout.formatFlameLength(heel) +
                     "\nRate of Max Spread: " + ros + " fpm" +
                     "\nDirection of Max Spread: " + dir + "°";
                 } else {
                     this.text = "Standby...";
                 }
-              };
-
+            };
+            
+            FireBehaviorCallout.formatFlameLength = function(flameLen) {
+                if (Number.isNaN(flameLen)) {
+                    return "NA"
+                } else {
+                    var len = Number(flameLen).toFixed(flameLen > 1 ? 0 : 1);
+                    return len + "' - " + (len < 1 ? "LOW" : len < 3 ? "MODERATE" : len < 7 ? "ACTIVE" : len < 15 ? "VERY ACTIVE" : "EXTREME");
+                }
+            };
+            
             return FireBehaviorCallout;
         }
 );
