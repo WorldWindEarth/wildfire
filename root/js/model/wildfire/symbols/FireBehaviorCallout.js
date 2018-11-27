@@ -6,8 +6,8 @@
 
 /*global define, WorldWind*/
 
-define(['model/Constants', 'model/globe/EnhancedAnnotation', 'worldwind'],
-        function (constants, EnhancedAnnotation, ww) {
+define(['model/Constants', 'model/globe/EnhancedAnnotation', 'model/util/Formatter', 'moment', 'worldwind'],
+        function (constants, EnhancedAnnotation, formatter, moment, ww) {
             "use strict";
 
             var FireBehaviorCallout = function (latitude, longitude, lookout) {
@@ -40,21 +40,31 @@ define(['model/Constants', 'model/globe/EnhancedAnnotation', 'worldwind'],
                   var head = Number(lookout.surfaceFire.flameLength.value);
                   var flanks = Number(lookout.surfaceFire.flameLengthFlanking.value);
                   var heel = Number(lookout.surfaceFire.flameLengthBacking.value);
-                  var dir = Math.round(lookout.surfaceFire.directionMaxSpread.value);
-                  var ros = Math.round(lookout.surfaceFire.rateOfSpreadMax.value);
+                  var dir = Number(lookout.surfaceFire.directionMaxSpread.value);
+                  var ros = Number(lookout.surfaceFire.rateOfSpreadMax.value);
                   var modelNo = lookout.surfaceFire.fuelBed.fuelModel.modelCode;
                   var modelName = lookout.surfaceFire.fuelBed.fuelModel.modelName;
+                  var dateTime = moment(lookout.sunlight.dateTime);
+                  var windDir = Number(lookout.activeWeather.windDirectionDeg);
+                  var windSpd = Number(lookout.activeWeather.windSpeedKts);   
+                  var aspect = formatter.formatAngle360(lookout.terrain.aspect, 0);
+                  var slope = formatter.formatPercentSlope(lookout.terrain.slope, 0);   
+                  head = Number.isNaN(head) ? '-' : Number(head).toFixed(head > 1 ? 0 : 1);
+                  flanks = Number.isNaN(flanks) ? '-' : Number(flanks).toFixed(flanks > 1 ? 0 : 1);
+                  heel = Number.isNaN(heel) ? '-' : Number(heel).toFixed(heel > 1 ? 0 : 1);
+                  ros = Number.isNaN(ros) ? '-' : ros.toFixed(0);
+                  dir = Number.isNaN(dir) ? '-' : dir.toFixed(0);
                   
-                  head = Number.isNaN(head) ? '0' : Number(head).toFixed(head > 1 ? 0 : 1);
-                  flanks = Number.isNaN(flanks) ? '0' : Number(flanks).toFixed(flanks > 1 ? 0 : 1);
-                  heel = Number.isNaN(heel) ? '0' : Number(heel).toFixed(heel > 1 ? 0 : 1);
                   
-                  this.text = "Fuel Model: " + modelNo + " - " + modelName +
+                  this.text = "Potential Fire Behavior @ " + (dateTime.isValid() ? dateTime.format("llll") : "?") +
+                    "\nWinds from " + windDir + "° at " + windSpd + " knots" +
+                    "\nSlope aspect is " + aspect + " at " + slope +
+                    "\nFuel Model: " + modelNo + " - " + modelName +
                     "\nHead Fire: " + head + "'" +
                     "\nFlanking Fire: " + flanks + "'" +
                     "\nBacking Fire: " + heel + "'" +
                     "\nRate of Max Spread: " + ros + " fpm" +
-                    "\nDirection of Max Spread: " + dir + " deg";
+                    "\nDirection of Max Spread: " + dir + "°";
                 } else {
                     this.text = "Standby...";
                 }
