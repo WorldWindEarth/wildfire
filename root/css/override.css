@@ -336,6 +336,18 @@ body {
 
 
 /*
+D3 charts
+*/
+
+.chart {
+  background-color: #eeeeee;
+}
+
+.xyplot {
+  background-color: #bebebe;
+}
+
+/*
 VisJS library overrides
 */
 

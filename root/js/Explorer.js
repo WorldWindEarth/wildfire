@@ -22,6 +22,7 @@ define([
     'viewmodels/BookmarkViewModel',
     'viewmodels/FiresViewModel',
     'viewmodels/FireLookoutEditor',
+    'viewmodels/FireLookoutView',
     'viewmodels/GlobeViewModel',
     'viewmodels/InfoViewModel',
     'viewmodels/LayersViewModel',
@@ -74,6 +75,7 @@ define([
         BookmarkViewModel,
         FiresViewModel,
         FireLookoutEditor,
+        FireLookoutView,
         GlobeViewModel,
         InfoViewModel,
         LayersViewModel,
@@ -210,6 +212,7 @@ define([
             new WeatherScoutEditor(weatherScoutEditorHtml);
             new FireLookoutEditor(fireLookoutEditorHtml);
             new WeatherScoutView(this.globe);
+            new FireLookoutView(this.globe);
             new WildfireView();
 
             // Marker tab content
