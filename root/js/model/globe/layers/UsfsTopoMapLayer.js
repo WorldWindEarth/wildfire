@@ -73,7 +73,7 @@ define([
      * @protected
      */
     UsfsTopoMapLayer.prototype.isLayerInView = function (dc) {
-        return this.wmtsLayer.isLayerInView(dc);
+        return this.wmtsLayer ? this.wmtsLayer.isLayerInView(dc) : false;
     };
 
     return UsfsTopoMapLayer;
