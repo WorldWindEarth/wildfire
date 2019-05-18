@@ -349,9 +349,9 @@ define([
                 this.latitude(),
                 this.longitude(),
                 function (json) { // Callback to process YQL Geo.Places result
-
+                  try {
                     // Load all the places into a place object array
-                    if (!json.query.results) {
+                    if (!json || !json.query || !json.query.results) {
                         log.error("WeatherScout", "refreshPlace", "json.query.results is null");
                         return;
                     }
@@ -374,13 +374,15 @@ define([
                         }
                     }
                     // Update the placename property: toponym
-                    self.toponym = placename;
-                    
+                    self.toponym = placename;                    
                     log.info('WeatherScout', 'refreshPlace', self.name() + ': EVENT_PLACE_CHANGED');
+                  }
+                  finally {
                     self.fire(events.EVENT_PLACE_CHANGED, self);
                     if (deferred) {
                         deferred.resolve(self);
                     }
+                  }
                 }
             );
         };

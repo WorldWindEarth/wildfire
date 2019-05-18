@@ -41,6 +41,7 @@ define(['model/Constants', 'model/globe/EnhancedAnnotation', 'worldwind'],
                     "\nNumber: " + fire.number + 
                     "\nSize: " + Number(fire.acres).toLocaleString() + " acres" +
                     "\nPercent Contained: " + fire.percentContained + "%" +
+                    "\nDiscovery Date: " + fire.discoveryDate.toLocaleDateString() +
                     "\nReport Date: " + fire.reportDate.toLocaleDateString() +
                     "\nStatus: " + (fire.status === 'U' ? "U (Update)" : fire.status === 'I' ? "I (Initial)" : fire.status === 'F' ? "F (Final)" : "Other");
                 } else {

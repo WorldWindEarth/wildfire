@@ -111,7 +111,10 @@ define(['model/util/Log',
                         + '&diagnostics=true'
                         + '&callback=';
                 console.log(url + '?' + query);
-                $.get(url, query, callback);
+                $.get(url, query, callback)
+                .fail(function() {
+                    callback({});
+                })
             },
             /**
              * Gets the reverse geocode address for the given lat/lon from the Yahoo GeoPlanet geo.placefinder table.
@@ -174,7 +177,10 @@ define(['model/util/Log',
                         + '&diagnostics=true'
                         + '&callback=';
                 console.log(url + '?' + query);
-                $.get(url, query, callback);
+                $.get(url, query, callback)
+                .fail(function() {
+                    callback({});
+                });
             },
             /**
              * Gets a lat/lon for the given place name, address, airport code or coordinates.

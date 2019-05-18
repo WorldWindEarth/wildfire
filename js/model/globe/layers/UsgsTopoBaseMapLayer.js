@@ -53,14 +53,6 @@ define([
     UsgsTopoBaseMapLayer.prototype = Object.create(WorldWind.Layer.prototype);
  
     /**
-     * Refreshes the data associated with this layer. The behavior of this function varies with the layer
-     * type. For image layers, it causes the images to be re-retrieved from their origin.
-     */
-    UsgsTopoBaseMapLayer.prototype.refresh = function () {
-       return this.wmtsLayer.refresh(dc);
-    };
-
-    /**
      * Subclass method called to display this layer. Subclasses should implement this method rather than the
      * [render]{@link Layer#render} method, which determines enable, pick and active altitude status and does not
      * call this doRender method if the layer should not be displayed.
@@ -80,7 +72,7 @@ define([
      * @protected
      */
     UsgsTopoBaseMapLayer.prototype.isLayerInView = function (dc) {
-        return this.wmtsLayer.isLayerInView(dc);
+        return this.wmtsLayer ? this.wmtsLayer.isLayerInView(dc) : false;
     };
 
     return UsgsTopoBaseMapLayer;

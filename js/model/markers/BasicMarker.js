@@ -190,9 +190,9 @@ define([
                     this.latitude(),
                     this.longitude(),
                     function (json) { // Callback to process Yahoo GeoPlanet geo.placefinder result
-
+                      try {
                         // Load all the places into a places object array
-                        if (!json.query.results) {
+                        if (!json || !json.query || !json.query.results) {
                             log.error("BasicMarker", "refreshPlace", "json.query.results is null");
                             return;
                         }
@@ -218,10 +218,17 @@ define([
                         self.toponym(placename);
 
                         log.info('BasicMarker', 'refreshPlace', self.name() + ': EVENT_PLACE_CHANGED');
+
+                      }
+                      catch (e) {
+                        log.error('BasicMarker', 'refreshPlace', 'Place lookup failed.');                        
+                      }
+                      finally {
                         self.fire(events.EVENT_PLACE_CHANGED, self);
                         if (deferred) {
                             deferred.resolve(self);
-                        }
+                        }                        
+                      }
                     }
                 );
             };
